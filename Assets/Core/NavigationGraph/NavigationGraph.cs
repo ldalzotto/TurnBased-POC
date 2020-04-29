@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
-
 
 public class NavigationGraph
 {
@@ -76,13 +76,6 @@ public class NavigationNode
     public float3 LocalPosition;
 
     private NavigationNode() { }
-
-    public static NavigationNode alloc(ref float3 p_localPosition)
-    {
-        NavigationNode l_instance = new NavigationNode();
-        l_instance.LocalPosition = p_localPosition;
-        return l_instance;
-    }
 
     public static NavigationNode alloc()
     {

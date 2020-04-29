@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
@@ -7,19 +8,25 @@ public struct PathCalculationParameters
     public float HeurisitcDistanceWeight;
 }
 
-public struct NavigationPath
+public struct NavigationPath : IDisposable
 {
-    public List<NavigationNode> NavigationNodes;
-    public Dictionary<NavigationNode, NavigationNodePathTraversalCalculations> NavigationNodesTraversalCalculations;
+    public PoolableList<NavigationNode> NavigationNodes;
+    public PoolableDictionary<NavigationNode, NavigationNodePathTraversalCalculations> NavigationNodesTraversalCalculations;
     public float PathCost;
 
     public static NavigationPath build()
     {
         NavigationPath l_instance = new NavigationPath();
-        l_instance.NavigationNodes = new List<NavigationNode>();
-        l_instance.NavigationNodesTraversalCalculations = new Dictionary<NavigationNode, NavigationNodePathTraversalCalculations>();
+        l_instance.NavigationNodes = NavigationGraphAlgorithmMemoryBuffer.NavigationPath_NavigationNodes.popOrCreate();
+        l_instance.NavigationNodesTraversalCalculations = NavigationGraphAlgorithmMemoryBuffer.NavigationPath_NavigationNodesTraversalCalculations.popOrCreate();
         l_instance.PathCost = 0.0f;
         return l_instance;
+    }
+
+    public void Dispose()
+    {
+        NavigationGraphAlgorithmMemoryBuffer.NavigationPath_NavigationNodes.push(NavigationNodes);
+        NavigationGraphAlgorithmMemoryBuffer.NavigationPath_NavigationNodesTraversalCalculations.push(NavigationNodesTraversalCalculations);
     }
 }
 
@@ -46,7 +53,7 @@ public static class NavigationGrpahAlgorithm
 
             // This list are all nodes available to be picked for the next current node.
             // This means that they all haven't been traversed by the algorithm but not calculated yet
-            List<NavigationNode> l_pathNodesElligibleForNextCurrent = new List<NavigationNode>();
+            PoolableList<NavigationNode> l_pathNodesElligibleForNextCurrent = NavigationGraphAlgorithmMemoryBuffer.CurrentNavigationNodes.popOrCreate();
 
             NavigationNode l_currentEvaluatedNode = p_beginNode;
             bool l_isFirstTimeInLoop = true;
@@ -117,9 +124,13 @@ public static class NavigationGrpahAlgorithm
             if (l_currentEvaluatedNode != null)
             {
                 l_resultPath.NavigationNodes.Add(l_currentEvaluatedNode);
-                l_resultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(
-                                            l_resultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode]
-                                        );
+                l_resultPath.PathCost = 0.0f;
+
+                if (l_resultPath.NavigationNodesTraversalCalculations.ContainsKey(l_currentEvaluatedNode))
+                {
+                    l_resultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(l_resultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode]);
+                }
+
 
                 while (l_currentEvaluatedNode != p_beginNode)
                 {
@@ -138,17 +149,20 @@ public static class NavigationGrpahAlgorithm
                 l_resultPath.NavigationNodes.Reverse();
             }
 
+            NavigationGraphAlgorithmMemoryBuffer.CurrentNavigationNodes.push(l_pathNodesElligibleForNextCurrent);
+
             return l_resultPath;
         }
         else
         {
             return new NavigationPath();
         }
+
     }
 
     /**
 	The picked NavigationNode with the lowest total score (retrieved from NavigationNodePathTraversalCalculations) is returned
-*/
+    */
     private static NavigationNode pickNextCurrentNodeToCalculate(
              in Dictionary<NavigationNode, NavigationNodePathTraversalCalculations> l_pathScoreCalculations,
              in List<NavigationNode> l_pathNodesElligibleForNextCurrent)
@@ -215,6 +229,14 @@ public static class NavigationGrpahAlgorithm
         p_navigationNodePathTraversalCalculations.HeuristicScore =
             math.distance(p_startNode.LocalPosition, p_endNode.LocalPosition) * p_heurisitcDistanceMultiplier;
     }
+
+
+
+    public static NavigationNode pickRandomNode(in NavigationGraph p_navigationGraph)
+    {
+        return p_navigationGraph.NavigationNodes[MyRandom.Random.NextInt(0, p_navigationGraph.NavigationNodes.Count)];
+    }
+
 }
 
 
@@ -250,3 +272,10 @@ public struct NavigationNodePathTraversalCalculations
         return p_navigationNodePathTraversalCalculations.PathScore + p_navigationNodePathTraversalCalculations.HeuristicScore;
     }
 };
+
+public static class NavigationGraphAlgorithmMemoryBuffer
+{
+    public static MemoryBufferStack<PoolableList<NavigationNode>> CurrentNavigationNodes = MemoryBufferStack<PoolableList<NavigationNode>>.alloc(() => { return new PoolableList<NavigationNode>(); });
+    public static MemoryBufferStack<PoolableList<NavigationNode>> NavigationPath_NavigationNodes = MemoryBufferStack<PoolableList<NavigationNode>>.alloc(() => { return new PoolableList<NavigationNode>(); });
+    public static MemoryBufferStack<PoolableDictionary<NavigationNode, NavigationNodePathTraversalCalculations>> NavigationPath_NavigationNodesTraversalCalculations = MemoryBufferStack<PoolableDictionary<NavigationNode, NavigationNodePathTraversalCalculations>>.alloc(() => { return new PoolableDictionary<NavigationNode, NavigationNodePathTraversalCalculations>(); });
+}

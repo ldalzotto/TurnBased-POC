@@ -1,7 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#if comment
+public interface IPoolable
+{
+    void ClearForNewInstance();
+}
+
+public class PoolableList<T> : List<T>, IPoolable
+{
+    public void ClearForNewInstance()
+    {
+        Clear();
+    }
+}
+
+public class PoolableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IPoolable
+{
+    public void ClearForNewInstance()
+    {
+        Clear();
+    }
+}
+
 public class MemoryBufferStack<T> where T : IPoolable
 {
     public Stack<T> Stack;
@@ -17,18 +37,22 @@ public class MemoryBufferStack<T> where T : IPoolable
         return l_instance;
     }
 
-    public static T getOrCreate(MemoryBufferStack<T> p_memoryBufferStack)
+    public T popOrCreate()
     {
-        if (p_memoryBufferStack.Stack.Count == 0)
+        if (Stack.Count == 0)
         {
-            return p_memoryBufferStack.AllocationCallback.Invoke();
+            return AllocationCallback.Invoke();
         }
         else
         {
-            return p_memoryBufferStack.Stack.Pop();
+            return Stack.Pop();
         }
     }
 
-}
+    public void push(T p_val)
+    {
+        p_val.ClearForNewInstance();
+        Stack.Push(p_val);
+    }
 
-#endif
+}
