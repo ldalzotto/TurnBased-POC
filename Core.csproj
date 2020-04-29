@@ -64,13 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Core\Entity\Entity.cs" />
-    <Compile Include="Assets\Core\Entity\EntityComponent.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
+    <Compile Include="Assets\Core\Functional\Event\MyEvent.cs" />
     <Compile Include="Assets\Core\Functional\ExecutionTree\ExecutionTree.cs" />
     <Compile Include="Assets\Core\Math\MyRandom.cs" />
     <Compile Include="Assets\Core\Memory\MemoryBuffer.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />
+    <Compile Include="Assets\Core\TurnTimeline\TurnTimeline.cs" />
     <None Include="Assets\Core\Core.asmdef" />
     <Reference Include="Unity.Mathematics">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>

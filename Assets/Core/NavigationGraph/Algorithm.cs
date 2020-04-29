@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-
 namespace _Navigation
 {
     public struct PathCalculationParameters

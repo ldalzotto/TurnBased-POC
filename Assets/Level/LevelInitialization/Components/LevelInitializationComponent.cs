@@ -18,10 +18,13 @@ namespace _Level
 
         private void Start()
         {
-            GameObject l_navigationObject = GameObject.Instantiate(LevelInitializationDefinition.NavigationGraphObjectPrefab, transform, false);
+            GameObject l_navigationObject = GameObject.Instantiate(LevelInitializationDefinition.NavigationGraphObjectPrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false);
             NavigationGraphComponent l_navigationGraphComponent = l_navigationObject.GetComponent<NavigationGraphComponent>();
             l_navigationGraphComponent.NavigationGraphAsset = LevelInitializationDefinition.NavigationGraphAssetsPick[0];
             l_navigationObject.SetActive(true);
+
+
+            EntitySpawnDefinition.spawnEntities(LevelInitializationDefinition.EntitySpawnDefinition, LevelInitializationGameObject.Entities.transform);
         }
 
       

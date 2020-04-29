@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\EditorUtility\NavigationGraphEditorComponent.cs" />
+    <Compile Include="Assets\Entity\EntityDefinition.cs" />
+    <Compile Include="Assets\Entity\EntityRegistrationComponent.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Components\LevelInitializationComponent.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Configuration\EntitySpawnDefinition.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Configuration\LevelInitializationDefinition.cs" />

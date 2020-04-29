@@ -1,5 +1,6 @@
 ﻿
 
+using _Functional;
 using _Navigation;
 using System;
 using System.Collections.Generic;
@@ -15,42 +16,62 @@ namespace _Entity
     {
         public bool MarkedForDestruction;
         public NavigationNode CurrentNavigationNode;
-        public Dictionary<EntityComponentTag, IEntityComponent> Components;
+        public Dictionary<Type, IEntityComponent> Components;
 
         #region events
-        public event Action<Entity> OnEntityDestroyed;
+        public MyEvent<Entity> OnEntityDestroyed;
         #endregion
 
-        private Entity()
-        {
-            MarkedForDestruction = false;
-            CurrentNavigationNode = null;
-            Components = new Dictionary<EntityComponentTag, IEntityComponent>();
-            OnEntityDestroyed = null;
-        }
+
+
+
 
         public static Entity alloc()
         {
             Entity l_instance = new Entity();
+            l_instance.MarkedForDestruction = false;
+            l_instance.CurrentNavigationNode = null;
+            l_instance.Components = new Dictionary<Type, IEntityComponent>();
+            l_instance.OnEntityDestroyed = MyEvent<Entity>.build();
+
             EntityContainer.AddEntity(l_instance);
+
             return l_instance;
         }
 
-        public static void markForDestruction(Entity p_entity)
+        public static void markForDestruction(ref Entity p_entity)
         {
             p_entity.MarkedForDestruction = true;
             EntityDestructionContainer.EntitiesMarkedForDestruction.Add(p_entity);
         }
 
-        public static void set_currentNavigationNode(Entity p_entity, NavigationNode p_newNavigationNode)
+        public static void set_currentNavigationNode(ref Entity p_entity, in NavigationNode p_newNavigationNode)
         {
             p_entity.CurrentNavigationNode = p_newNavigationNode;
         }
 
-        public static void destroyEntity(Entity p_entity)
+        public static void add_component<COMPONENT>(in Entity p_entity, in COMPONENT p_component) where COMPONENT : IEntityComponent
         {
-            p_entity.OnEntityDestroyed?.Invoke(p_entity);
+            p_entity.Components[typeof(COMPONENT)] = p_component;
+        }
+
+        public static COMPONENT get_component<COMPONENT>(in Entity p_entity) where COMPONENT : IEntityComponent
+        {
+            if (p_entity.Components.ContainsKey(typeof(COMPONENT)))
+            {
+                return (COMPONENT)p_entity.Components[typeof(COMPONENT)];
+            }
+
+            return default(COMPONENT);
+        }
+
+        public static void destroyEntity(ref Entity p_entity)
+        {
+            MyEvent<Entity>.broadcast(ref p_entity.OnEntityDestroyed, ref p_entity);
         }
     }
+
+
+    public interface IEntityComponent { }
 }
 
