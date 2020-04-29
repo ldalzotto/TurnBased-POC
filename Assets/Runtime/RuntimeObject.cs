@@ -11,7 +11,7 @@ namespace _RuntimeObject
         {
             RuntimeObjectContainer.RuntimeObjects.Add(this);
             m_childComponents = new List<RuntimeComponent>();
-            m_rootComponentReference = p_rootComponentReference;
+            RuntimeObjectRootComponent = p_rootComponentReference;
         }
 
         internal void OnDestroy()
@@ -56,7 +56,7 @@ namespace _RuntimeObject
         }
 
         private List<RuntimeComponent> m_childComponents;
-        public RuntimeObjectRootComponent m_rootComponentReference { get; private set; }
+        public RuntimeObjectRootComponent RuntimeObjectRootComponent;
     }
 
 }

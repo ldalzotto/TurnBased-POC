@@ -8,20 +8,19 @@ namespace _RuntimeObject
     [ExecuteAfter(typeof(RuntimeObjectRootComponent))]
     public abstract class RuntimeComponent : MonoBehaviour
     {
+        public RuntimeObject RuntimeObject;
+
         public virtual void Awake()
         {
-            m_associatedObject = RuntimeObjectRootComponent.FindRootRuntimeObjectComponent(this).m_InstanciatedRuntimeObject;
-            m_associatedObject.AddChildComponent(this);
+            RuntimeObject = RuntimeObjectRootComponent.FindRootRuntimeObjectComponent(this).m_InstanciatedRuntimeObject;
+            RuntimeObject.AddChildComponent(this);
         }
 
         public virtual void OnDestroy()
         {
-            m_associatedObject.RemoveChildComponent(this);
+            RuntimeObject.RemoveChildComponent(this);
         }
 
-        public RuntimeObject GetAssociatedRuntimeObject() { return m_associatedObject; }
-
-        protected RuntimeObject m_associatedObject;
     }
 
 

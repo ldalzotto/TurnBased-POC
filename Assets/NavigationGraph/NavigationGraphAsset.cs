@@ -28,13 +28,13 @@ namespace _Navigation
         {
             NavigationGraph l_navigationGraph = NavigationGraph.alloc();
             Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode = new Dictionary<int, NavigationNode>(NavigationNodes.Count);
-            InstanciateNavigationNodes(l_navigationGraph, l_serializedKeyToNavigationNode);
-            InstanciateNavigationLinks(l_navigationGraph, l_serializedKeyToNavigationNode);
+            InstanciateNavigationNodes(l_navigationGraph, ref l_serializedKeyToNavigationNode);
+            InstanciateNavigationLinks(l_navigationGraph, ref l_serializedKeyToNavigationNode);
             NavigationGraph.takeSnapshot(l_navigationGraph);
             return l_navigationGraph;
         }
 
-        private void InstanciateNavigationNodes(NavigationGraph l_navigationGraph, in Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
+        private void InstanciateNavigationNodes(NavigationGraph l_navigationGraph, ref Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
         {
             foreach (var l_navigationNodeEntry in NavigationNodes)
             {
@@ -44,7 +44,7 @@ namespace _Navigation
             }
         }
 
-        private void InstanciateNavigationLinks(NavigationGraph l_navigationGraph, in Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
+        private void InstanciateNavigationLinks(NavigationGraph l_navigationGraph, ref Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
         {
             foreach (var l_navigationLinkEntry in NavigationLinks)
             {

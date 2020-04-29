@@ -17,14 +17,14 @@ namespace _ExecutionTree
 
         #region Tree creation/ateration
 
-        public static void addNode(ref ExecutionTree p_executiontree, in ExecutionNode p_executionNode)
+        public static void addNode(ExecutionTree p_executiontree, ExecutionNode p_executionNode)
         {
             p_executiontree.ExecutionNodes.Add(p_executionNode);
         }
 
         #endregion
 
-        public static void iterate(ref ExecutionTree p_executionTree)
+        public static void iterate(ExecutionTree p_executionTree)
         {
             while (p_executionTree.ExecutionNodes.Count > 0)
             {
@@ -45,7 +45,7 @@ namespace _ExecutionTree
     public struct ExecutionNode
     {
         public IExecutionNodeAction ExecutionNodeAction;
-        public static ExecutionNode build(in IExecutionNodeAction p_executionNodeAction)
+        public static ExecutionNode build(IExecutionNodeAction p_executionNodeAction)
         {
             ExecutionNode l_instance = new ExecutionNode();
             l_instance.ExecutionNodeAction = p_executionNodeAction;

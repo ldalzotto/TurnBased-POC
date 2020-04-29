@@ -10,7 +10,7 @@ namespace _Level
         public int RandomEntityNumber;
         public GameObject EntityPrefab;
 
-        public static void spawnEntities(in EntitySpawnDefinition p_entitySpawnDefinition, in Transform p_parent)
+        public static void spawnEntities(EntitySpawnDefinition p_entitySpawnDefinition, Transform p_parent)
         {
             for(int i = 0; i < p_entitySpawnDefinition.RandomEntityNumber; i++)
             {

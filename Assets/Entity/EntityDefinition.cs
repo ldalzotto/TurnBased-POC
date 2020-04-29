@@ -8,11 +8,11 @@ using System.Collections.Generic;
 namespace _Entity
 {
     [Serializable]
+    [CreateAssetMenu(fileName = "EntityDefinition", menuName = "Entity/EntityDefinition")]
     public class EntityDefinition : SerializedScriptableObject
     {
         [InlineEditor]
         public List<EntityDefinitionSubObject> EntityDefinitionSubObjects;
-
 
         public static void Initialize(
                 ref EntityDefinition p_entityDefinition,
@@ -21,7 +21,7 @@ namespace _Entity
         {
             for (int i = 0; i < p_entityDefinition.EntityDefinitionSubObjects.Count; i++)
             {
-                p_entityDefinition.EntityDefinitionSubObjects[i].Initialize(ref p_entity, p_runtimeObjectRootComponent);
+                p_entityDefinition.EntityDefinitionSubObjects[i].Initialize(p_entity, p_runtimeObjectRootComponent);
             }
         }
     }
@@ -29,7 +29,7 @@ namespace _Entity
     [Serializable]
     public abstract class EntityDefinitionSubObject : SerializedScriptableObject
     {
-        public abstract void Initialize(ref Entity p_entity, in RuntimeObjectRootComponent p_runtimeObjectRootComponent);
+        public abstract void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent);
     }
 }
 

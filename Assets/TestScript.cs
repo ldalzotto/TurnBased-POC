@@ -13,15 +13,15 @@ public class TestScript : MonoBehaviour
     void Start()
     {
         ExecutionTree l_executionTree = ExecutionTree.build();
-        ExecutionTree.addNode(ref l_executionTree, ExecutionNode.build(new StartAction()));
-        ExecutionTree.iterate(ref l_executionTree);
+        ExecutionTree.addNode(l_executionTree, ExecutionNode.build(new StartAction()));
+        ExecutionTree.iterate(l_executionTree);
     }
 
     private void Update()
     {
         ExecutionTree l_executionTree = ExecutionTree.build();
-        ExecutionTree.addNode(ref l_executionTree, ExecutionNode.build(new StartAction()));
-        ExecutionTree.iterate(ref l_executionTree);
+        ExecutionTree.addNode(l_executionTree, ExecutionNode.build(new StartAction()));
+        ExecutionTree.iterate(l_executionTree);
     }
 
 
@@ -32,6 +32,7 @@ public class TestScript : MonoBehaviour
             // Debug.Log("Hello from StartAction");
             p_newExecutionNodes.Add(ExecutionNode.build(IncrementAction.build(0, 10)));
         }
+
     }
 
     struct IncrementAction : IExecutionNodeAction
@@ -58,7 +59,7 @@ public class TestScript : MonoBehaviour
             }
         }
 
-        public static IncrementAction build(in int p_currentValue, in int p_maxValue)
+        public static IncrementAction build(int p_currentValue, int p_maxValue)
         {
             IncrementAction l_instance = new IncrementAction();
             l_instance.CurrentValue = p_currentValue;

@@ -17,7 +17,7 @@ namespace _Functional
             return l_instance;
         }
 
-        public static int register(ref MyEvent<T1> p_event, in IEventCallback p_callback)
+        public static int register(ref MyEvent<T1> p_event, ref IEventCallback p_callback)
         {
             p_event.Callbacks[p_event.HandleCounter] = p_callback;
             p_event.HandleCounter += 1;

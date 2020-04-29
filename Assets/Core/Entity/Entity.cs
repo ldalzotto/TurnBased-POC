@@ -39,23 +39,23 @@ namespace _Entity
             return l_instance;
         }
 
-        public static void markForDestruction(ref Entity p_entity)
+        public static void markForDestruction(Entity p_entity)
         {
             p_entity.MarkedForDestruction = true;
             EntityDestructionContainer.EntitiesMarkedForDestruction.Add(p_entity);
         }
 
-        public static void set_currentNavigationNode(ref Entity p_entity, in NavigationNode p_newNavigationNode)
+        public static void set_currentNavigationNode(Entity p_entity, NavigationNode p_newNavigationNode)
         {
             p_entity.CurrentNavigationNode = p_newNavigationNode;
         }
 
-        public static void add_component<COMPONENT>(in Entity p_entity, in COMPONENT p_component) where COMPONENT : IEntityComponent
+        public static void add_component<COMPONENT>(Entity p_entity, ref COMPONENT p_component) where COMPONENT : IEntityComponent
         {
             p_entity.Components[typeof(COMPONENT)] = p_component;
         }
 
-        public static COMPONENT get_component<COMPONENT>(in Entity p_entity) where COMPONENT : IEntityComponent
+        public static COMPONENT get_component<COMPONENT>(Entity p_entity) where COMPONENT : IEntityComponent
         {
             if (p_entity.Components.ContainsKey(typeof(COMPONENT)))
             {
@@ -65,7 +65,7 @@ namespace _Entity
             return default(COMPONENT);
         }
 
-        public static void destroyEntity(ref Entity p_entity)
+        public static void destroyEntity(Entity p_entity)
         {
             MyEvent<Entity>.broadcast(ref p_entity.OnEntityDestroyed, ref p_entity);
         }

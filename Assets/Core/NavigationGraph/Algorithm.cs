@@ -54,7 +54,7 @@ namespace _Navigation
                     NavigationGraph p_navigationGraph,
                     NavigationNode p_beginNode,
                     NavigationNode p_endNode,
-                    in PathCalculationParameters p_pathCalculationParameters)
+                    ref PathCalculationParameters p_pathCalculationParameters)
         {
             if (p_beginNode != null && p_endNode != null)
             {
@@ -100,7 +100,8 @@ namespace _Navigation
                                 NavigationLink l_link = l_evaluatedNavigationLinks[i];
 
                                 // We calculate the score as if the linked node is traversed.
-                                float l_calculatedPathScore = simulateNavigationLinkTraversal(l_resultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode], l_link);
+                                NavigationNodePathTraversalCalculations l_currentCalculation = l_resultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode];
+                                float l_calculatedPathScore = simulateNavigationLinkTraversal(ref l_currentCalculation, ref l_link);
 
                                 // If the neighbor has not already been calculated
                                 if (!l_resultPath.NavigationNodesTraversalCalculations.ContainsKey(l_link.EndNode))
@@ -138,7 +139,8 @@ namespace _Navigation
 
                     if (l_resultPath.NavigationNodesTraversalCalculations.ContainsKey(l_currentEvaluatedNode))
                     {
-                        l_resultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(l_resultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode]);
+                        NavigationNodePathTraversalCalculations l_navigationNodePathTraversalCalculations = l_resultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode];
+                        l_resultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(ref l_navigationNodePathTraversalCalculations);
                     }
 
 
@@ -174,8 +176,8 @@ namespace _Navigation
         The picked NavigationNode with the lowest total score (retrieved from NavigationNodePathTraversalCalculations) is returned
         */
         private static NavigationNode pickNextCurrentNodeToCalculate(
-                 in Dictionary<NavigationNode, NavigationNodePathTraversalCalculations> l_pathScoreCalculations,
-                 in List<NavigationNode> l_pathNodesElligibleForNextCurrent)
+                 Dictionary<NavigationNode, NavigationNodePathTraversalCalculations> l_pathScoreCalculations,
+                 List<NavigationNode> l_pathNodesElligibleForNextCurrent)
         {
             NavigationNode l_currentSelectedNode = null;
             float l_currentTotalScore = 0.0f;
@@ -187,11 +189,13 @@ namespace _Navigation
                 if (l_currentSelectedNode == null)
                 {
                     l_currentSelectedNode = l_currentComparedNavigationnode;
-                    l_currentTotalScore = NavigationNodePathTraversalCalculations.calculateTotalScore(l_pathScoreCalculations[l_currentComparedNavigationnode]);
+                    NavigationNodePathTraversalCalculations l_navigationNodePathTraversalCalculations = l_pathScoreCalculations[l_currentComparedNavigationnode];
+                    l_currentTotalScore = NavigationNodePathTraversalCalculations.calculateTotalScore(ref l_navigationNodePathTraversalCalculations);
                 }
                 else
                 {
-                    float l_currentComparedTotalScore = NavigationNodePathTraversalCalculations.calculateTotalScore(l_pathScoreCalculations[l_currentComparedNavigationnode]);
+                    NavigationNodePathTraversalCalculations l_navigationNodePathTraversalCalculations = l_pathScoreCalculations[l_currentComparedNavigationnode];
+                    float l_currentComparedTotalScore = NavigationNodePathTraversalCalculations.calculateTotalScore(ref l_navigationNodePathTraversalCalculations);
                     if (l_currentComparedTotalScore < l_currentTotalScore)
                     {
                         l_currentTotalScore = l_currentComparedTotalScore;
@@ -206,7 +210,7 @@ namespace _Navigation
         /**
             Calculates the path score as if the p_traversedNavigationLink_ptr has been traversed.
         */
-        private static float simulateNavigationLinkTraversal(in NavigationNodePathTraversalCalculations p_navigationNodePathTraversalCalculations, in NavigationLink p_navigationLink)
+        private static float simulateNavigationLinkTraversal(ref NavigationNodePathTraversalCalculations p_navigationNodePathTraversalCalculations, ref NavigationLink p_navigationLink)
         {
             return p_navigationNodePathTraversalCalculations.PathScore + p_navigationLink.TravelCost;
         }
@@ -217,8 +221,8 @@ namespace _Navigation
         */
         private static void updatePathScore(
                 ref NavigationNodePathTraversalCalculations p_navigationNodePathTraversalCalculations,
-                in float p_newPathScore,
-                in NavigationNode p_calculatedFrom)
+                float p_newPathScore,
+                NavigationNode p_calculatedFrom)
         {
             if (p_navigationNodePathTraversalCalculations.CalculationMadeFrom == null || p_newPathScore < p_navigationNodePathTraversalCalculations.PathScore)
             {
@@ -232,9 +236,9 @@ namespace _Navigation
         */
         private static void calculateHeuristicScore(
            ref NavigationNodePathTraversalCalculations p_navigationNodePathTraversalCalculations,
-           in NavigationNode p_startNode,
-           in NavigationNode p_endNode,
-           in float p_heurisitcDistanceMultiplier)
+           NavigationNode p_startNode,
+           NavigationNode p_endNode,
+           float p_heurisitcDistanceMultiplier)
         {
             p_navigationNodePathTraversalCalculations.HeuristicScore =
                 math.distance(p_startNode.LocalPosition, p_endNode.LocalPosition) * p_heurisitcDistanceMultiplier;
@@ -242,7 +246,7 @@ namespace _Navigation
 
 
 
-        public static NavigationNode pickRandomNode(in NavigationGraph p_navigationGraph)
+        public static NavigationNode pickRandomNode(NavigationGraph p_navigationGraph)
         {
             return p_navigationGraph.NavigationNodes[MyRandom.Random.NextInt(0, p_navigationGraph.NavigationNodes.Count)];
         }
@@ -277,12 +281,12 @@ namespace _Navigation
         }
 
         /** The total score is the sum of m_pathScore and m_heuristicScore. */
-        public static float calculateTotalScore(in NavigationNodePathTraversalCalculations p_navigationNodePathTraversalCalculations)
+        public static float calculateTotalScore(ref NavigationNodePathTraversalCalculations p_navigationNodePathTraversalCalculations)
         {
             return p_navigationNodePathTraversalCalculations.PathScore + p_navigationNodePathTraversalCalculations.HeuristicScore;
         }
     };
-    
+
     public static class NavigationGraphAlgorithmMemoryBuffer
     {
         public static MemoryBufferStack<PoolableList<NavigationNode>> CurrentNavigationNodes = MemoryBufferStack<PoolableList<NavigationNode>>.alloc(() => { return new PoolableList<NavigationNode>(); });
