@@ -1,58 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public interface IPoolable
+namespace _Memory
 {
-    void ClearForNewInstance();
-}
-
-public class PoolableList<T> : List<T>, IPoolable
-{
-    public void ClearForNewInstance()
+    public interface IPoolable
     {
-        Clear();
-    }
-}
-
-public class PoolableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IPoolable
-{
-    public void ClearForNewInstance()
-    {
-        Clear();
-    }
-}
-
-public class MemoryBufferStack<T> where T : IPoolable
-{
-    public Stack<T> Stack;
-    public Func<T> AllocationCallback;
-
-    private MemoryBufferStack() { }
-
-    public static MemoryBufferStack<T> alloc(Func<T> p_allocationCallback)
-    {
-        MemoryBufferStack<T> l_instance = new MemoryBufferStack<T>();
-        l_instance.Stack = new Stack<T>();
-        l_instance.AllocationCallback = p_allocationCallback;
-        return l_instance;
+        void ClearForNewInstance();
     }
 
-    public T popOrCreate()
+    public class MemoryBufferStack<T> where T : IPoolable
     {
-        if (Stack.Count == 0)
+        public Stack<T> Stack;
+        public Func<T> AllocationCallback;
+
+        private MemoryBufferStack() { }
+
+        public static MemoryBufferStack<T> alloc(Func<T> p_allocationCallback)
         {
-            return AllocationCallback.Invoke();
+            MemoryBufferStack<T> l_instance = new MemoryBufferStack<T>();
+            l_instance.Stack = new Stack<T>();
+            l_instance.AllocationCallback = p_allocationCallback;
+            return l_instance;
         }
-        else
+
+        public T popOrCreate()
         {
-            return Stack.Pop();
+            if (Stack.Count == 0)
+            {
+                return AllocationCallback.Invoke();
+            }
+            else
+            {
+                return Stack.Pop();
+            }
+        }
+
+        public void push(T p_val)
+        {
+            p_val.ClearForNewInstance();
+            Stack.Push(p_val);
+        }
+
+    }
+
+
+    #region Specialization
+
+    public class PoolableList<T> : List<T>, IPoolable
+    {
+        public void ClearForNewInstance()
+        {
+            Clear();
         }
     }
 
-    public void push(T p_val)
+    public class PoolableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IPoolable
     {
-        p_val.ClearForNewInstance();
-        Stack.Push(p_val);
+        public void ClearForNewInstance()
+        {
+            Clear();
+        }
     }
 
+    #endregion
 }

@@ -14,7 +14,7 @@ public class TestScript : MonoBehaviour
 
     void Start()
     {
-        l_navigationGraph = NavigationGraphAsset.InstanciateNavigationGraph(out NavigationNode[] p_nodes);
+        l_navigationGraph = NavigationGraphAsset.InstanciateNavigationGraph();
     }
 
     private void Update()

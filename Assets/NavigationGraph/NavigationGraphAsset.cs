@@ -24,30 +24,24 @@ namespace _Navigation
         /// </summary>
         /// <param name="out_instanciatedNodes"> All <see cref="NavigationNode"/> instanciated.</param>
         /// <returns></returns>
-        public NavigationGraph InstanciateNavigationGraph(out NavigationNode[] out_instanciatedNodes)
+        public NavigationGraph InstanciateNavigationGraph()
         {
             NavigationGraph l_navigationGraph = NavigationGraph.alloc();
             Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode = new Dictionary<int, NavigationNode>(NavigationNodes.Count);
-            out_instanciatedNodes = InstanciateNavigationNodes(l_navigationGraph, l_serializedKeyToNavigationNode);
+            InstanciateNavigationNodes(l_navigationGraph, l_serializedKeyToNavigationNode);
             InstanciateNavigationLinks(l_navigationGraph, l_serializedKeyToNavigationNode);
             NavigationGraph.takeSnapshot(l_navigationGraph);
             return l_navigationGraph;
         }
 
-        private NavigationNode[] InstanciateNavigationNodes(NavigationGraph l_navigationGraph, in Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
+        private void InstanciateNavigationNodes(NavigationGraph l_navigationGraph, in Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
         {
-            NavigationNode[] out_instanciatedNodes = new NavigationNode[NavigationNodes.Count];
-            int l_instanciatedNodesCounter = 0;
             foreach (var l_navigationNodeEntry in NavigationNodes)
             {
                 NavigationNode l_instanciatedNavigationNode = NavigationGraph.instanciateAndAddNode(l_navigationGraph);
                 l_instanciatedNavigationNode.LocalPosition = l_navigationNodeEntry.Value.LocalPosition;
                 l_serializedKeyToNavigationNode[l_navigationNodeEntry.Key] = l_instanciatedNavigationNode;
-                out_instanciatedNodes[l_instanciatedNodesCounter] = l_instanciatedNavigationNode;
-                l_instanciatedNodesCounter += 1;
             }
-
-            return out_instanciatedNodes;
         }
 
         private void InstanciateNavigationLinks(NavigationGraph l_navigationGraph, in Dictionary<int, NavigationNode> l_serializedKeyToNavigationNode)
