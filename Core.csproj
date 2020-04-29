@@ -66,6 +66,7 @@
     <Compile Include="Assets\Core\Entity\Entity.cs" />
     <Compile Include="Assets\Core\Entity\EntityComponent.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
+    <Compile Include="Assets\Core\Functional\ExecutionTree\ExecutionTree.cs" />
     <Compile Include="Assets\Core\Math\MyRandom.cs" />
     <Compile Include="Assets\Core\Memory\MemoryBuffer.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
