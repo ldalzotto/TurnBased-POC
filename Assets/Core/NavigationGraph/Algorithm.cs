@@ -5,8 +5,17 @@ using Unity.Mathematics;
 
 namespace _Navigation
 {
+    /// <summary>
+    /// Structure used by all algorithm that calculates <see cref="NavigationPath"/>.
+    /// It is used as a unique parameter object for these calculations.
+    /// </summary>
     public struct PathCalculationParameters
     {
+        /// <summary>
+        /// This factor controls the weight of the <see cref="NavigationNodePathTraversalCalculations.HeuristicScore"/> calculation.
+        /// If > 1, <see cref="NavigationNode"/> with higher <see cref="NavigationNodePathTraversalCalculations.HeuristicScore"/> are likely to be picked for calculation 
+        /// even if ovther <see cref="NavigationNode"/>'s path score is higher.
+        /// </summary>
         public float HeurisitcDistanceWeight;
 
         public static PathCalculationParameters build(float p_heurisitcDistanceWeight)
@@ -46,10 +55,12 @@ namespace _Navigation
                     Path calculation is a recursive algorithm that try all possibilities of NavigationLinks from the p_beginNode to reach the p_endNode.
                     These possibilities are ordered by a score (see NavigationNodePathTraversalCalculations for details) that represents the "difficulty" to reach the destination.
                     The combinaison of NavigationLinks that leads to the lower score is the resulting path.
-
-                    * p_heurisitcDistanceWeight : This factor controls the weight of the heuristic score in to total score calculation of NavigationNodePathTraversalCalculations.
-                                                  If > 1, NavigationNodes with higher heurisitc score are likely to be picked for calculation even if ovther NavigationNode's path score is higher.
         */
+        /// <summary>
+        /// Path calculation is a recursive algorithm that try all possibilities of <see cref="NavigationLink"/> from the <paramref name="p_beginNode"/> to reach the <paramref name="p_endNode"/>.
+        /// These possibilities are ordered by a score (see <see cref="NavigationNodePathTraversalCalculations"/> for details) that represents the "difficulty" to reach the destination.
+        /// The combinaison of <see cref="NavigationLink"/> that leads to the lower score is the resulting path.
+        /// </summary>
         public static NavigationPath CalculatePath(
                     NavigationGraph p_navigationGraph,
                     NavigationNode p_beginNode,
@@ -173,7 +184,7 @@ namespace _Navigation
         }
 
         /**
-        The picked NavigationNode with the lowest total score (retrieved from NavigationNodePathTraversalCalculations) is returned
+             The picked NavigationNode with the lowest total score (retrieved from NavigationNodePathTraversalCalculations) is returned
         */
         private static NavigationNode pickNextCurrentNodeToCalculate(
                  Dictionary<NavigationNode, NavigationNodePathTraversalCalculations> l_pathScoreCalculations,
@@ -254,15 +265,21 @@ namespace _Navigation
     }
 
 
-    /**
-        Store path traversal calculated data for path calculation.
-        Associated to a NavigationNode by the path calculation algorithm, the NavigationNodePathTraversalCalculations stores two type of score :
-            - Path score : This score represents the sum of @ref NavigationLink "NavigationLinks" travel cost to reach the associated node.
-            - Heuristic socre : This score is entierly defined by the associated NavigationNode. It influences the choice of the next NavigationNode picked for calculation
-                by the path algorithm. The higher the heuristic score is, the likelier the path algorithm will take the next NavigationNode as the asscoiated node.
 
-        Whatever the score, all values have the same scale. Thus 1.0f of score is 1.0f unit distance of the game engine.
+    /**
+      
 */
+
+
+    /// <summary>
+    /// Store path traversal calculated data for path calculation.
+    /// Associated to a <see cref="NavigationNode"/> by the path calculation algorithm, the <see cref="NavigationNodePathTraversalCalculations"/> stores two type of score :
+    ///    - <see cref="PathScore"/> : This score represents the sum of <see cref="NavigationLink"/>s travel cost to reach the associated node.
+    ///    - <see cref="HeuristicScore"/> : This score is entierly defined by the associated <see cref="NavigationNode"/>. It influences the choice of the next <see cref="NavigationNode"/> picked for calculation
+    ///           by the path algorithm.The higher the heuristic score is, the likelier the path algorithm will take the next NavigationNode as the asscoiated node.
+    ///
+    /// Whatever the score, all values have the same scale. Thus 1.0f of score is 1.0f unit distance of the game engine.
+    /// </summary>    
     public struct NavigationNodePathTraversalCalculations
     {
         public float PathScore;

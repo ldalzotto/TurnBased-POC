@@ -16,13 +16,11 @@ namespace _Entity
     {
         public bool MarkedForDestruction;
         public NavigationNode CurrentNavigationNode;
-        public Dictionary<Type, IEntityComponent> Components;
+        public RefDictionary<Type, AEntityComponent> Components;
 
         #region events
         public MyEvent<Entity> OnEntityDestroyed;
         #endregion
-
-
 
 
 
@@ -31,7 +29,7 @@ namespace _Entity
             Entity l_instance = new Entity();
             l_instance.MarkedForDestruction = false;
             l_instance.CurrentNavigationNode = null;
-            l_instance.Components = new Dictionary<Type, IEntityComponent>();
+            l_instance.Components = new RefDictionary<Type, AEntityComponent>();
             l_instance.OnEntityDestroyed = MyEvent<Entity>.build();
 
             EntityContainer.AddEntity(l_instance);
@@ -50,12 +48,13 @@ namespace _Entity
             p_entity.CurrentNavigationNode = p_newNavigationNode;
         }
 
-        public static void add_component<COMPONENT>(Entity p_entity, ref COMPONENT p_component) where COMPONENT : IEntityComponent
+        public static void add_component<COMPONENT>(Entity p_entity, ref COMPONENT p_component) where COMPONENT : AEntityComponent
         {
+            p_component.AssociatedEntity = p_entity;
             p_entity.Components[typeof(COMPONENT)] = p_component;
         }
 
-        public static COMPONENT get_component<COMPONENT>(Entity p_entity) where COMPONENT : IEntityComponent
+        public static COMPONENT get_component<COMPONENT>(Entity p_entity) where COMPONENT : AEntityComponent
         {
             if (p_entity.Components.ContainsKey(typeof(COMPONENT)))
             {
@@ -71,7 +70,9 @@ namespace _Entity
         }
     }
 
-
-    public interface IEntityComponent { }
+    public abstract class AEntityComponent
+    {
+        public Entity AssociatedEntity;
+    }
 }
 
