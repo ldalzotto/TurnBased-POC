@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Navigation;
+using _TurnTimeline;
+using _Entity._Turn;
 
 namespace _Level
 {
@@ -25,7 +27,11 @@ namespace _Level
 
             EntitySpawnDefinition.spawnEntities(LevelInitializationDefinition.EntitySpawnDefinition, LevelInitializationGameObject.Entities.transform);
 
-            GameObject.Instantiate(LevelInitializationDefinition.TurnTimelinePrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false);
+            TurnTimelineComponent l_turnTimelineComponent = GameObject.Instantiate(LevelInitializationDefinition.TurnTimelinePrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false)
+                    .GetComponent<TurnTimelineComponent>();
+
+            TurnTimelineSequencer.beginSequencingTurn();
+            // TurnTimelineComponent.startTurnTimeline(l_turnTimelineComponent);
         }
     }
 

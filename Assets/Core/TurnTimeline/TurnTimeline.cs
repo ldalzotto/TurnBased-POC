@@ -2,10 +2,16 @@
 using _Entity;
 using _EntityCharacteristics;
 using _Functional;
+using System;
 using System.Collections.Generic;
 
 namespace _TurnTimeline
 {
+    public static class TurnTimelineContainer
+    {
+        public static TurnTimeline UniqueTurnTimeline;
+    }
+
     public class TurnTimeline
     {
         public RefDictionary<Entity, EntityTurnTimelineCalculationData> TimelineOrderingDatas;
@@ -36,7 +42,9 @@ namespace _TurnTimeline
                     }
                 }
             }
-           
+
+            TurnTimelineContainer.UniqueTurnTimeline = l_instance;
+
             return l_instance;
         }
 
@@ -62,6 +70,8 @@ namespace _TurnTimeline
         {
             public TurnTimeline TurnTimeline;
 
+            public int Handle { get; set; }
+
             public static OnTurnTimelineEllibilityComponentAdded build(TurnTimeline p_turnTimeline)
             {
                 OnTurnTimelineEllibilityComponentAdded l_instance = new OnTurnTimelineEllibilityComponentAdded();
@@ -69,9 +79,10 @@ namespace _TurnTimeline
                 return l_instance;
             }
 
-            public void Execute(ref AEntityComponent p_entityComponent)
+            public EventCallbackResponse Execute(ref AEntityComponent p_entityComponent)
             {
                 AddTurnTimelineEllibilityToTimeline(TurnTimeline, ((TurnTimelineElligibility)p_entityComponent));
+                return EventCallbackResponse.OK;
             }
 
             public static void AddTurnTimelineEllibilityToTimeline(TurnTimeline p_turnTimeline, TurnTimelineElligibility p_turnTimelineElligibility)
@@ -81,10 +92,13 @@ namespace _TurnTimeline
                     TurnTimeline.addEntityToTimeline(p_turnTimeline, p_turnTimelineElligibility.AssociatedEntity);
                 }
             }
+
+
         }
 
         struct OnTurnTimelineEllibilityComponentRemoved : MyEvent<AEntityComponent>.IEventCallback
         {
+            public int Handle { get; set; }
             public TurnTimeline TurnTimeline;
 
             public static OnTurnTimelineEllibilityComponentRemoved build(TurnTimeline p_turnTimeline)
@@ -94,13 +108,14 @@ namespace _TurnTimeline
                 return l_instance;
             }
 
-            public void Execute(ref AEntityComponent p_entityComponent)
+            public EventCallbackResponse Execute(ref AEntityComponent p_entityComponent)
             {
                 TurnTimelineElligibility l_turnTimelineElligibility = (TurnTimelineElligibility)p_entityComponent;
                 if (l_turnTimelineElligibility.TurnTimelineElligibilityData.IsElligibleForTimeline)
                 {
                     TurnTimeline.TimelineOrderingDatas.Remove(p_entityComponent.AssociatedEntity);
                 }
+                return EventCallbackResponse.OK;
             }
         }
 

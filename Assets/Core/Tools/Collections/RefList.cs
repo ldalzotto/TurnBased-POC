@@ -262,6 +262,13 @@
             _version++;
         }
 
+        public void AddRef(ref T item)
+        {
+            if (_size == _items.Length) EnsureCapacity(_size + 1);
+            _items[_size++] = item;
+            _version++;
+        }
+
         int System.Collections.IList.Add(Object item)
         {
             ThrowHelper.IfNullAndNullsAreIllegalThenThrow<T>(item, ExceptionArgument.item);

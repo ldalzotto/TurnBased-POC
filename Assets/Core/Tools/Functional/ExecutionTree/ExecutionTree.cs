@@ -15,7 +15,7 @@ namespace _ExecutionTree
             return l_instance;
         }
 
-        #region Tree creation/ateration
+        #region Tree creation/alteration
 
         public static void addNode(ExecutionTree p_executiontree, ExecutionNode p_executionNode)
         {
@@ -32,8 +32,7 @@ namespace _ExecutionTree
                 
                 for (int i = 0; i < p_executionTree.ExecutionNodes.Count; i++)
                 {
-                    List<ExecutionNode> l_newExecutionNodes_asList = l_newExecutionNodes;
-                    p_executionTree.ExecutionNodes[i].ExecutionNodeAction.Execute(ref l_newExecutionNodes_asList);
+                    p_executionTree.ExecutionNodes[i].ExecutionNodeAction.Execute(l_newExecutionNodes);
                 }
 
                 p_executionTree.ExecutionNodes.Clear();
@@ -55,7 +54,7 @@ namespace _ExecutionTree
 
     public interface IExecutionNodeAction
     {
-        void Execute(ref List<ExecutionNode> p_newExecutionNodes);
+        void Execute(List<ExecutionNode> p_newExecutionNodes);
     }
 
 

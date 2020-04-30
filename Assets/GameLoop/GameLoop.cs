@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _Functional;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,6 +46,8 @@ namespace _GameLoop
 
         private void Update()
         {
+            MyEvent.broadcast(ref GameLoopEvents.OnTickStart); 
+
             float delta = Time.deltaTime;
 
             List<GameLoopCallback> l_tickCallbacks = GameSequencer[GameLoopHook.Tick];

@@ -63,19 +63,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Core\Collections\Helpers.cs" />
-    <Compile Include="Assets\Core\Collections\RefDictionary.cs" />
-    <Compile Include="Assets\Core\Collections\RefList.cs" />
+    <Compile Include="Assets\Core\Entity\Compoent\EntityCharacteristics.cs" />
+    <Compile Include="Assets\Core\Entity\Compoent\TurnTimelineElligibility.cs" />
     <Compile Include="Assets\Core\Entity\Entity.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
-    <Compile Include="Assets\Core\EntityComponents\EntityCharacteristics.cs" />
-    <Compile Include="Assets\Core\EntityComponents\TurnTimelineElligibility.cs" />
-    <Compile Include="Assets\Core\Functional\Event\MyEvent.cs" />
-    <Compile Include="Assets\Core\Functional\ExecutionTree\ExecutionTree.cs" />
-    <Compile Include="Assets\Core\Math\MyRandom.cs" />
-    <Compile Include="Assets\Core\Memory\MemoryBuffer.cs" />
+    <Compile Include="Assets\Core\Entity\Turn\TurnGlobalEvents.cs" />
+    <Compile Include="Assets\Core\Entity\Turn\TurnRequest.cs" />
+    <Compile Include="Assets\Core\Entity\Turn\TurnSequencer.cs" />
+    <Compile Include="Assets\Core\GameLoopEvents\GameLoopEvents.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />
+    <Compile Include="Assets\Core\Tools\Collections\Helpers.cs" />
+    <Compile Include="Assets\Core\Tools\Collections\RefDictionary.cs" />
+    <Compile Include="Assets\Core\Tools\Collections\RefList.cs" />
+    <Compile Include="Assets\Core\Tools\Functional\Event\MyEvent.cs" />
+    <Compile Include="Assets\Core\Tools\Functional\ExecutionTree\ExecutionTree.cs" />
+    <Compile Include="Assets\Core\Tools\Math\MyRandom.cs" />
+    <Compile Include="Assets\Core\Tools\Memory\MemoryBuffer.cs" />
     <Compile Include="Assets\Core\TurnTimeline\Algorithm.cs" />
     <Compile Include="Assets\Core\TurnTimeline\TurnTimeline.cs" />
     <None Include="Assets\Core\Core.asmdef" />

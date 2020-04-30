@@ -1,7 +1,9 @@
-﻿using _Functional;
+﻿using _Entity._Turn;
+using _Functional;
 using _Locomotion;
 using _Navigation;
 using _RuntimeObject;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,15 +48,39 @@ namespace _Entity
                     ref p_entityRegistrationComponent.AssociatedEntity,
                     p_entityRegistrationComponent.RuntimeObject.RuntimeObjectRootComponent);
 
+
+
+
+            TurnGlobalEvents.OnEntityTurnStartEvent.Add(p_entityRegistrationComponent.AssociatedEntity, MyEvent.build());
+            TurnGlobalEvents.OnEntityTurnEndEvent.Add(p_entityRegistrationComponent.AssociatedEntity, MyEvent.build());
+
+            MyEvent.IEventCallback l_callback = new Test() { Entity = p_entityRegistrationComponent.AssociatedEntity };
+            MyEvent.register(ref TurnGlobalEvents.OnEntityTurnStartEvent.ValueRef(p_entityRegistrationComponent.AssociatedEntity), ref l_callback);
+            
+
+        }
+
+        struct Test : MyEvent.IEventCallback
+        {
+            public Entity Entity;
+            public int Handle { get ; set ; }
+
+            public EventCallbackResponse Execute()
+            {
+             //   Debug.Log("Start turn : " + Entity.ToString());
+                return EventCallbackResponse.OK;
+            }
         }
 
         struct OnEntityDestroyed : MyEvent<Entity>.IEventCallback
         {
+            public int Handle { get; set; }
             public EntityRegistrationComponent EntityRegistrationComponent;
 
-            public void Execute(ref Entity p_entity)
+            public EventCallbackResponse Execute(ref Entity p_param1)
             {
                 GameObject.Destroy(EntityRegistrationComponent.gameObject);
+                return EventCallbackResponse.OK;
             }
 
             public static OnEntityDestroyed build(EntityRegistrationComponent p_entityRegistrationComponent)
@@ -63,6 +89,8 @@ namespace _Entity
                 l_instance.EntityRegistrationComponent = p_entityRegistrationComponent;
                 return l_instance;
             }
+
+           
         }
     }
 
