@@ -23,7 +23,7 @@
     {
         private const int _defaultCapacity = 4;
 
-        private T[] _items;
+        public T[] _items;
         [ContractPublicPropertyName("Count")]
         private int _size;
         private int _version;

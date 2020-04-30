@@ -23,13 +23,10 @@ namespace _Level
             l_navigationGraphComponent.NavigationGraphAsset = LevelInitializationDefinition.NavigationGraphAssetsPick[0];
             l_navigationObject.SetActive(true);
 
-
             EntitySpawnDefinition.spawnEntities(LevelInitializationDefinition.EntitySpawnDefinition, LevelInitializationGameObject.Entities.transform);
+
+            GameObject.Instantiate(LevelInitializationDefinition.TurnTimelinePrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false);
         }
-
-      
-
-
     }
 
 

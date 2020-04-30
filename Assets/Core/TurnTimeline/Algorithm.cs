@@ -24,16 +24,16 @@ namespace _TurnTimeline
 
             for(int i = 0; i < l_entityTurnTimelineDataLookup.Count; i++)
             {
-                var l_timelineOrderingDataEntry = l_entityTurnTimelineDataLookup.entries[i];
+                var l_timelineOrderingDataEntry_ref = l_entityTurnTimelineDataLookup.GetEntryRef(i);
                 if (l_lowerTimelineScore == null)
                 {
-                    l_lowerTimelineScore = l_timelineOrderingDataEntry.key;
-                    l_currentComparedScore = l_timelineOrderingDataEntry.value.CurrentTimelinePosition;
+                    l_lowerTimelineScore = l_timelineOrderingDataEntry_ref.key;
+                    l_currentComparedScore = l_timelineOrderingDataEntry_ref.value.CurrentTimelinePosition;
                 }
-                else if (l_timelineOrderingDataEntry.value.CurrentTimelinePosition < l_currentComparedScore)
+                else if (l_timelineOrderingDataEntry_ref.value.CurrentTimelinePosition < l_currentComparedScore)
                 {
-                    l_lowerTimelineScore = l_timelineOrderingDataEntry.key;
-                    l_currentComparedScore = l_timelineOrderingDataEntry.value.CurrentTimelinePosition;
+                    l_lowerTimelineScore = l_timelineOrderingDataEntry_ref.key;
+                    l_currentComparedScore = l_timelineOrderingDataEntry_ref.value.CurrentTimelinePosition;
                 }
             }
 

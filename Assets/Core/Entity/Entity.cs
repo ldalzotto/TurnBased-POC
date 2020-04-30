@@ -48,10 +48,33 @@ namespace _Entity
             p_entity.CurrentNavigationNode = p_newNavigationNode;
         }
 
+        public static void destroyEntity(Entity p_entity)
+        {
+            MyEvent<Entity>.broadcast(ref p_entity.OnEntityDestroyed, ref p_entity);
+
+            for (int i = 0; i < p_entity.Components.Count; i++)
+            {
+                EntityComponentContainer.onComponentRemoved(p_entity.Components.entries[i].value);
+            }
+
+        }
+    }
+
+
+    #region Entity Component
+
+    public abstract class AEntityComponent
+    {
+        public Entity AssociatedEntity;
+    }
+
+    public static class EntityComponent
+    {
         public static void add_component<COMPONENT>(Entity p_entity, ref COMPONENT p_component) where COMPONENT : AEntityComponent
         {
             p_component.AssociatedEntity = p_entity;
             p_entity.Components[typeof(COMPONENT)] = p_component;
+            EntityComponentContainer.onComponentAdded(p_component);
         }
 
         public static COMPONENT get_component<COMPONENT>(Entity p_entity) where COMPONENT : AEntityComponent
@@ -63,16 +86,101 @@ namespace _Entity
 
             return default(COMPONENT);
         }
-
-        public static void destroyEntity(Entity p_entity)
-        {
-            MyEvent<Entity>.broadcast(ref p_entity.OnEntityDestroyed, ref p_entity);
-        }
     }
 
-    public abstract class AEntityComponent
+    public static class EntityComponentContainer
     {
-        public Entity AssociatedEntity;
+        public static RefDictionary<Type, List<AEntityComponent>> Components;
+
+        public static RefDictionary<Type, MyEvent<AEntityComponent>> ComponentAddedEvents;
+        public static RefDictionary<Type, MyEvent<AEntityComponent>> ComponentRemovedEvents;
+
+        static EntityComponentContainer()
+        {
+            Components = new RefDictionary<Type, List<AEntityComponent>>();
+            ComponentAddedEvents = new RefDictionary<Type, MyEvent<AEntityComponent>>();
+            ComponentRemovedEvents = new RefDictionary<Type, MyEvent<AEntityComponent>>();
+        }
+
+        public static int registerComponentAddedEvent<COMPONENT>(ref MyEvent<AEntityComponent>.IEventCallback p_callback) where COMPONENT : AEntityComponent
+        {
+            if (!ComponentAddedEvents.ContainsKey(typeof(COMPONENT)))
+            {
+                ComponentAddedEvents[typeof(COMPONENT)] = MyEvent<AEntityComponent>.build();
+            }
+
+            return MyEvent<AEntityComponent>.register(
+                    ref ComponentAddedEvents.ValueRef(typeof(COMPONENT)),
+                    ref p_callback
+            );
+        }
+
+        public static void unRegisterComponentAddedEvent<COMPONENT>(int p_handler) where COMPONENT : AEntityComponent
+        {
+            if (!ComponentAddedEvents.ContainsKey(typeof(COMPONENT)))
+            {
+                MyEvent<AEntityComponent>.unRegister(ref ComponentAddedEvents.ValueRef(typeof(COMPONENT)), p_handler);
+            }
+        }
+
+        public static void onComponentAdded(AEntityComponent p_component)
+        {
+            Type l_componentType = p_component.GetType();
+            if (!Components.ContainsKey(l_componentType))
+            {
+                Components[l_componentType] = new List<AEntityComponent>();
+            }
+
+            Components[l_componentType].Add(p_component);
+
+            if (ComponentAddedEvents.ContainsKey(l_componentType))
+            {
+                MyEvent<AEntityComponent>.broadcast(
+                          ref ComponentAddedEvents.ValueRef(l_componentType),
+                          ref p_component
+                    );
+            }
+        }
+
+        public static int registerComponentRemovedEvent<COMPONENT>(ref MyEvent<AEntityComponent>.IEventCallback p_callback) where COMPONENT : AEntityComponent
+        {
+            if (!ComponentRemovedEvents.ContainsKey(typeof(COMPONENT)))
+            {
+                ComponentRemovedEvents[typeof(COMPONENT)] = MyEvent<AEntityComponent>.build();
+            }
+
+            return MyEvent<AEntityComponent>.register(
+                    ref ComponentRemovedEvents.ValueRef(typeof(COMPONENT)),
+                    ref p_callback
+            );
+        }
+
+        public static void unRegisterComponentRemovedEvent<COMPONENT>(int p_handler) where COMPONENT : AEntityComponent
+        {
+            if (!ComponentRemovedEvents.ContainsKey(typeof(COMPONENT)))
+            {
+                MyEvent<AEntityComponent>.unRegister(ref ComponentRemovedEvents.ValueRef(typeof(COMPONENT)), p_handler);
+            }
+        }
+
+        public static void onComponentRemoved(AEntityComponent p_component)
+        {
+            Type l_componentType = p_component.GetType();
+            Components[l_componentType].Remove(p_component);
+
+            if (ComponentRemovedEvents.ContainsKey(l_componentType))
+            {
+                MyEvent<AEntityComponent>.broadcast(
+                           ref ComponentRemovedEvents.ValueRef(l_componentType),
+                           ref p_component
+                     );
+            }
+        }
+
     }
+
+    #endregion
+
+
 }
 

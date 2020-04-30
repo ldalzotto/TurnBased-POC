@@ -20,11 +20,14 @@ public class TestScript : MonoBehaviour
     {
         RefDictionary<int, Value> test = new RefDictionary<int, Value>();
         test.Add(76, new Value());
-        test.ValueRef(76).Y = 99;
+        test.Add(12, new Value());
+        test.Add(78, new Value());
 
-        RefList<Value> zd = new RefList<Value>();
-        zd.Add(new Value());
-        zd.ValueRef(0).X = 10;
+
+        for(int i = 0; i < test.Count; i++)
+        {
+            test.entries[i].value.X = 50;
+        }
 
     }
 

@@ -30,13 +30,6 @@ namespace _Entity
                     RuntimeObject.FindComponent<LocomotionSystemComponent>(),
                     l_randomNavigationNode
                 );
-
-            /*
-            NavigationGraphComponent.get_WorldPositionFromNavigationNode(
-                NavigationGraphComponentContainer.NavigationGraphComponent,
-                l_randomNavigationNode
-            );
-            */
         }
 
         public static void initialize(EntityRegistrationComponent p_entityRegistrationComponent)

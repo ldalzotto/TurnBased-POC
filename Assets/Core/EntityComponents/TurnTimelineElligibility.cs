@@ -8,12 +8,24 @@ namespace _TurnTimeline
 
     public class TurnTimelineElligibility : AEntityComponent
     {
-        public bool IsElligibleForTimeline;
+        public TurnTimelineElligibilityData TurnTimelineElligibilityData;
 
-        public static TurnTimelineElligibility alloc(bool isElligibleForTimeline)
+        public static TurnTimelineElligibility alloc(ref TurnTimelineElligibilityData p_turnTimelineElligibilityData)
         {
             TurnTimelineElligibility l_instance = new TurnTimelineElligibility();
-            l_instance.IsElligibleForTimeline = isElligibleForTimeline;
+            l_instance.TurnTimelineElligibilityData = p_turnTimelineElligibilityData;
+            return l_instance;
+        }
+    }
+
+    public struct TurnTimelineElligibilityData
+    {
+        public bool IsElligibleForTimeline;
+
+        public static TurnTimelineElligibilityData build(bool p_isElligibleForTimeline)
+        {
+            TurnTimelineElligibilityData l_instance = new TurnTimelineElligibilityData();
+            l_instance.IsElligibleForTimeline = p_isElligibleForTimeline;
             return l_instance;
         }
     }

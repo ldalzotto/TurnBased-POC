@@ -66,8 +66,10 @@
     <Compile Include="Assets\EditorUtility\NavigationGraphEditorComponent.cs" />
     <Compile Include="Assets\Entity\EntityDefinition.cs" />
     <Compile Include="Assets\Entity\EntityRegistrationComponent.cs" />
+    <Compile Include="Assets\EntityComponents\EntityCharacteristics\EntityCharacteristicsDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\EntityLocomotionDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\LocomotionSystemComponent.cs" />
+    <Compile Include="Assets\EntityComponents\TurnTimelineEllibigility\TurnTimelineEllibilityDefinition.cs" />
     <Compile Include="Assets\GameLoop\GameLoop.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Components\LevelInitializationComponent.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Configuration\EntitySpawnDefinition.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Assets\Runtime\UnityComponents\RuntimeColliderRegisteringComponent.cs" />
     <Compile Include="Assets\Runtime\UnityComponents\RuntimeObjectRootComponent.cs" />
     <Compile Include="Assets\TestScript.cs" />
+    <Compile Include="Assets\TurnTimeline\TurnTimelineComponent.cs" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Serialization.Config.xml" />

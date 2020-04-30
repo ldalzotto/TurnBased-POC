@@ -172,6 +172,11 @@ namespace System.Collections.Generic
             }
         }
         
+        public ref Entry GetEntryRef(int p_index)
+        {
+            return ref entries[p_index];
+        }
+
         public void Add(TKey key, TValue value)
         {
             Insert(key, value, true);
