@@ -50,6 +50,9 @@ namespace _Navigation
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static class NavigationGraphAlgorithm
     {
         /// <summary>

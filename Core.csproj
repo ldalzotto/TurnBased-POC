@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\Algorithm.cs" />
+    <Compile Include="Assets\Core\AI\DecisionTree\DecisionTree.cs" />
     <Compile Include="Assets\Core\Entity\Action\Action.cs" />
     <Compile Include="Assets\Core\Entity\Action\ActionStack.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\ActionPoint\ActionPoint.cs" />

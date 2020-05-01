@@ -8,10 +8,13 @@ using System.Collections.Generic;
 namespace _Entity
 {
     /*
-	An Entity is any object that can be placed in the NavigationGraph and can interact with it's environment.
-	To avoid any undefined behavior, Entity destruction is never instant. To destroy the Entity, the flag m_markedForDestruction must be setted
-	to true. Then, when the application collect Entities marked as destroyed, it will effectively detroy the object (see EntityDestructor).
+
     */
+    /// <summary>
+    /// An Entity is any object that can be placed in the NavigationGraph and can interact with it's environment.
+	/// To avoid any undefined behavior, Entity destruction is never instant. To destroy the Entity, the flag <see cref="MarkedForDestruction"/>  must be setted
+    /// to true. Then, when the application collect Entities marked as destroyed, it will effectively detroy the object (see <see cref="EntityDestructionContainer"/>).
+    /// </summary>
     public class Entity
     {
         public bool MarkedForDestruction;

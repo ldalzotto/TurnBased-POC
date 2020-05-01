@@ -1412,8 +1412,6 @@
             }
 
         }
-
-
     }
 
     internal sealed class FunctorComparer<T> : IComparer<T>
