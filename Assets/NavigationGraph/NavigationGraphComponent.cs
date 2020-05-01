@@ -31,8 +31,7 @@ namespace _Navigation
         private void Awake()
         {
             NavigationGraph = NavigationGraphAsset.InstanciateNavigationGraph();
-            // NavigationGraph.PromoteToUniqueInstance();
-            NavigationGraphComponentContainer.NavigationGraphComponent = this;
+            NavigationGraphComponentContainer.UniqueNavigationGraphComponent = this;
 
             for (int i = 0; i < NavigationGraph.NavigationNodes.Count; i++)
             {
@@ -42,10 +41,11 @@ namespace _Navigation
 
         private void OnDestroy()
         {
-            if (this == NavigationGraphComponentContainer.NavigationGraphComponent)
+            if (this == NavigationGraphComponentContainer.UniqueNavigationGraphComponent)
             {
-                NavigationGraphComponentContainer.NavigationGraphComponent = null;
+                NavigationGraphComponentContainer.UniqueNavigationGraphComponent = null;
             }
+            NavigationGraph.free(NavigationGraph);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace _Navigation
 
     public static class NavigationGraphComponentContainer
     {
-        public static NavigationGraphComponent NavigationGraphComponent;
+        public static NavigationGraphComponent UniqueNavigationGraphComponent;
     }
 
 }

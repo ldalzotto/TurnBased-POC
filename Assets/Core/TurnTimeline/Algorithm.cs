@@ -22,9 +22,10 @@ namespace _TurnTimeline
 
             RefDictionary<Entity, EntityTurnTimelineCalculationData> l_entityTurnTimelineDataLookup = p_turnTimeline.TimelineOrderingDatas;
 
-            for(int i = 0; i < l_entityTurnTimelineDataLookup.Count; i++)
+            var l_entityTurnTimelineDataLookupEnumerator = l_entityTurnTimelineDataLookup.GetRefEnumerator();
+            while (l_entityTurnTimelineDataLookupEnumerator.MoveNext())
             {
-                var l_timelineOrderingDataEntry_ref = l_entityTurnTimelineDataLookup.GetEntryRef(i);
+                var l_timelineOrderingDataEntry_ref = l_entityTurnTimelineDataLookupEnumerator.GetCurrentRef();
                 if (l_lowerTimelineScore == null)
                 {
                     l_lowerTimelineScore = l_timelineOrderingDataEntry_ref.key;
@@ -42,9 +43,10 @@ namespace _TurnTimeline
                 float l_removedTimelineScore = l_currentComparedScore;
 
                 // All entities advances in the timeline
-                for(int i = 0; i < l_entityTurnTimelineDataLookup.Count; i++)
+                l_entityTurnTimelineDataLookupEnumerator = l_entityTurnTimelineDataLookup.GetRefEnumerator();
+                while (l_entityTurnTimelineDataLookupEnumerator.MoveNext())
                 {
-                    l_entityTurnTimelineDataLookup.entries[i].value.CurrentTimelinePosition += (-1 * l_removedTimelineScore);
+                    l_entityTurnTimelineDataLookupEnumerator.GetCurrentRef().value.CurrentTimelinePosition += (-1 * l_removedTimelineScore);
                 }
 
                 // The next Entity is pushed back on the Timeline

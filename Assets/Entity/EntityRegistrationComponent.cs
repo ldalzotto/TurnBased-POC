@@ -10,6 +10,17 @@ using UnityEngine;
 
 namespace _Entity
 {
+    public static class EntityRegistrationComponentContainer
+    {
+        public static Dictionary<Entity, EntityRegistrationComponent> EntityRegistrationComponentByEntities;
+        
+        static EntityRegistrationComponentContainer()
+        {
+            EntityRegistrationComponentByEntities = new Dictionary<Entity, EntityRegistrationComponent>();
+        }
+        
+    }
+
     public class EntityRegistrationComponent : RuntimeComponent
     {
         public EntityDefinition EntityDefinition;
@@ -23,10 +34,8 @@ namespace _Entity
 
         private void Start()
         {
-            NavigationNode l_randomNavigationNode = NavigationGrpahAlgorithm.pickRandomNode(NavigationGraphComponentContainer.NavigationGraphComponent.NavigationGraph);
+            NavigationNode l_randomNavigationNode = NavigationGraphAlgorithm.pickRandomNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent.NavigationGraph);
             Entity.set_currentNavigationNode(AssociatedEntity, l_randomNavigationNode);
-
-            RuntimeObject.FindComponent<LocomotionSystemComponent>();
 
             LocomotionSystemComponent.warp(
                     RuntimeObject.FindComponent<LocomotionSystemComponent>(),
@@ -53,22 +62,15 @@ namespace _Entity
 
             TurnGlobalEvents.OnEntityTurnStartEvent.Add(p_entityRegistrationComponent.AssociatedEntity, MyEvent.build());
             TurnGlobalEvents.OnEntityTurnEndEvent.Add(p_entityRegistrationComponent.AssociatedEntity, MyEvent.build());
-
-            MyEvent.IEventCallback l_callback = new Test() { Entity = p_entityRegistrationComponent.AssociatedEntity };
-            MyEvent.register(ref TurnGlobalEvents.OnEntityTurnStartEvent.ValueRef(p_entityRegistrationComponent.AssociatedEntity), ref l_callback);
-            
-
         }
 
-        struct Test : MyEvent.IEventCallback
+        public override void OnDestroy()
         {
-            public Entity Entity;
-            public int Handle { get ; set ; }
+            base.OnDestroy();
 
-            public EventCallbackResponse Execute()
+            if(AssociatedEntity != null && !AssociatedEntity.MarkedForDestruction)
             {
-             //   Debug.Log("Start turn : " + Entity.ToString());
-                return EventCallbackResponse.OK;
+                Entity.destroyEntity(AssociatedEntity);
             }
         }
 
@@ -79,7 +81,7 @@ namespace _Entity
 
             public EventCallbackResponse Execute(ref Entity p_param1)
             {
-                GameObject.Destroy(EntityRegistrationComponent.gameObject);
+                GameObject.Destroy(EntityRegistrationComponent.RuntimeObject.RuntimeObjectRootComponent.gameObject);
                 return EventCallbackResponse.OK;
             }
 
@@ -89,8 +91,6 @@ namespace _Entity
                 l_instance.EntityRegistrationComponent = p_entityRegistrationComponent;
                 return l_instance;
             }
-
-           
         }
     }
 

@@ -11,41 +11,20 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public event Action myev;
-    struct Value
-    {
-        public float X;
-        public float Y;
-    }
-
-    void Start()
-    {
-        myev += Test;
-        myev.Invoke();
-
-        RefDictionary<int, Value> test = new RefDictionary<int, Value>();
-        test.Add(76, new Value());
-        test.Add(12, new Value());
-        test.Add(78, new Value());
-
-
-        for (int i = 0; i < test.Count; i++)
-        {
-            test.entries[i].value.X = 50;
-        }
-
-    }
-
-    public void Test()
-    {
-        myev -= Test;
-    }
 
     private void Update()
     {
+        using (NavigationGraphAlgorithm.CalculatePathRequest l_calculatePathRequest = NavigationGraphAlgorithm.CalculatePathRequest.CalculatePathRequestPool.popOrCreate())
+        {
+            NavigationGraphAlgorithm.CalculatePathRequest.prepareForCalculation(
+              l_calculatePathRequest,
+              NavigationGraphContainer.UniqueNavigationGraph,
+              NavigationGraphAlgorithm.pickRandomNode(NavigationGraphContainer.UniqueNavigationGraph),
+              NavigationGraphAlgorithm.pickRandomNode(NavigationGraphContainer.UniqueNavigationGraph),
+              PathCalculationParameters.build(2.0f)
+          );
 
+            NavigationGraphAlgorithm.CalculatePath(l_calculatePathRequest);
+        }
     }
-
-
-
 }

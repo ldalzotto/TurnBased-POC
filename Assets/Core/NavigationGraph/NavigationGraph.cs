@@ -4,9 +4,13 @@ using Unity.Mathematics;
 
 namespace _Navigation
 {
+    public static class NavigationGraphContainer
+    {
+        public static NavigationGraph UniqueNavigationGraph;
+    }
+
     public class NavigationGraph
     {
-
         public List<NavigationNode> NavigationNodes;
         public Dictionary<NavigationNode, List<NavigationLink>> NodeLinksIndexedByStartNode;
         public Dictionary<NavigationNode, List<NavigationLink>> NodeLinksIndexedByEndNode;
@@ -20,7 +24,16 @@ namespace _Navigation
             l_instanciatedNavigationGraph.NavigationNodes = new List<NavigationNode>();
             l_instanciatedNavigationGraph.NodeLinksIndexedByStartNode = new Dictionary<NavigationNode, List<NavigationLink>>();
             l_instanciatedNavigationGraph.NodeLinksIndexedByEndNode = new Dictionary<NavigationNode, List<NavigationLink>>();
+            NavigationGraphContainer.UniqueNavigationGraph = l_instanciatedNavigationGraph;
             return l_instanciatedNavigationGraph;
+        }
+
+        public static void free(NavigationGraph p_navigationGraph)
+        {
+            if(NavigationGraphContainer.UniqueNavigationGraph == p_navigationGraph)
+            {
+                NavigationGraphContainer.UniqueNavigationGraph = null;
+            }
         }
 
         public static NavigationNode instanciateAndAddNode(NavigationGraph p_navigationGraph)

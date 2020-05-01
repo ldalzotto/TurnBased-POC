@@ -52,11 +52,14 @@ namespace _Entity
         {
             MyEvent<Entity>.broadcast(ref p_entity.OnEntityDestroyed, ref p_entity);
 
-            for (int i = 0; i < p_entity.Components.Count; i++)
+            var l_componentIterator = p_entity.Components.GetRefEnumerator();
+            while (l_componentIterator.MoveNext())
             {
-                EntityComponentContainer.onComponentRemoved(p_entity.Components.entries[i].value);
+                EntityComponentContainer.onComponentRemoved(l_componentIterator.GetCurrentRef().value);
             }
 
+            EntityContainer.Entities.Remove(p_entity);
+            EntityDestructionContainer.EntitiesMarkedForDestruction.Remove(p_entity);
         }
     }
 

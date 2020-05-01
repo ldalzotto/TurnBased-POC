@@ -26,6 +26,8 @@ namespace _GameLoop
 
         private void Awake()
         {
+            ExternalHooks.LogDebug = Debug.Log;
+
             if (!GameSequencer.ContainsKey(GameLoopHook.BeforePhysics)) { GameSequencer[GameLoopHook.BeforePhysics] = new List<GameLoopCallback>(); }
             if (!GameSequencer.ContainsKey(GameLoopHook.Tick)) { GameSequencer[GameLoopHook.Tick] = new List<GameLoopCallback>(); }
             if (!GameSequencer.ContainsKey(GameLoopHook.LateTick)) { GameSequencer[GameLoopHook.LateTick] = new List<GameLoopCallback>(); }
@@ -46,7 +48,7 @@ namespace _GameLoop
 
         private void Update()
         {
-            MyEvent.broadcast(ref GameLoopEvents.OnTickStart); 
+            MyEvent.broadcast(ref ExternalHooks.OnTickStartEvent); 
 
             float delta = Time.deltaTime;
 

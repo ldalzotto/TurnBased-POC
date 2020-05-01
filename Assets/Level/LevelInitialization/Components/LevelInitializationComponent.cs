@@ -26,15 +26,10 @@ namespace _Level
             l_navigationObject.SetActive(true);
 
             EntitySpawnDefinition.spawnEntities(LevelInitializationDefinition.EntitySpawnDefinition, LevelInitializationGameObject.Entities.transform);
-
-            TurnTimelineComponent l_turnTimelineComponent = GameObject.Instantiate(LevelInitializationDefinition.TurnTimelinePrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false)
-                    .GetComponent<TurnTimelineComponent>();
-
-            TurnTimelineSequencer.beginSequencingTurn();
-            // TurnTimelineComponent.startTurnTimeline(l_turnTimelineComponent);
+            GameObject.Instantiate(LevelInitializationDefinition.TurnTimelinePrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false);
         }
-    }
 
+    }
 
     struct LevelInitializationGameObject
     {

@@ -14,8 +14,13 @@ namespace _Locomotion
 
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
         {
+            Locomotion l_locomotion = Locomotion.alloc();
+            EntityComponent.add_component<Locomotion>(p_entity, ref l_locomotion);
+
             LocomotionSystemComponent l_locomotionSystemComponent = p_runtimeObjectRootComponent.GetInstanciatedComponentsGameObject().AddComponent<LocomotionSystemComponent>();
+            l_locomotionSystemComponent.AssociatedEntity = p_entity;
             l_locomotionSystemComponent.TravelSpeed = TravelSpeed;
+            l_locomotion.MoveToNavigationNode = l_locomotionSystemComponent.HeadTowardsNode;
         }
     }
 }

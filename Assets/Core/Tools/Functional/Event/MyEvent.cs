@@ -62,12 +62,13 @@ namespace _Functional
         public static void broadcast(ref MyEvent p_event)
         {
             p_event.IsBroadcasting = true;
-            for (int i = 0; i < p_event.Callbacks.Count; i++)
+            var l_eventInterator = p_event.Callbacks.GetRefEnumerator();
+            while (l_eventInterator.MoveNext())
             {
-                if (p_event.Callbacks.entries[i].value.Execute() == EventCallbackResponse.REMOVE)
+                if (l_eventInterator.GetCurrentRef().value.Execute() == EventCallbackResponse.REMOVE)
                 {
                     if (p_event.RemoveQueue == null) { p_event.RemoveQueue = new List<int>(); }
-                    p_event.RemoveQueue.Add(p_event.Callbacks.entries[i].value.Handle);
+                    p_event.RemoveQueue.Add(l_eventInterator.GetCurrentRef().value.Handle);
                 }
             }
             p_event.IsBroadcasting = false;
@@ -152,12 +153,13 @@ namespace _Functional
         public static void broadcast(ref MyEvent<T1> p_event, ref T1 p_param1)
         {
             p_event.IsBroadcasting = true;
-            for (int i = 0; i < p_event.Callbacks.Count; i++)
+            var l_eventInterator = p_event.Callbacks.GetRefEnumerator();
+            while (l_eventInterator.MoveNext())
             {
-                if (p_event.Callbacks.entries[i].value.Execute(ref p_param1) == EventCallbackResponse.REMOVE)
+                if (l_eventInterator.GetCurrentRef().value.Execute(ref p_param1) == EventCallbackResponse.REMOVE)
                 {
                     if (p_event.RemoveQueue == null) { p_event.RemoveQueue = new List<int>(); }
-                    p_event.RemoveQueue.Add(p_event.Callbacks.entries[i].value.Handle);
+                    p_event.RemoveQueue.Add(l_eventInterator.GetCurrentRef().value.Handle);
                 }
             }
             p_event.IsBroadcasting = false;

@@ -27,7 +27,7 @@ namespace System.Collections.Generic
 
         private static TValue EmptyValue;
         private int[] buckets;
-        public Entry[] entries;
+        private Entry[] entries;
         private int count;
         private int version;
         private int freeList;
@@ -172,11 +172,6 @@ namespace System.Collections.Generic
             }
         }
         
-        public ref Entry GetEntryRef(int p_index)
-        {
-            return ref entries[p_index];
-        }
-
         public void Add(TKey key, TValue value)
         {
             Insert(key, value, true);
@@ -277,6 +272,11 @@ namespace System.Collections.Generic
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this, Enumerator.KeyValuePair);
+        }
+
+        public RefEnumerator GetRefEnumerator()
+        {
+            return new RefEnumerator(this);
         }
 
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
@@ -924,6 +924,55 @@ namespace System.Collections.Generic
 
                     return current.Value;
                 }
+            }
+        }
+
+        [Serializable]
+        public struct RefEnumerator
+        {
+            private RefDictionary<TKey, TValue> dictionary;
+            private int version;
+            private int index;
+
+            private int currentIndex;
+
+            internal RefEnumerator(RefDictionary<TKey, TValue> dictionary)
+            {
+                this.dictionary = dictionary;
+                version = dictionary.version;
+                index = 0;
+                currentIndex = 0;
+            }
+
+
+            public bool MoveNext()
+            {
+                if (version != dictionary.version)
+                {
+                    ThrowHelper.ThrowInvalidOperationException(ExceptionResource.InvalidOperation_EnumFailedVersion);
+                }
+
+                // Use unsigned comparison since we set index to dictionary.count+1 when the enumeration ends.
+                // dictionary.count+1 could be negative if dictionary.count is Int32.MaxValue
+                while ((uint)index < (uint)dictionary.count)
+                {
+                    if (dictionary.entries[index].hashCode >= 0)
+                    {
+                        currentIndex = index;
+                        index++;
+                        return true;
+                    }
+                    index++;
+                }
+
+                index = dictionary.count + 1;
+                currentIndex = -1;
+                return false;
+            }
+
+            public ref Entry GetCurrentRef()
+            {
+                return ref dictionary.entries[currentIndex];
             }
         }
 

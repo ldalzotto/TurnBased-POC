@@ -12,11 +12,12 @@ namespace _Entity._Turn
         /// The <see cref="Entity"/> asked for a new turn.
         /// </summary>
         Entity Entity { get; set; }
-        
+        TurnTimelineSequencerStartRequest TurnTimelineSequencerStartRequest { get; set; }
+
         /// <summary>
         /// Called when <see cref="Entity"/> turn has started.
         /// </summary>
-        void StartTurn(Action<ITurnRequest, TurnResponse> p_onTurnEnded);
+        void StartTurn(Action<ITurnRequest, TurnResponse, TurnTimelineSequencerStartRequest> p_onTurnEnded);
     }
 
     /// <summary>

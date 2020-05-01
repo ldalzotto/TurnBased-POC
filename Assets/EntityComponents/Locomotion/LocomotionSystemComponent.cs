@@ -14,6 +14,7 @@ using UnityEditor;
 
 namespace _Locomotion
 {
+
     public static class LocomotionSystemComponentContainer
     {
         public static List<LocomotionSystemComponent> LocomotionSystemComponents = new List<LocomotionSystemComponent>();
@@ -32,6 +33,7 @@ namespace _Locomotion
         }
     }
 
+
     /// <summary>
     /// Physically move the <see cref="RuntimeObject"/> towards a <see cref="NavigationNode"/>.
     /// His role is to update <see cref="Entity.CurrentNavigationNode"/> position. 
@@ -39,13 +41,12 @@ namespace _Locomotion
     /// </summary>
     public class LocomotionSystemComponent : RuntimeComponent
     {
-
-        public float TravelSpeed;
-
         #region Component Dependencies
         public CachedComponent<Rigidbody> RigidBody;
-        public CachedRuntimeComponent<EntityRegistrationComponent> EntityRegistrationComponent;
         #endregion
+
+        public float TravelSpeed;
+        public Entity AssociatedEntity;
 
         #region Event callbacks
         /// <summary>
@@ -58,7 +59,6 @@ namespace _Locomotion
         {
             base.Awake();
             RigidBody = CachedComponent<Rigidbody>.New(RuntimeObject.RuntimeObjectRootComponent.gameObject);
-            EntityRegistrationComponent = CachedRuntimeComponent<EntityRegistrationComponent>.New(RuntimeObject);
             LocomotionSystemComponentContainer.LocomotionSystemComponents.Add(this);
         }
 
@@ -72,27 +72,34 @@ namespace _Locomotion
         private Vector3 m_currentDestination;
         private NavigationNode m_currentTargetNode;
 
-        public void HeadTowardsNode(ref NavigationNode p_navigationNode, Action<NavigationNode, NavigationNode> p_onDestinationReached = null)
+        public void HeadTowardsNode(NavigationNode p_navigationNode, Action<NavigationNode, NavigationNode> p_onDestinationReached = null)
         {
             OnNavigationNodeReachedEvent = p_onDestinationReached;
             m_headingTowardsTargetNode = true;
             m_currentDestination = NavigationGraphComponent.get_WorldPositionFromNavigationNode(
-                                NavigationGraphComponentContainer.NavigationGraphComponent,
+                                NavigationGraphComponentContainer.UniqueNavigationGraphComponent,
                                 p_navigationNode);
             m_currentTargetNode = p_navigationNode;
+        }
+
+        public static void HeadTowardNode(Entity p_entity, NavigationNode p_targetNavigationNode, Action<NavigationNode, NavigationNode> p_onDestinationReached = null)
+        {
+            
         }
 
         public static void warp(LocomotionSystemComponent p_locomotionSystemComponent, NavigationNode p_navigationNode)
         {
             Entity.set_currentNavigationNode(
-                   p_locomotionSystemComponent.EntityRegistrationComponent.Get().AssociatedEntity,
+                   p_locomotionSystemComponent.AssociatedEntity,
                    p_navigationNode
                );
 
             p_locomotionSystemComponent.RigidBody.Get().MovePosition(
-                NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.NavigationGraphComponent, p_navigationNode)
+                NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent, p_navigationNode)
             );
         }
+
+      
 
         public void FixedTick(float d)
         {
@@ -117,9 +124,9 @@ namespace _Locomotion
                 if (l_isDestinationReached)
                 {
                     m_headingTowardsTargetNode = false;
-                    NavigationNode l_oldNavigationNode = EntityRegistrationComponent.Get().AssociatedEntity.CurrentNavigationNode;
+                    NavigationNode l_oldNavigationNode = AssociatedEntity.CurrentNavigationNode;
 
-                    Entity.set_currentNavigationNode(EntityRegistrationComponent.Get().AssociatedEntity, m_currentTargetNode);
+                    Entity.set_currentNavigationNode(AssociatedEntity, m_currentTargetNode);
 
                     if (OnNavigationNodeReachedEvent != null)
                     {
