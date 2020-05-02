@@ -1,52 +1,30 @@
-﻿using _AI._DecisionTree;
+﻿using _ActionPoint;
+using _AI._DecisionTree;
 using _AI._DecisionTree._Algorithm;
-using _Entity._Turn;
-using _ExecutionTree;
-using _Navigation;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Unity.Mathematics;
+using _Attack;
+using _Entity;
 using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-
     private void Update()
     {
+        Entity l_entity = Entity.alloc();
+        ActionPointData l_actionPointData = new ActionPointData() {InitialActionPoints = 3.0f, CurrentActionPoints = 3.0f};
+        ActionPoint l_actionPoint = ActionPoint.alloc(ref l_actionPointData);
+        EntityComponent.add_component(l_entity, ref l_actionPoint);
+        AttackData l_attackData = new AttackData() {APCost = 1.5f, Damage = 1.0f};
+        Attack l_attack = Attack.alloc(ref l_attackData);
+
         DecisionTree l_decisionTree = DecisionTree.alloc();
-        TestNode l_testNode1 = new TestNode();
-        TestNode l_testNode2 = new TestNode();
-        TestNode l_testNode3 = new TestNode();
+        AttackNode l_testNode1 = AttackNode.alloc(l_entity, null, l_attack);
+        AttackNode l_testNode2 = AttackNode.alloc(l_entity, null, l_attack);
+        AttackNode l_testNode3 = AttackNode.alloc(l_entity, null, l_attack);
         DecisionTree.linkDecisionNodes(l_decisionTree, l_decisionTree.RootNode, l_testNode1);
         DecisionTree.linkDecisionNodes(l_decisionTree, l_testNode1, l_testNode2);
-        DecisionTree.linkDecisionNodes(l_decisionTree, l_testNode1, l_testNode3);
-        Algorithm.traverseDecisionTree(l_decisionTree);
+        DecisionTree.linkDecisionNodes(l_decisionTree, l_testNode2, l_testNode3);
+        ref Algorithm.AIDecisionTreeChoice l_choice = ref Algorithm.traverseDecisionTree(l_decisionTree, l_entity);
+
+        Debug.Log(l_choice);
     }
-
-    public interface SObject { }
-
-    public struct MyVec3 : SObject
-    {
-        public float X;
-        public float Y;
-        public float Z;
-    }
-
-    class TestNode : ADecisionNode
-    {
-
-        public override void TreeTraversal(ADecisionNode p_sourceNode)
-        {
-            switch (p_sourceNode)
-            {
-                case TestNode l_testNode:
-                    break;
-            }
-        }
-    }
-
 }

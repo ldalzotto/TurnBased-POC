@@ -6,18 +6,18 @@ namespace _ExecutionTree
 {
     public struct ExecutionTree
     {
-        public List<ExecutionNode> ExecutionNodes;
+        public List<IExecutionNode> ExecutionNodes;
 
         public static ExecutionTree build()
         {
             ExecutionTree l_instance = new ExecutionTree();
-            l_instance.ExecutionNodes = new List<ExecutionNode>();
+            l_instance.ExecutionNodes = new List<IExecutionNode>();
             return l_instance;
         }
 
         #region Tree creation/alteration
 
-        public static void addNode(ExecutionTree p_executiontree, ExecutionNode p_executionNode)
+        public static void addNode(ExecutionTree p_executiontree, IExecutionNode p_executionNode)
         {
             p_executiontree.ExecutionNodes.Add(p_executionNode);
         }
@@ -28,11 +28,11 @@ namespace _ExecutionTree
         {
             while (p_executionTree.ExecutionNodes.Count > 0)
             {
-                List<ExecutionNode> l_newExecutionNodes = new List<ExecutionNode>();
+                List<IExecutionNode> l_newExecutionNodes = new List<IExecutionNode>();
                 
                 for (int i = 0; i < p_executionTree.ExecutionNodes.Count; i++)
                 {
-                    p_executionTree.ExecutionNodes[i].ExecutionNodeAction.Execute(l_newExecutionNodes);
+                    p_executionTree.ExecutionNodes[i].Execute(l_newExecutionNodes);
                 }
 
                 p_executionTree.ExecutionNodes.Clear();
@@ -40,21 +40,10 @@ namespace _ExecutionTree
             }
         }
     }
-
-    public struct ExecutionNode
+    
+    public interface IExecutionNode
     {
-        public IExecutionNodeAction ExecutionNodeAction;
-        public static ExecutionNode build(IExecutionNodeAction p_executionNodeAction)
-        {
-            ExecutionNode l_instance = new ExecutionNode();
-            l_instance.ExecutionNodeAction = p_executionNodeAction;
-            return l_instance;
-        }
-    }
-
-    public interface IExecutionNodeAction
-    {
-        void Execute(List<ExecutionNode> p_newExecutionNodes);
+        void Execute(List<IExecutionNode> p_newExecutionNodes);
     }
 
 

@@ -1,15 +1,12 @@
 ﻿
 
-using _Functional;
-using _Navigation;
 using System;
 using System.Collections.Generic;
+using _Functional;
+using _Navigation;
 
 namespace _Entity
 {
-    /*
-
-    */
     /// <summary>
     /// An Entity is any object that can be placed in the NavigationGraph and can interact with it's environment.
 	/// To avoid any undefined behavior, Entity destruction is never instant. To destroy the Entity, the flag <see cref="MarkedForDestruction"/>  must be setted

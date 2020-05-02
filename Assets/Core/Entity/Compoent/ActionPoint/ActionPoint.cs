@@ -16,12 +16,12 @@ namespace _ActionPoint
 
         public static void add(ActionPoint p_actionPoint, float p_delta)
         {
-            p_actionPoint.ActionPointData.CurrentActionPoints = math.max(p_actionPoint.ActionPointData.CurrentActionPoints + p_delta, 0.0f);
+            ActionPointData.add(ref p_actionPoint.ActionPointData, p_delta);
         }
 
         public static void resetActionPoints(ActionPoint p_actionPoint)
         {
-            p_actionPoint.ActionPointData.CurrentActionPoints = p_actionPoint.ActionPointData.InitialActionPoints;
+            ActionPointData.resetActionPoints(ref p_actionPoint.ActionPointData);
         }
     }
 
@@ -29,6 +29,15 @@ namespace _ActionPoint
     {
         public float InitialActionPoints;
         public float CurrentActionPoints;
+
+        public static void add(ref ActionPointData p_actionPointData, float p_delta)
+        {
+            p_actionPointData.CurrentActionPoints = math.max(p_actionPointData.CurrentActionPoints + p_delta, 0.0f);
+        }
+        public static void resetActionPoints(ref ActionPointData p_actionPointData)
+        {
+            p_actionPointData.CurrentActionPoints = p_actionPointData.InitialActionPoints;
+        }
     }
 
 }

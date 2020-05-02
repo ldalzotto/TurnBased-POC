@@ -1,10 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using static _AI._DecisionTree._Algorithm.Algorithm;
 
 namespace _AI._DecisionTree
 {
-
     public class DecisionTree
     {
         public RefDictionary<ADecisionNode, RefList<DecisionLink>> DecisionLinks;
@@ -23,7 +21,7 @@ namespace _AI._DecisionTree
             DecisionLink l_instanciatedLink = DecisionLink.build(p_sourceNode, p_targetNode);
             if (!p_decisiontree.DecisionLinks.ContainsKey(p_sourceNode))
             {
-                p_decisiontree.DecisionLinks.Add(p_sourceNode, new RefList<DecisionLink>() { l_instanciatedLink });
+                p_decisiontree.DecisionLinks.Add(p_sourceNode, new RefList<DecisionLink>() {l_instanciatedLink});
             }
             else
             {
@@ -34,15 +32,21 @@ namespace _AI._DecisionTree
 
     /// <summary>
     /// An <see cref="ADecisionNode"/> is a data container without any logic.
-	/// It's purpose is to be red by the algorithm that traverse the Navigation tree.
+    /// It's purpose is to be red by the algorithm that traverse the Navigation tree.
     /// </summary>
     public abstract class ADecisionNode
     {
         public EDecisionNodeConsumerAction DecisionNodeConsumerAction;
-        public virtual void TreeTraversal(ADecisionNode p_sourceNode) { }
+
+        public virtual void TreeTraversal(ADecisionNode p_sourceNode, ref EntityDecisionContext p_entityDecisionContextdata)
+        {
+            DecisionNodeConsumerAction = EDecisionNodeConsumerAction.SKIP;
+        }
     }
 
-    public class RootDecisionNode : ADecisionNode { }
+    public class RootDecisionNode : ADecisionNode
+    {
+    }
 
     public struct DecisionLink
     {
@@ -67,6 +71,7 @@ namespace _AI._DecisionTree
     public enum EDecisionNodeConsumerAction : ushort
     {
         SKIP = 0,
+
         /// <summary>
         /// The consumer is likely to execute another process by reading the associated <see cref="ADecisionNode"/> data.
         /// </summary>
