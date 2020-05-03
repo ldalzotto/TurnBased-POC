@@ -66,8 +66,6 @@
     <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\Algorithm.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\DecisionTree.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\DecisionNodes.cs" />
-    <Compile Include="Assets\Core\Entity\Action\Action.cs" />
-    <Compile Include="Assets\Core\Entity\Action\ActionStack.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\ActionPoint\ActionPoint.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\ActionPoint\Calculations.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\Attack.cs" />
@@ -77,9 +75,11 @@
     <Compile Include="Assets\Core\Entity\Compoent\TurnTimelineElligibility.cs" />
     <Compile Include="Assets\Core\Entity\Entity.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
-    <Compile Include="Assets\Core\Entity\Turn\TurnGlobalEvents.cs" />
-    <Compile Include="Assets\Core\Entity\Turn\TurnRequest.cs" />
-    <Compile Include="Assets\Core\Entity\Turn\TurnSequencer.cs" />
+    <Compile Include="Assets\Core\Entity\Events\EntityEvents.cs" />
+    <Compile Include="Assets\Core\Entity\Turn\Events\EntityTurnEvent.cs" />
+    <Compile Include="Assets\Core\Entity\Turn\Events\TurnEvent.cs" />
+    <Compile Include="Assets\Core\EventQueue\EventQueue.cs" />
+    <Compile Include="Assets\Core\EventQueue\EventQueueListener.cs" />
     <Compile Include="Assets\Core\ExternalHooks\ExternalHooks.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />
@@ -87,7 +87,6 @@
     <Compile Include="Assets\Core\Tools\Collections\RefDictionary.cs" />
     <Compile Include="Assets\Core\Tools\Collections\RefList.cs" />
     <Compile Include="Assets\Core\Tools\Functional\Event\MyEvent.cs" />
-    <Compile Include="Assets\Core\Tools\Functional\ExecutionTree\ExecutionTree.cs" />
     <Compile Include="Assets\Core\Tools\Math\MyRandom.cs" />
     <Compile Include="Assets\Core\Tools\Memory\MemoryBuffer.cs" />
     <Compile Include="Assets\Core\TurnTimeline\Algorithm.cs" />

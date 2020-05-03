@@ -56,12 +56,6 @@ namespace _Entity
                     ref p_entityRegistrationComponent.EntityDefinition,
                     ref p_entityRegistrationComponent.AssociatedEntity,
                     p_entityRegistrationComponent.RuntimeObject.RuntimeObjectRootComponent);
-
-
-
-
-            TurnGlobalEvents.OnEntityTurnStartEvent.Add(p_entityRegistrationComponent.AssociatedEntity, MyEvent.build());
-            TurnGlobalEvents.OnEntityTurnEndEvent.Add(p_entityRegistrationComponent.AssociatedEntity, MyEvent.build());
         }
 
         public override void OnDestroy()

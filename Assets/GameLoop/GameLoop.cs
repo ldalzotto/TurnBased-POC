@@ -1,4 +1,5 @@
-﻿using _Functional;
+﻿using _EventQueue;
+using _Functional;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +49,9 @@ namespace _GameLoop
 
         private void Update()
         {
-            MyEvent.broadcast(ref ExternalHooks.OnTickStartEvent); 
+            MyEvent.broadcast(ref ExternalHooks.OnTickStartEvent);
+
+            EventQueue.iterate(EventQueue.UniqueInstance);
 
             float delta = Time.deltaTime;
 
@@ -58,6 +61,8 @@ namespace _GameLoop
             {
                 l_tickCallbacks[i].Callback(delta);
             }
+
+            EventQueue.iterate(EventQueue.UniqueInstance);
         }
 
         private void LateUpdate()

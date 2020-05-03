@@ -163,7 +163,7 @@ namespace _AI._DecisionTree._Algorithm
             /// The amount of damage done by Attack.
             /// </summary>
             public float DamageScore;
-
+        
             public static float totalScore(ref AIDecisionScore p_aiDecisionScore)
             {
                 return p_aiDecisionScore.DamageScore + p_aiDecisionScore.PathScore;

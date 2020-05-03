@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using _Entity._Events;
+using _EventQueue;
 using _Functional;
 using _Navigation;
 
@@ -40,7 +42,8 @@ namespace _Entity
         public static void markForDestruction(Entity p_entity)
         {
             p_entity.MarkedForDestruction = true;
-            EntityDestructionContainer.EntitiesMarkedForDestruction.Add(p_entity);
+            EventQueue.insertEventAt(EventQueue.UniqueInstance, 0, EntityDestroyEvent.alloc(p_entity));
+            // EntityDestructionContainer.EntitiesMarkedForDestruction.Add(p_entity);
         }
 
         public static void set_currentNavigationNode(Entity p_entity, NavigationNode p_newNavigationNode)
