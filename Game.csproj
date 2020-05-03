@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Editor\TestWindow.cs" />
     <Compile Include="Assets\EditorUtility\NavigationGraphEditorComponent.cs" />
     <Compile Include="Assets\Entity\EntityDefinition.cs" />
     <Compile Include="Assets\Entity\EntityRegistrationComponent.cs" />

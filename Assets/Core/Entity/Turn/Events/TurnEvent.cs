@@ -4,6 +4,7 @@ using _TurnTimeline;
 using _ActionPoint;
 using _GameLoop;
 using _Functional;
+using _EventQueue._Events;
 
 namespace _Entity._Turn
 {
@@ -33,7 +34,6 @@ namespace _Entity._Turn
     public class OnEntityTurnEndEventListener : AEventListener<EndEntityTurnEvent>
     {
         public TurnTimeline TurnTimeline;
-        // private OnNextFrame OnNextFrameCallback;
 
         public static OnEntityTurnEndEventListener alloc(TurnTimeline p_turnTimeline)
         {
@@ -44,31 +44,10 @@ namespace _Entity._Turn
 
         public override void OnEventExecuted(EventQueue p_eventQueue, EndEntityTurnEvent p_event)
         {
-            // OnNextFrameCallback = OnNextFrame.alloc(TurnTimeline);
-            // MyEvent.register(ref ExternalHooks.OnTickStartEvent,  OnNextFrameCallback);
-
-            EventQueue.insertEventAt(p_eventQueue, 0, StartTurnEvent.alloc(TurnTimeline));
+            EventQueue.clearAll(p_eventQueue);
+            EventQueue.insertEventAt(p_eventQueue, 0, WaitForNextFrame.alloc());
+            EventQueue.insertEventAt(p_eventQueue, 1, StartTurnEvent.alloc(TurnTimeline));
         }
-
-#if comment
-        class OnNextFrame : MyEvent.IEventCallback
-        {
-            public TurnTimeline TurnTimeline;
-            public int Handle { get; set; }
-
-            public static OnNextFrame alloc(TurnTimeline p_turnTimeline)
-            {
-                OnNextFrame l_instance = new OnNextFrame();
-                l_instance.TurnTimeline = p_turnTimeline;
-                return l_instance;
-            }
-
-            public EventCallbackResponse Execute()
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-#endif
     }
 
 }
