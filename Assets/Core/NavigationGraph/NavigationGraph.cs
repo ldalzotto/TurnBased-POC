@@ -30,7 +30,7 @@ namespace _Navigation
 
         public static void free(NavigationGraph p_navigationGraph)
         {
-            if(NavigationGraphContainer.UniqueNavigationGraph == p_navigationGraph)
+            if (NavigationGraphContainer.UniqueNavigationGraph == p_navigationGraph)
             {
                 NavigationGraphContainer.UniqueNavigationGraph = null;
             }
@@ -65,6 +65,19 @@ namespace _Navigation
                     new Dictionary<NavigationNode, List<NavigationLink>>(p_navigationGraph.NodeLinksIndexedByStartNode),
                     new Dictionary<NavigationNode, List<NavigationLink>>(p_navigationGraph.NodeLinksIndexedByEndNode)
             );
+        }
+
+        public static Dictionary<NavigationNode, List<NavigationLink>> get_nodeLinksIndexedByStartNode(NavigationGraph p_navigationGraph, NavigationGraphFlag p_navigationGraphFlag)
+        {
+            if (p_navigationGraphFlag == NavigationGraphFlag.CURRENT)
+            {
+                return p_navigationGraph.NodeLinksIndexedByStartNode;
+            }
+            else if (p_navigationGraphFlag == NavigationGraphFlag.SNAPSHOT)
+            {
+                return p_navigationGraph.NavigationGraphSnapshot.NodeLinksIndexedByStartNode;
+            }
+            return null;
         }
     }
 
@@ -116,4 +129,14 @@ namespace _Navigation
             return l_instance;
         }
     }
+
+    /// <summary>
+    /// This flag is used when requesting the <see cref="NavigationGraph"/> to sepcify if the request is done in the current <see cref="NavigationGraph"/> (the graph that is modfied at rutime)
+    /// or on the snapshot.
+    /// </summary>
+    public enum NavigationGraphFlag : ushort
+    {
+        CURRENT = 0,
+        SNAPSHOT = 1
+    };
 }

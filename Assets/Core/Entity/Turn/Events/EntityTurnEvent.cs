@@ -1,4 +1,7 @@
 ﻿using _ActionPoint;
+using _AI._DecisionTree;
+using _AI._DecisionTree._Algorithm;
+using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
 using System.Collections;
@@ -18,12 +21,37 @@ namespace _Entity._Turn
 
         public override void Execute(EventQueue p_eventQueue)
         {
-            ActionPoint.resetActionPoints(EntityComponent.get_component<ActionPoint>(Entity));
-
             // We insert the EndTurn event just to be sure that end will effectively occur.
             EventQueue.insertEventAt(p_eventQueue, 0, EndEntityTurnEvent.alloc(Entity));
 
-            EventQueue.insertEventAt(p_eventQueue, 0, HealthReductionEvent.alloc(Entity));
+
+            ActionPoint.resetActionPoints(EntityComponent.get_component<ActionPoint>(Entity));
+
+            DecisionTree l_decisionTree = DecisionTree.alloc();
+            TreeBuilder.buildAggressiveTree(l_decisionTree, Entity);
+            var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);
+
+            int l_eventInsersionInex = 0;
+
+            for(int i = 0; i < l_choice.DecisionNodesChoiceOrdered.Length; i++)
+            {
+                ADecisionNode l_decisionNode = l_choice.DecisionNodesChoiceOrdered[i];
+                if(l_decisionNode.DecisionNodeConsumerAction == EDecisionNodeConsumerAction.EXECUTE)
+                {
+                    switch (l_decisionNode)
+                    {
+                        case MoveToNavigationNodeNode l_moveToNavigationNode:
+
+                            var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
+                            while (l_pathEnumerator.MoveNext())
+                            {
+                                EventQueue.insertEventAt(p_eventQueue, l_eventInsersionInex, NavigationNodeMoveEntityEvent.alloc(Entity, l_pathEnumerator.Current));
+                                l_eventInsersionInex += 1;
+                            }
+                            break;
+                    }
+                }
+            }
         }
     }
 

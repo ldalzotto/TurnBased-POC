@@ -1,6 +1,9 @@
 ﻿using System.Collections;
+using _ActionPoint;
 using _EventQueue;
 using _Health;
+using _Locomotion;
+using _Navigation;
 
 namespace _Entity._Events
 {
@@ -40,47 +43,63 @@ namespace _Entity._Events
         }
     }
 
-#if comment
 
     /// <summary>
-    /// The <see cref="NavigationNodeMoveEntityAction"/> moves the <see cref="SourceEntity"/> to the <see cref="NavigationNode"/> <see cref="TargetNavigationNode"/>.
+    /// The <see cref="NavigationNodeMoveEntityEvent"/> moves the <see cref="SourceEntity"/> to the <see cref="NavigationNode"/> <see cref="TargetNavigationNode"/>.
     /// Consumes <see cref="ActionPoint"/>.
     /// </summary>
-    public struct NavigationNodeMoveEntityAction : IEntityAction
+    public class NavigationNodeMoveEntityEvent : AAsyncEvent
     {
-        public NavigationNodeMoveEntityAction(Entity p_sourceEntity, NavigationNode p_navigationNode)
+        public static NavigationNodeMoveEntityEvent alloc(Entity p_sourceEntity, NavigationNode p_navigationNode)
         {
-            SourceEntity = p_sourceEntity;
-            TargetNavigationNode = p_navigationNode;
+            NavigationNodeMoveEntityEvent l_instance = new NavigationNodeMoveEntityEvent();
+            l_instance.SourceEntity = p_sourceEntity;
+            l_instance.TargetNavigationNode = p_navigationNode;
+            return l_instance;
         }
 
         public Entity SourceEntity;
         public NavigationNode TargetNavigationNode;
 
-        public Action<Action<EntityActionResultAction>> GetEntityAction()
+        public override void Execute(EventQueue p_eventQueue)
         {
-            NavigationNodeMoveEntityAction thiz = this;
-            return (Action<EntityActionResultAction> p_onEndCallback) =>
+            Start();
+            float l_costToMove = _ActionPoint.Calculations.actionPointBetweenNavigationNodes(SourceEntity.CurrentNavigationNode, TargetNavigationNode);
+            ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
+            if (l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove)
             {
-                float l_costToMove = Calculations.actionPointBetweenNavigationNodes(thiz.SourceEntity.CurrentNavigationNode,
-                            thiz.TargetNavigationNode);
-
-                ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(thiz.SourceEntity);
-                if (l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove)
+                EntityComponent.get_component<Locomotion>(SourceEntity).MoveToNavigationNode.Invoke(TargetNavigationNode, (p_startNavigationNode, p_endNavigationNode) =>
                 {
-                    EntityComponent.get_component<Locomotion>(thiz.SourceEntity).MoveToNavigationNode.Invoke(thiz.TargetNavigationNode, (p_startNavigationNode, p_endNavigationNode) =>
-                    {
-                        ActionPoint.add(l_actionPoint, -1 * l_costToMove);
-                        p_onEndCallback.Invoke(EntityActionResultAction.OK);
-                    });
-                }
-                else
-                {
-                    p_onEndCallback.Invoke(EntityActionResultAction.OK);
-                }
-            };
+                    ActionPoint.add(l_actionPoint, -1 * l_costToMove);
+                    Entity.set_currentNavigationNode(SourceEntity, p_endNavigationNode);
+                    Complete();
+                });
+            }
+            else
+            {
+                Complete();
+            }
         }
+
     }
 
-#endif
+    public class NavigationNodeWarpEntityEvent : AEvent
+    {
+        public Entity Entity;
+        public NavigationNode TargetNavigationNode;
+
+        public static NavigationNodeWarpEntityEvent alloc(Entity p_entity, NavigationNode p_targetNavigationNode)
+        {
+            NavigationNodeWarpEntityEvent l_instance = new NavigationNodeWarpEntityEvent();
+            l_instance.Entity = p_entity;
+            l_instance.TargetNavigationNode = p_targetNavigationNode;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            EntityComponent.get_component<Locomotion>(Entity).WarpTo(TargetNavigationNode);
+            Entity.set_currentNavigationNode(Entity, TargetNavigationNode);
+        }
+    }
 }

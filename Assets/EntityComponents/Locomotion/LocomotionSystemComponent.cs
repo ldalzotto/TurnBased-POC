@@ -82,24 +82,14 @@ namespace _Locomotion
             m_currentTargetNode = p_navigationNode;
         }
 
-        public static void HeadTowardNode(Entity p_entity, NavigationNode p_targetNavigationNode, Action<NavigationNode, NavigationNode> p_onDestinationReached = null)
+        public void warp(NavigationNode p_navigationNode)
         {
-            
-        }
-
-        public static void warp(LocomotionSystemComponent p_locomotionSystemComponent, NavigationNode p_navigationNode)
-        {
-            Entity.set_currentNavigationNode(
-                   p_locomotionSystemComponent.AssociatedEntity,
-                   p_navigationNode
-               );
-
-            p_locomotionSystemComponent.RigidBody.Get().MovePosition(
+            RigidBody.Get().MovePosition(
                 NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent, p_navigationNode)
             );
         }
 
-      
+
 
         public void FixedTick(float d)
         {
@@ -125,8 +115,6 @@ namespace _Locomotion
                 {
                     m_headingTowardsTargetNode = false;
                     NavigationNode l_oldNavigationNode = AssociatedEntity.CurrentNavigationNode;
-
-                    Entity.set_currentNavigationNode(AssociatedEntity, m_currentTargetNode);
 
                     if (OnNavigationNodeReachedEvent != null)
                     {

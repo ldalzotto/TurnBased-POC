@@ -21,6 +21,7 @@ namespace _Locomotion
             l_locomotionSystemComponent.AssociatedEntity = p_entity;
             l_locomotionSystemComponent.TravelSpeed = TravelSpeed;
             l_locomotion.MoveToNavigationNode = l_locomotionSystemComponent.HeadTowardsNode;
+            l_locomotion.WarpTo = l_locomotionSystemComponent.warp;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using _Entity._Turn;
+using _EventQueue;
 using _Functional;
 using _Locomotion;
 using _Navigation;
@@ -35,12 +36,7 @@ namespace _Entity
         private void Start()
         {
             NavigationNode l_randomNavigationNode = NavigationGraphAlgorithm.pickRandomNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent.NavigationGraph);
-            Entity.set_currentNavigationNode(AssociatedEntity, l_randomNavigationNode);
-
-            LocomotionSystemComponent.warp(
-                    RuntimeObject.FindComponent<LocomotionSystemComponent>(),
-                    l_randomNavigationNode
-                );
+            EventQueue.insertEventAt(EventQueue.UniqueInstance, 0, _Entity._Events.NavigationNodeWarpEntityEvent.alloc(AssociatedEntity, l_randomNavigationNode));
         }
 
         public static void initialize(EntityRegistrationComponent p_entityRegistrationComponent)

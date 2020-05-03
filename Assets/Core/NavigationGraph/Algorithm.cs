@@ -48,6 +48,34 @@ namespace _Navigation
             p_navigationPath.NavigationNodesTraversalCalculations.Clear();
             p_navigationPath.PathCost = 0.0f;
         }
+
+        public static void limitPathByMaximumPathCost(ref NavigationPath p_navigationPath, float p_maxPathCost)
+        {
+            if (p_maxPathCost >= 0.00f)
+            {
+                int l_lastIndex = -1;
+                for (int i = 0; i < p_navigationPath.NavigationNodes.Count; i++)
+                {
+                    NavigationNode l_navigationNode = p_navigationPath.NavigationNodes[i];
+                    float l_calculatedpathScore = p_navigationPath.NavigationNodesTraversalCalculations[l_navigationNode].PathScore;
+                    if (l_calculatedpathScore > p_maxPathCost)
+                    {
+                        if (l_lastIndex == -1)
+                        {
+                            p_navigationPath.NavigationNodes.Clear();
+                            p_navigationPath.PathCost = 0.0f;
+                        }
+                        else
+                        {
+                            p_navigationPath.NavigationNodes.RemoveRange(i, p_navigationPath.NavigationNodes.Count - 1 - i);
+                            p_navigationPath.PathCost = p_navigationPath.NavigationNodesTraversalCalculations[p_navigationPath.NavigationNodes[i - 1]].PathScore;
+                        }
+                        return;
+                    }
+                    l_lastIndex = i;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -64,9 +92,14 @@ namespace _Navigation
         {
             if (p_request.BeginNode != null && p_request.EndNode != null)
             {
+                if(p_request.BeginNode == p_request.EndNode)
+                {
+                    p_request.ResultPath.NavigationNodesTraversalCalculations[p_request.BeginNode] = NavigationNodePathTraversalCalculations.build();
+                    return;
+                }
+
                 NavigationNode l_currentEvaluatedNode = p_request.BeginNode;
                 bool l_isFirstTimeInLoop = true;
-
 
                 while (l_currentEvaluatedNode != null && l_currentEvaluatedNode != p_request.EndNode)
                 {
@@ -128,7 +161,6 @@ namespace _Navigation
                         }
                     }
                 }
-
 
                 // calculating final path by going to the start by taking "CalculationMadeFrom" nodes
                 if (l_currentEvaluatedNode != null)
@@ -294,14 +326,41 @@ namespace _Navigation
             }
         }
 
+
+        /*
+            Find all NavigationNodes that the p_requestedNode can travel to and have direct NavigationLink between them.
+                - "Reachable" : Means that it exists a path between the p_requestedNode and the returned NavigationNode
+                - "Neighbor" : Means that the p_requestedNode and the returned NavigationNode have a direct NavigationLink between them.
+        */
+        public static IEnumerable<NavigationNode> getReachableNeighborNavigationNodes(NavigationGraph p_navigationGraph, NavigationNode p_requestedNode, NavigationGraphFlag p_navigationGraphFlag)
+        {
+            var l_navigationLinksGoingFromTheRequestedNode = NavigationGraph.get_nodeLinksIndexedByStartNode(p_navigationGraph, p_navigationGraphFlag)[p_requestedNode];
+
+            var l_navigationLinksGoingFromTheRequestedNodeEnumerator = l_navigationLinksGoingFromTheRequestedNode.GetEnumerator();
+            while (l_navigationLinksGoingFromTheRequestedNodeEnumerator.MoveNext())
+            {
+                yield return l_navigationLinksGoingFromTheRequestedNodeEnumerator.Current.EndNode;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the <paramref name="p_requestedNode1"/> and <paramref name="p_requestedNode2"/> have a direct <see cref="NavigationLink"/> connection.
+        /// </summary>
+        /// <returns></returns>
+        public static bool areNavigationNodesNeighbors(NavigationGraph p_navigationGraph, NavigationNode p_requestedNode1, NavigationNode p_requestedNode2)
+        {
+            foreach (NavigationNode l_reachableNavigationNode in getReachableNeighborNavigationNodes(p_navigationGraph, p_requestedNode2, NavigationGraphFlag.SNAPSHOT))
+            {
+                if (l_reachableNavigationNode == p_requestedNode1)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
     }
-
-
-
-    /**
-      
-*/
-
 
     /// <summary>
     /// Store path traversal calculated data for path calculation.
@@ -335,5 +394,6 @@ namespace _Navigation
             return p_navigationNodePathTraversalCalculations.PathScore + p_navigationNodePathTraversalCalculations.HeuristicScore;
         }
     };
+
 
 }

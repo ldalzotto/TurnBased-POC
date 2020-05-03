@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\Algorithm.cs" />
+    <Compile Include="Assets\Core\AI\DecisionTree\Builder\TreeBuilder.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\DecisionTree.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\DecisionNodes.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\ActionPoint\ActionPoint.cs" />
