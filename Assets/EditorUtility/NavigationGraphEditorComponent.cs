@@ -10,11 +10,6 @@ using Sirenix.OdinInspector.Editor;
 
 namespace _Navigation
 {
-    public struct NavigationGraphEditorComponentEditorData
-    {
-        public Mesh NodeMesh;
-    }
-
     [ExecuteInEditMode]
     public class NavigationGraphEditorComponent : SerializedMonoBehaviour
     {
