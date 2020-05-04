@@ -25,26 +25,6 @@ namespace _Entity._Events
         }
     }
 
-
-    public class HealthReductionEvent : AEvent
-    {
-        public Entity Entity;
-        public static HealthReductionEvent alloc(Entity p_entity)
-        {
-            HealthReductionEvent l_instance = new HealthReductionEvent();
-            l_instance.Entity = p_entity;
-            return l_instance;
-        }
-        public override void Execute(EventQueue p_eventQueue)
-        {
-            Health.addToCurrentHealth(
-                   EntityComponent.get_component<Health>(Entity),
-                   -1.0f
-               );
-        }
-    }
-
-
     /// <summary>
     /// The <see cref="NavigationNodeMoveEntityEvent"/> moves the <see cref="SourceEntity"/> to the <see cref="NavigationNode"/> <see cref="TargetNavigationNode"/>.
     /// Consumes <see cref="ActionPoint"/>.
@@ -65,6 +45,14 @@ namespace _Entity._Events
         public override void Execute(EventQueue p_eventQueue)
         {
             Start();
+
+            if (SourceEntity.MarkedForDestruction)
+            {
+                Complete();
+                return;
+            }
+
+
             float l_costToMove = _ActionPoint.Calculations.actionPointBetweenNavigationNodes(SourceEntity.CurrentNavigationNode, TargetNavigationNode);
             ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
             if (l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove)
@@ -121,7 +109,9 @@ namespace _Entity._Events
 
         public override void Execute(EventQueue p_eventQueue)
         {
-            if(NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode))
+            if (
+                !SourceEntity.MarkedForDestruction && !TargetEntity.MarkedForDestruction &&
+                NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode))
             {
                 ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
                 if (l_actionPoint.ActionPointData.CurrentActionPoints >= Attack.AttackData.APCost)

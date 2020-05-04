@@ -33,10 +33,10 @@ namespace _Entity._Turn
 
             int l_eventInsersionIndex = 0;
 
-            for(int i = 0; i < l_choice.DecisionNodesChoiceOrdered.Length; i++)
+            for (int i = 0; i < l_choice.DecisionNodesChoiceOrdered.Length; i++)
             {
                 ADecisionNode l_decisionNode = l_choice.DecisionNodesChoiceOrdered[i];
-                if(l_decisionNode.DecisionNodeConsumerAction == EDecisionNodeConsumerAction.EXECUTE)
+                if (l_decisionNode.DecisionNodeConsumerAction == EDecisionNodeConsumerAction.EXECUTE)
                 {
                     switch (l_decisionNode)
                     {
@@ -52,8 +52,12 @@ namespace _Entity._Turn
 
                         case AttackNode l_attackNode:
 
-                            EventQueue.insertEventAt(p_eventQueue, l_eventInsersionIndex, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
-                            l_eventInsersionIndex += 1;
+                            for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
+                            {
+                                EventQueue.insertEventAt(p_eventQueue, l_eventInsersionIndex, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
+                                l_eventInsersionIndex += 1;
+                            }
+
                             break;
                     }
                 }

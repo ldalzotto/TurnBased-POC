@@ -94,6 +94,7 @@ namespace _AI._DecisionTree
         public Entity SourceEntity;
         public Entity TargetEntity;
         public Attack Attack;
+        public int NumberOfAttacks;
 
         public static AttackNode alloc(Entity p_sourceEntity, Entity p_targetEntity, Attack p_attack)
         {
@@ -101,6 +102,7 @@ namespace _AI._DecisionTree
             l_instance.SourceEntity = p_sourceEntity;
             l_instance.TargetEntity = p_targetEntity;
             l_instance.Attack = p_attack;
+            l_instance.NumberOfAttacks = 0;
             return l_instance;
         }
 
@@ -117,6 +119,7 @@ namespace _AI._DecisionTree
                     {
                         ActionPointData.add(ref p_entityDecisionContextdata.ActionPoint, -1 * Attack.AttackData.APCost);
                         p_entityDecisionContextdata.AIDecisionScore.DamageScore += Attack.AttackData.Damage;
+                        NumberOfAttacks += 1;
                     }
                 }
             }

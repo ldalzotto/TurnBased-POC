@@ -21,18 +21,5 @@ namespace _Entity
             OnEntityCreated?.Invoke(p_entity);
         }
     }
-
-    /// <summary>
-    /// All <see cref="Entity"/> that are <see cref="Entity.MarkedForDestruction"/> are stored in this container.
-    /// </summary>
-    public static class EntityDestructionContainer
-    {
-        public static List<Entity> EntitiesMarkedForDestruction;
-
-        static EntityDestructionContainer()
-        {
-            EntitiesMarkedForDestruction = new List<Entity>();
-        }
-    }
 }
 

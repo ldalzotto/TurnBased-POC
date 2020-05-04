@@ -12,19 +12,17 @@ namespace _Entity
     /// <summary>
     /// An Entity is any object that can be placed in the NavigationGraph and can interact with it's environment.
 	/// To avoid any undefined behavior, Entity destruction is never instant. To destroy the Entity, the flag <see cref="MarkedForDestruction"/>  must be setted
-    /// to true. Then, when the application collect Entities marked as destroyed, it will effectively detroy the object (see <see cref="EntityDestructionContainer"/>).
+    /// to true. Then, an <see cref="EntityDestroyEvent"/> is sended.
     /// </summary>
     public class Entity
     {
         public bool MarkedForDestruction;
-        public NavigationNode CurrentNavigationNode;
+        public NavigationNode CurrentNavigationNode { get; private set; }
         public RefDictionary<Type, AEntityComponent> Components;
 
         #region events
         public MyEvent<Entity> OnEntityDestroyed;
         #endregion
-
-
 
         public static Entity alloc()
         {
@@ -43,7 +41,6 @@ namespace _Entity
         {
             p_entity.MarkedForDestruction = true;
             EventQueue.insertEventAt(EventQueue.UniqueInstance, 0, EntityDestroyEvent.alloc(p_entity));
-            // EntityDestructionContainer.EntitiesMarkedForDestruction.Add(p_entity);
         }
 
         public static void set_currentNavigationNode(Entity p_entity, NavigationNode p_newNavigationNode)
@@ -62,10 +59,8 @@ namespace _Entity
             }
 
             EntityContainer.Entities.Remove(p_entity);
-            EntityDestructionContainer.EntitiesMarkedForDestruction.Remove(p_entity);
         }
     }
-
 
     #region Entity Component
 
@@ -186,7 +181,5 @@ namespace _Entity
     }
 
     #endregion
-
-
 }
 
