@@ -6,6 +6,8 @@ namespace _EventQueue._Events
 {
     public class WaitForNextFrame : AAsyncEvent
     {
+        public bool Completed;
+
         public static WaitForNextFrame alloc()
         {
             WaitForNextFrame l_instance = new WaitForNextFrame();
@@ -16,7 +18,12 @@ namespace _EventQueue._Events
         {
             base.Execute(p_eventQueue);
             MyEvent.register(ref ExternalHooks.OnTickStartEvent, OnNextFrame.alloc(this));
-            Start();
+            Completed = false;
+        }
+
+        public override bool IsCompleted()
+        {
+            return Completed;
         }
 
         class OnNextFrame : MyEvent.IEventCallback
@@ -33,11 +40,39 @@ namespace _EventQueue._Events
 
             public EventCallbackResponse Execute()
             {
-                WaitForNextFrame.Complete();
+                WaitForNextFrame.Completed = true;
                 return EventCallbackResponse.REMOVE;
             }
         }
 
+    }
+
+    public class IterateAndWaitForEmptyQueue : AAsyncEvent
+    {
+        public EventQueue EventQueue;
+
+        public static IterateAndWaitForEmptyQueue alloc(EventQueue p_awaitedEventQueue)
+        {
+            IterateAndWaitForEmptyQueue l_instance = new IterateAndWaitForEmptyQueue();
+            l_instance.EventQueue = p_awaitedEventQueue;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+        }
+
+        public override void ExecuteEveryIteration()
+        {
+            base.ExecuteEveryIteration();
+            EventQueue.iterate(EventQueue);
+        }
+
+        public override bool IsCompleted()
+        {
+            return EventQueue.Events.Count == 0;
+        }
     }
 }
 

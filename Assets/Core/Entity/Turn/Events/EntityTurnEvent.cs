@@ -21,17 +21,11 @@ namespace _Entity._Turn
 
         public override void Execute(EventQueue p_eventQueue)
         {
-            // We insert the EndTurn event just to be sure that end will effectively occur.
-            EventQueue.insertEventAt(p_eventQueue, 0, EndEntityTurnEvent.alloc(Entity));
-
-
-            ActionPoint.resetActionPoints(EntityComponent.get_component<ActionPoint>(Entity));
-
             DecisionTree l_decisionTree = DecisionTree.alloc();
             TreeBuilder.buildAggressiveTree(l_decisionTree, Entity);
             var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);
 
-            int l_eventInsersionIndex = 0;
+            int l_eventQueueSizeBeforeInsersion = p_eventQueue.Events.Count;
 
             for (int i = 0; i < l_choice.DecisionNodesChoiceOrdered.Length; i++)
             {
@@ -45,8 +39,7 @@ namespace _Entity._Turn
                             var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
                             while (l_pathEnumerator.MoveNext())
                             {
-                                EventQueue.insertEventAt(p_eventQueue, l_eventInsersionIndex, NavigationNodeMoveEntityEvent.alloc(Entity, l_pathEnumerator.Current));
-                                l_eventInsersionIndex += 1;
+                                EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEntityEvent.alloc(Entity, l_pathEnumerator.Current));
                             }
                             break;
 
@@ -54,25 +47,19 @@ namespace _Entity._Turn
 
                             for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
                             {
-                                EventQueue.insertEventAt(p_eventQueue, l_eventInsersionIndex, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
-                                l_eventInsersionIndex += 1;
+                                EventQueue.enqueueEvent(p_eventQueue, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
                             }
-
                             break;
                     }
                 }
             }
-        }
-    }
 
-    public class EndEntityTurnEvent : AEvent
-    {
-        public Entity Entity;
-        public static EndEntityTurnEvent alloc(Entity p_entity)
-        {
-            EndEntityTurnEvent l_instance = new EndEntityTurnEvent();
-            l_instance.Entity = p_entity;
-            return l_instance;
+            // This means that at least one action is performed.
+            // Thus, we try to re-evaluate action choice to be sure that there is nothing else to do for the associated Entity.
+            if(l_eventQueueSizeBeforeInsersion != p_eventQueue.Events.Count)
+            {
+                EventQueue.enqueueEvent(p_eventQueue, StartEntityTurnEvent.alloc(Entity));
+            }
         }
     }
 }

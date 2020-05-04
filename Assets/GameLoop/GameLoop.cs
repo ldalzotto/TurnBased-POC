@@ -51,7 +51,7 @@ namespace _GameLoop
         {
             MyEvent.broadcast(ref ExternalHooks.OnTickStartEvent);
 
-            EventQueue.iterate(EventQueue.UniqueInstance);
+            EventQueueContainer.iterate();
 
             float delta = Time.deltaTime;
 
@@ -62,7 +62,7 @@ namespace _GameLoop
                 l_tickCallbacks[i].Callback(delta);
             }
 
-            EventQueue.iterate(EventQueue.UniqueInstance);
+            EventQueueContainer.iterate();
         }
 
         private void LateUpdate()

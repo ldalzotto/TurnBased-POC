@@ -20,8 +20,6 @@ namespace _TurnTimeline
         public int TurnTimelineElligibilityComponentAddedEventHandler;
         public int TurnTimelineElligibilityComponentRemovedEventHandler;
 
-        private OnEntityTurnEndEventListener OnEntityTurnEndEventListener;
-
         public static TurnTimeline alloc()
         {
             TurnTimeline l_instance = new TurnTimeline();
@@ -46,10 +44,7 @@ namespace _TurnTimeline
                     }
                 }
             }
-
-            l_instance.OnEntityTurnEndEventListener = OnEntityTurnEndEventListener.alloc(l_instance);
-            EventQueueListener.registerEvent(ref EventQueue.UniqueInstance.EventQueueListener, l_instance.OnEntityTurnEndEventListener);
-
+            
             TurnTimelineContainer.UniqueTurnTimeline = l_instance;
 
             return l_instance;
@@ -59,7 +54,6 @@ namespace _TurnTimeline
         {
             EntityComponentContainer.unRegisterComponentAddedEvent<TurnTimelineElligibility>(p_turnTimeline.TurnTimelineElligibilityComponentAddedEventHandler);
             EntityComponentContainer.unRegisterComponentRemovedEvent<TurnTimelineElligibility>(p_turnTimeline.TurnTimelineElligibilityComponentRemovedEventHandler);
-            EventQueueListener.unRegisterEvent(ref EventQueue.UniqueInstance.EventQueueListener, p_turnTimeline.OnEntityTurnEndEventListener);
         }
 
 

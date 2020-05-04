@@ -31,6 +31,7 @@ namespace _Entity._Events
     /// </summary>
     public class NavigationNodeMoveEntityEvent : AAsyncEvent
     {
+        public bool Completed = false;
         public static NavigationNodeMoveEntityEvent alloc(Entity p_sourceEntity, NavigationNode p_navigationNode)
         {
             NavigationNodeMoveEntityEvent l_instance = new NavigationNodeMoveEntityEvent();
@@ -44,11 +45,9 @@ namespace _Entity._Events
 
         public override void Execute(EventQueue p_eventQueue)
         {
-            Start();
-
             if (SourceEntity.MarkedForDestruction)
             {
-                Complete();
+                Completed = true;
                 return;
             }
 
@@ -61,15 +60,19 @@ namespace _Entity._Events
                 {
                     ActionPoint.add(l_actionPoint, -1 * l_costToMove);
                     Entity.set_currentNavigationNode(SourceEntity, p_endNavigationNode);
-                    Complete();
+                    Completed = true;
                 });
             }
             else
             {
-                Complete();
+                Completed = true;
             }
         }
 
+        public override bool IsCompleted()
+        {
+            return Completed;
+        }
     }
 
     public class NavigationNodeWarpEntityEvent : AEvent

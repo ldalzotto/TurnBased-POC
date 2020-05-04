@@ -60,14 +60,14 @@ namespace _Navigation
                     float l_calculatedpathScore = p_navigationPath.NavigationNodesTraversalCalculations[l_navigationNode].PathScore;
                     if (l_calculatedpathScore > p_maxPathCost)
                     {
-                        if (l_lastIndex == -1)
+                        if (l_lastIndex <= 0)
                         {
                             p_navigationPath.NavigationNodes.Clear();
                             p_navigationPath.PathCost = 0.0f;
                         }
                         else
                         {
-                            p_navigationPath.NavigationNodes.RemoveRange(i, p_navigationPath.NavigationNodes.Count - 1 - i);
+                            p_navigationPath.NavigationNodes.RemoveRange(i, p_navigationPath.NavigationNodes.Count - i);
                             p_navigationPath.PathCost = p_navigationPath.NavigationNodesTraversalCalculations[p_navigationPath.NavigationNodes[i - 1]].PathScore;
                         }
                         return;
@@ -112,7 +112,9 @@ namespace _Navigation
                     else
                     {
                         l_isFirstTimeInLoop = false;
-                        p_request.ResultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode] = NavigationNodePathTraversalCalculations.build();
+                        NavigationNodePathTraversalCalculations l_pathTraversalCaluclation = NavigationNodePathTraversalCalculations.build();
+                        l_pathTraversalCaluclation.CalculationMadeFrom = l_currentEvaluatedNode;
+                        p_request.ResultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode] = l_pathTraversalCaluclation;
                         p_request.NodesElligibleForNextCurrent.Add(l_currentEvaluatedNode);
                     }
 
@@ -166,13 +168,9 @@ namespace _Navigation
                 if (l_currentEvaluatedNode != null)
                 {
                     p_request.ResultPath.NavigationNodes.Add(l_currentEvaluatedNode);
-                    p_request.ResultPath.PathCost = 0.0f;
-
-                    if (p_request.ResultPath.NavigationNodesTraversalCalculations.ContainsKey(l_currentEvaluatedNode))
-                    {
-                        NavigationNodePathTraversalCalculations l_navigationNodePathTraversalCalculations = p_request.ResultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode];
-                        p_request.ResultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(ref l_navigationNodePathTraversalCalculations);
-                    }
+              
+                    NavigationNodePathTraversalCalculations l_navigationNodePathTraversalCalculations = p_request.ResultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode];
+                    p_request.ResultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(ref l_navigationNodePathTraversalCalculations);
 
 
                     while (l_currentEvaluatedNode != p_request.BeginNode)

@@ -36,7 +36,7 @@ namespace _Entity
         private void Start()
         {
             NavigationNode l_randomNavigationNode = NavigationGraphAlgorithm.pickRandomNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent.NavigationGraph);
-            EventQueue.insertEventAt(EventQueue.UniqueInstance, 0, _Entity._Events.NavigationNodeWarpEntityEvent.alloc(AssociatedEntity, l_randomNavigationNode));
+            EventQueue.insertEventAt(EventQueueContainer.TurnTimelineQueue, 0, _Entity._Events.NavigationNodeWarpEntityEvent.alloc(AssociatedEntity, l_randomNavigationNode));
         }
 
         public static void initialize(EntityRegistrationComponent p_entityRegistrationComponent)

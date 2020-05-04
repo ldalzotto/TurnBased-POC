@@ -1,33 +1,58 @@
-﻿using System;
+﻿using _Functional;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace _EventQueue
 {
-    public class EventQueue
+    public static class EventQueueContainer
     {
-        public static EventQueue UniqueInstance;
-        static EventQueue()
+        public static EventQueue TurnTimelineQueue;
+        public static EventQueue EntityActionQueue;
+        public static EventQueueListener EventQueueListener;
+
+        static EventQueueContainer()
         {
-            EventQueue.UniqueInstance = EventQueue.alloc();
+            TurnTimelineQueue = EventQueue.alloc();
+            EntityActionQueue = EventQueue.alloc();
+            EventQueueListener = EventQueueListener.alloc();
         }
 
+        public static void iterate()
+        {
+            EventQueue.iterate(TurnTimelineQueue);
+        }
+    }
+    public class EventQueue
+    {
         // public static Action<AEvent> OnEventExecuted;
 
         public static EventQueue alloc()
         {
             EventQueue l_instance = new EventQueue();
-            l_instance.Events = new List<AEvent>(16);
-            l_instance.EventQueueListener = EventQueueListener.alloc();
+            l_instance.Events = new List<AEvent>(8);
             return l_instance;
         }
 
         public List<AEvent> Events;
-        public EventQueueListener EventQueueListener;
 
-        public static void insertEventAt(EventQueue p_eventQueue, int p_insersionIndex, AEvent p_event)
+        public static void insertEventAt(EventQueue p_eventQueue, int p_insersionIndex, AEvent p_insertedEvent)
         {
-            p_eventQueue.Events.Insert(p_insersionIndex, p_event);
+            p_eventQueue.Events.Insert(p_insersionIndex, p_insertedEvent);
+        }
+
+        public static void enqueueEvent(EventQueue p_eventQueue, AEvent p_event)
+        {
+            p_eventQueue.Events.Add(p_event);
+        }
+
+        public static void insertBefore(EventQueue p_eventQueue, AEvent p_comparisonEvent, AEvent p_insertedEvent)
+        {
+            int l_index = p_eventQueue.Events.IndexOf(p_comparisonEvent);
+            if (l_index >= 0)
+            {
+                insertEventAt(p_eventQueue, l_index, p_insertedEvent);
+            }
         }
 
         public static void clearAll(EventQueue p_eventQueue)
@@ -45,26 +70,33 @@ namespace _EventQueue
                 AAsyncEvent l_firstEventAsAsync = l_firstEvent as AAsyncEvent;
                 if (l_firstEventAsAsync != null)
                 {
-                    if (!l_firstEventAsAsync.IsRunning && !l_firstEventAsAsync.IsCompleted)
+                    if (!l_firstEventAsAsync.IsRunning && !l_firstEventAsAsync.IsCompleted())
                     {
+                        l_firstEventAsAsync.IsRunning = true;
                         l_firstEventAsAsync.Execute(p_eventQueue);
                     }
 
-                    if (l_firstEventAsAsync.IsRunning && !l_firstEventAsAsync.IsCompleted)
+                    if (l_firstEventAsAsync.IsRunning)
                     {
-                        break;
-                    }
-                    else if (l_firstEventAsAsync.IsCompleted)
-                    {
-                        p_eventQueue.Events.RemoveAt(0);
-                        EventQueueListener.onEventExecuted(p_eventQueue, l_firstEvent);
+                        l_firstEventAsAsync.ExecuteEveryIteration();
+
+                        if (l_firstEventAsAsync.IsCompleted())
+                        {
+                            p_eventQueue.Events.RemoveAt(0);
+                            EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
+                            l_firstEventAsAsync.IsRunning = false;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
                 else
                 {
                     p_eventQueue.Events.RemoveAt(0);
-                    l_firstEvent.Execute(p_eventQueue);
-                    EventQueueListener.onEventExecuted(p_eventQueue, l_firstEvent);
+                    l_firstEvent.Execute(p_eventQueue); 
+                    EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
                 }
 
 
@@ -82,18 +114,8 @@ namespace _EventQueue
     public abstract class AAsyncEvent : AEvent
     {
         public bool IsRunning;
-        public bool IsCompleted;
+        public abstract bool IsCompleted();
 
-        public void Start()
-        {
-            IsRunning = true;
-            IsCompleted = false;
-        }
-
-        public void Complete()
-        {
-            IsRunning = false;
-            IsCompleted = true;
-        }
+        public virtual void ExecuteEveryIteration() { }
     }
 }

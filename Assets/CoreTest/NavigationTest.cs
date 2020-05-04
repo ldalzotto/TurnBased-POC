@@ -112,6 +112,8 @@ public class NavigationTest
         }
     }
 
+#if comment
+
     [TearDown]
     public void After()
     {
@@ -182,4 +184,5 @@ public class NavigationTest
         EventQueue.insertEventAt(EventQueue.UniqueInstance, 0, StartEntityTurnEvent.alloc(l_entity1));
         EventQueue.iterate(EventQueue.UniqueInstance);
     }
+#endif
 }

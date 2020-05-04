@@ -18,10 +18,9 @@ namespace _TurnTimeline
 
         private void Update()
         {
-
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                EventQueue.insertEventAt(EventQueue.UniqueInstance, 0, StartTurnEvent.alloc(TurnTimeline));
+                EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, StartTurnEvent.alloc(TurnTimeline));
             }
         }
 

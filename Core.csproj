@@ -81,7 +81,7 @@
     <Compile Include="Assets\Core\Entity\Turn\Events\TurnEvent.cs" />
     <Compile Include="Assets\Core\EventQueue\EventQueue.cs" />
     <Compile Include="Assets\Core\EventQueue\EventQueueListener.cs" />
-    <Compile Include="Assets\Core\EventQueue\Events\UtilEvents.cs" />
+    <Compile Include="Assets\Core\EventQueue\Events\CommonEvents.cs" />
     <Compile Include="Assets\Core\ExternalHooks\ExternalHooks.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />

@@ -4,7 +4,7 @@ using System;
 
 namespace _EventQueue
 {
-    public struct EventQueueListener 
+    public class EventQueueListener 
     {
         public Dictionary<Type, List<IEventListener>> EventsListener;
 
@@ -14,12 +14,12 @@ namespace _EventQueue
             return l_instance;
         }
 
-        public static void onEventExecuted(EventQueue p_eventQueue, AEvent p_event)
+        public static void onEventExecuted(EventQueueListener p_eventQueueListener, EventQueue p_eventQueue, AEvent p_event)
         {
             Type l_eventType = p_event.GetType();
-            if (p_eventQueue.EventQueueListener.EventsListener.ContainsKey(l_eventType))
+            if (p_eventQueueListener.EventsListener.ContainsKey(l_eventType))
             {
-                List<IEventListener> l_eventListeners = p_eventQueue.EventQueueListener.EventsListener[l_eventType];
+                List<IEventListener> l_eventListeners = p_eventQueueListener.EventsListener[l_eventType];
                 for(int i = l_eventListeners.Count - 1; i >= 0; i--)
                 {
                     l_eventListeners[i].I_OnEventExecuted(p_eventQueue, p_event);
@@ -27,7 +27,7 @@ namespace _EventQueue
             }
         }
 
-        public static void registerEvent(ref EventQueueListener p_eventQueueListener, IEventListener p_eventListener)
+        public static void registerEvent(EventQueueListener p_eventQueueListener, IEventListener p_eventListener)
         {
             Type l_eventType = p_eventListener.get_eventType();
             if (!p_eventQueueListener.EventsListener.ContainsKey(l_eventType))
@@ -39,7 +39,7 @@ namespace _EventQueue
             p_eventQueueListener.EventsListener[l_eventType].Add(p_eventListener);
         }
 
-        public static void unRegisterEvent(ref EventQueueListener p_eventQueueListener, IEventListener p_eventListener)
+        public static void unRegisterEvent(EventQueueListener p_eventQueueListener, IEventListener p_eventListener)
         {
             Type l_eventType = p_eventListener.get_eventType();
             List<IEventListener> l_eventListeners = p_eventQueueListener.EventsListener[l_eventType];

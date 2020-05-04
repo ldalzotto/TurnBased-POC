@@ -26,28 +26,13 @@ namespace _Entity._Turn
             if (l_nextTurnEntity != null)
             {
                 ActionPoint.resetActionPoints(EntityComponent.get_component<ActionPoint>(l_nextTurnEntity));
-                EventQueue.insertEventAt(p_eventQueue, 0, StartEntityTurnEvent.alloc(l_nextTurnEntity));
+
+                EventQueue.enqueueEvent(p_eventQueue, IterateAndWaitForEmptyQueue.alloc(EventQueueContainer.EntityActionQueue));
+                EventQueue.enqueueEvent(p_eventQueue, WaitForNextFrame.alloc());
+                EventQueue.enqueueEvent(p_eventQueue, StartTurnEvent.alloc(TurnTimeline));
+
+                EventQueue.enqueueEvent(EventQueueContainer.EntityActionQueue, StartEntityTurnEvent.alloc(l_nextTurnEntity));
             }
-        }
-    }
-
-    public class OnEntityTurnEndEventListener : AEventListener<EndEntityTurnEvent>
-    {
-        public TurnTimeline TurnTimeline;
-
-        public static OnEntityTurnEndEventListener alloc(TurnTimeline p_turnTimeline)
-        {
-            OnEntityTurnEndEventListener l_instance = new OnEntityTurnEndEventListener();
-            l_instance.TurnTimeline = p_turnTimeline;
-            return l_instance;
-        }
-
-
-        public override void OnEventExecuted(EventQueue p_eventQueue, EndEntityTurnEvent p_event)
-        {
-            EventQueue.clearAll(p_eventQueue);
-            EventQueue.insertEventAt(p_eventQueue, 0, WaitForNextFrame.alloc());
-            EventQueue.insertEventAt(p_eventQueue, 1, StartTurnEvent.alloc(TurnTimeline));
         }
     }
 

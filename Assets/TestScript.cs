@@ -13,15 +13,15 @@ public class TestScript : MonoBehaviour
     private void Start()
     {
         AnotherEvetnListener l_list = new AnotherEvetnListener();
-        EventQueueListener.registerEvent(ref EventQueue.UniqueInstance.EventQueueListener, l_list);
+        EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, l_list);
 
-        EventQueue.insertEventAt(EventQueue.UniqueInstance, EventQueue.UniqueInstance.Events.Count, new AnotherEvent());
-        EventQueue.iterate(EventQueue.UniqueInstance);
+        EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, new AnotherEvent());
+        EventQueueContainer.iterate();
 
-        EventQueueListener.unRegisterEvent(ref EventQueue.UniqueInstance.EventQueueListener, l_list);
+        EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, l_list);
 
-        EventQueue.insertEventAt(EventQueue.UniqueInstance, EventQueue.UniqueInstance.Events.Count, new AnotherEvent());
-        EventQueue.iterate(EventQueue.UniqueInstance);
+        EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, new AnotherEvent());
+        EventQueueContainer.iterate();
     }
 
     private void Update()
@@ -45,6 +45,7 @@ public class TestScript : MonoBehaviour
 
         Debug.Log(l_choice);
         */
+        /*
 
         AnotherEvetnListener l_list = new AnotherEvetnListener();
         EventQueueListener.registerEvent(ref EventQueue.UniqueInstance.EventQueueListener, l_list);
@@ -56,6 +57,7 @@ public class TestScript : MonoBehaviour
 
         EventQueue.insertEventAt(EventQueue.UniqueInstance, EventQueue.UniqueInstance.Events.Count, new AnotherEvent());
         EventQueue.iterate(EventQueue.UniqueInstance);
+        */
     }
 
     class StartTurnEventListener : AEventListener<StartTurnEvent>
