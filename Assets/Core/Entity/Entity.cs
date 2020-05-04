@@ -76,7 +76,7 @@ namespace _Entity
 
     public static class EntityComponent
     {
-        public static void add_component<COMPONENT>(Entity p_entity, ref COMPONENT p_component) where COMPONENT : AEntityComponent
+        public static void add_component<COMPONENT>(Entity p_entity, COMPONENT p_component) where COMPONENT : AEntityComponent
         {
             p_component.AssociatedEntity = p_entity;
             p_entity.Components[typeof(COMPONENT)] = p_component;

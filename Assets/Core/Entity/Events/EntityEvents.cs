@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using _ActionPoint;
+using _Attack;
 using _EventQueue;
 using _Health;
 using _Locomotion;
@@ -100,6 +101,35 @@ namespace _Entity._Events
         {
             EntityComponent.get_component<Locomotion>(Entity).WarpTo(TargetNavigationNode);
             Entity.set_currentNavigationNode(Entity, TargetNavigationNode);
+        }
+    }
+
+    public class AttackEntityEvent : AEvent
+    {
+        public Entity SourceEntity;
+        public Entity TargetEntity;
+        public Attack Attack;
+
+        public static AttackEntityEvent alloc(Entity p_sourceEntity, Entity p_targetEntity, Attack p_attack)
+        {
+            AttackEntityEvent l_instance = new AttackEntityEvent();
+            l_instance.SourceEntity = p_sourceEntity;
+            l_instance.TargetEntity = p_targetEntity;
+            l_instance.Attack = p_attack;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            if(NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode))
+            {
+                ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
+                if (l_actionPoint.ActionPointData.CurrentActionPoints >= Attack.AttackData.APCost)
+                {
+                    ActionPoint.add(EntityComponent.get_component<ActionPoint>(SourceEntity), -1 * Attack.AttackData.Damage);
+                    Attack.resolve(Attack, TargetEntity);
+                }
+            }
         }
     }
 }

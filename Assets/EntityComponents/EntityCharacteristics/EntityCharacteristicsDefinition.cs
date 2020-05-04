@@ -15,7 +15,7 @@ namespace _EntityCharacteristics
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
         {
             EntityCharacteristics l_entityCharacterstics = EntityCharacteristics.alloc(ref EntityCharacteristicsData);
-            EntityComponent.add_component<EntityCharacteristics>(p_entity, ref l_entityCharacterstics);
+            EntityComponent.add_component<EntityCharacteristics>(p_entity, l_entityCharacterstics);
         }
     }
 

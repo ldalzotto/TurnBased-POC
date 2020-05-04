@@ -10,14 +10,10 @@ namespace _TurnTimeline
     public class TurnTimelineComponent : MonoBehaviour
     {
         public TurnTimeline TurnTimeline;
-
-        private OnEntityTurnEndEventListener OnEntityTurnEndEventListener;
-
+        
         private void Awake()
         {
             TurnTimeline = TurnTimeline.alloc();
-            OnEntityTurnEndEventListener = OnEntityTurnEndEventListener.alloc(TurnTimeline);
-            EventQueueListener.registerEvent(ref EventQueue.UniqueInstance.EventQueueListener, OnEntityTurnEndEventListener);
         }
 
         private void Update()
@@ -32,10 +28,7 @@ namespace _TurnTimeline
         private void OnDestroy()
         {
             TurnTimeline.free(TurnTimeline);
-            EventQueueListener.unRegisterEvent(ref EventQueue.UniqueInstance.EventQueueListener, OnEntityTurnEndEventListener);
         }
-
-
     }
 
 }

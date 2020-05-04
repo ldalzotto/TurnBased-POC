@@ -15,7 +15,7 @@ namespace _ActionPoint
         {
             ActionPoint l_actionPoint = ActionPoint.alloc(ref ActionPointData);
             l_actionPoint.ActionPointData.CurrentActionPoints = l_actionPoint.ActionPointData.InitialActionPoints;
-            EntityComponent.add_component<ActionPoint>(p_entity, ref l_actionPoint);
+            EntityComponent.add_component<ActionPoint>(p_entity, l_actionPoint);
         }
     }
 

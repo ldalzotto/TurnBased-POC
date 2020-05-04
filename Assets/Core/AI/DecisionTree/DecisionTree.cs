@@ -5,13 +5,13 @@ namespace _AI._DecisionTree
 {
     public class DecisionTree
     {
-        public RefDictionary<ADecisionNode, RefList<DecisionLink>> DecisionLinks;
+        public Dictionary<ADecisionNode, RefList<DecisionLink>> DecisionLinks;
         public RootDecisionNode RootNode;
 
         public static DecisionTree alloc()
         {
             DecisionTree l_instance = new DecisionTree();
-            l_instance.DecisionLinks = new RefDictionary<ADecisionNode, RefList<DecisionLink>>();
+            l_instance.DecisionLinks = new Dictionary<ADecisionNode, RefList<DecisionLink>>();
             l_instance.RootNode = new RootDecisionNode();
             return l_instance;
         }

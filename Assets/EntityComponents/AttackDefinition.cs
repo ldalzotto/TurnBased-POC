@@ -14,7 +14,7 @@ namespace _Attack
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
         {
             Attack l_attack = Attack.alloc(ref AttackData);
-            EntityComponent.add_component<Attack>(p_entity, ref l_attack);
+            EntityComponent.add_component<Attack>(p_entity, l_attack);
         }
     }
 }

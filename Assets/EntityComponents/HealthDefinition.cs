@@ -15,7 +15,7 @@ namespace _Health
         {
             Health l_health = Health.alloc(ref HealthData);
             Health.resetHealth(l_health);
-            EntityComponent.add_component<Health>(p_entity, ref l_health);
+            EntityComponent.add_component<Health>(p_entity, l_health);
         }
     }
 

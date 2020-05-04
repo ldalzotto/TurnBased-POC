@@ -31,7 +31,7 @@ namespace _Entity._Turn
             TreeBuilder.buildAggressiveTree(l_decisionTree, Entity);
             var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);
 
-            int l_eventInsersionInex = 0;
+            int l_eventInsersionIndex = 0;
 
             for(int i = 0; i < l_choice.DecisionNodesChoiceOrdered.Length; i++)
             {
@@ -45,9 +45,15 @@ namespace _Entity._Turn
                             var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
                             while (l_pathEnumerator.MoveNext())
                             {
-                                EventQueue.insertEventAt(p_eventQueue, l_eventInsersionInex, NavigationNodeMoveEntityEvent.alloc(Entity, l_pathEnumerator.Current));
-                                l_eventInsersionInex += 1;
+                                EventQueue.insertEventAt(p_eventQueue, l_eventInsersionIndex, NavigationNodeMoveEntityEvent.alloc(Entity, l_pathEnumerator.Current));
+                                l_eventInsersionIndex += 1;
                             }
+                            break;
+
+                        case AttackNode l_attackNode:
+
+                            EventQueue.insertEventAt(p_eventQueue, l_eventInsersionIndex, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
+                            l_eventInsersionIndex += 1;
                             break;
                     }
                 }

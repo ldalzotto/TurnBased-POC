@@ -273,6 +273,20 @@ namespace _Navigation
             return p_navigationGraph.NavigationNodes[MyRandom.Random.NextInt(0, p_navigationGraph.NavigationNodes.Count)];
         }
 
+        public static NavigationNode getNearestNode(NavigationGraph p_navigationGraph, float3 p_localPosition)
+        {
+            NavigationNode l_nearestNavigationNode = p_navigationGraph.NavigationNodes[0];
+            for(int i = 1; i < p_navigationGraph.NavigationNodes.Count; i++)
+            {
+                if (math.distance(l_nearestNavigationNode.LocalPosition, p_localPosition) > 
+                        math.distance(l_nearestNavigationNode.LocalPosition, p_navigationGraph.NavigationNodes[i].LocalPosition))
+                {
+                    l_nearestNavigationNode = p_navigationGraph.NavigationNodes[i];
+                }
+            }
+            return l_nearestNavigationNode;
+        }
+
 
         public class CalculatePathRequest : IPoolable, IDisposable
         {

@@ -42,6 +42,7 @@ namespace _Entity._Turn
             return l_instance;
         }
 
+
         public override void OnEventExecuted(EventQueue p_eventQueue, EndEntityTurnEvent p_event)
         {
             EventQueue.clearAll(p_eventQueue);
