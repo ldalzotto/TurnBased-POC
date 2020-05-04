@@ -158,12 +158,27 @@ namespace _Navigation
 
         private void OnDrawGizmosSelected()
         {
-            /*
-            if (NavigationGraphComponentContainer.NavigationGraphComponent)
+            if (NavigationGraphContainer.UniqueNavigationGraph != null)
             {
-                NavigationGraphComponentContainer.NavigationGraphComponent.DrawDebug();
+                Matrix4x4 l_localToWorldMatrix = transform.localToWorldMatrix;
+
+                for (int i = 0; i < NavigationGraphContainer.UniqueNavigationGraph.NavigationNodes.Count; i++)
+                {
+                    Gizmos.DrawWireCube(l_localToWorldMatrix.MultiplyPoint(NavigationGraphContainer.UniqueNavigationGraph.NavigationNodes[i].LocalPosition),
+                        l_localToWorldMatrix.MultiplyPoint(new Vector3(0.2f, 0.2f, 0.2f)));
+                }
+
+                var l_listOfNavigationNodes = NavigationGraphContainer.UniqueNavigationGraph.NodeLinksIndexedByStartNode.Values.GetEnumerator();
+                while (l_listOfNavigationNodes.MoveNext())
+                {
+                    for (int i = 0; i < l_listOfNavigationNodes.Current.Count; i++)
+                    {
+                        Vector3 l_startPosition = l_localToWorldMatrix.MultiplyPoint(l_listOfNavigationNodes.Current[i].StartNode.LocalPosition);
+                        Vector3 l_endPosition = l_localToWorldMatrix.MultiplyPoint(l_listOfNavigationNodes.Current[i].EndNode.LocalPosition);
+                        GizmosHelper.DrawArrow(l_startPosition, l_endPosition, 0.2f);
+                    }
+                }
             }
-            */
         }
 
         private void OnDrawGizmos()
