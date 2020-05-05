@@ -63,18 +63,18 @@ namespace _NavigationEngine
             l_instance.OnEntityCreatedListener = OnEntityCreated.build(p_navigationEngine);
             initializeEntities(ref l_instance);
 
-            EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, l_instance.OnEntityCreatedListener);
+            EventQueueListener.registerEvent(EventQueueListener.UniqueInstance, l_instance.OnEntityCreatedListener);
 
             l_instance.OnEntityDestroyedListener = OnEntityDestroyed.alloc(p_navigationEngine);
-            EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, l_instance.OnEntityDestroyedListener);
+            EventQueueListener.registerEvent(EventQueueListener.UniqueInstance, l_instance.OnEntityDestroyedListener);
 
             return l_instance;
         }
 
         public static void free(ref EntitiesIndexedByNavigationNodes p_entitiesIndexedByNavigationNodes)
         {
-            EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, p_entitiesIndexedByNavigationNodes.OnEntityCreatedListener);
-            EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, p_entitiesIndexedByNavigationNodes.OnEntityDestroyedListener);
+            EventQueueListener.unRegisterEvent(EventQueueListener.UniqueInstance, p_entitiesIndexedByNavigationNodes.OnEntityCreatedListener);
+            EventQueueListener.unRegisterEvent(EventQueueListener.UniqueInstance, p_entitiesIndexedByNavigationNodes.OnEntityDestroyedListener);
             p_entitiesIndexedByNavigationNodes.Entities.Clear();
         }
 
@@ -103,7 +103,7 @@ namespace _NavigationEngine
 
             public override void OnEventExecuted(EventQueue p_eventQueue, EntityCreateEvent p_event)
             {
-                if(p_event.CreatedEntity!=null && p_event.CreatedEntity.CurrentNavigationNode != null)
+                if (p_event.CreatedEntity != null && p_event.CreatedEntity.CurrentNavigationNode != null)
                 {
                     addEntityToNavigationNode(ref NavigationEngine.EntitiesIndexedByNavigationNodes, p_event.CreatedEntity, p_event.CreatedEntity.CurrentNavigationNode);
                 }

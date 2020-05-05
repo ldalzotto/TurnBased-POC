@@ -2,7 +2,6 @@
 using _Attack;
 using _EventQueue;
 using _Locomotion;
-using _Navigation._Modifier;
 using _NavigationEngine;
 using _NavigationGraph;
 using System;
@@ -157,6 +156,13 @@ namespace _Entity._Events
                 {
                     ActionPoint.add(EntityComponent.get_component<ActionPoint>(SourceEntity), -1 * Attack.AttackData.Damage);
                     Attack.resolve(Attack, TargetEntity);
+
+                    // TODO -> This logic must be inside an EventListener.
+                    // Maybe reacting to an Interface or tag ?
+                    if (TargetEntity.MarkedForDestruction)
+                    {
+                        EventQueue.insertEventAt(p_eventQueue, 0, EntityDestroyEvent.alloc(TargetEntity));
+                    }
                 }
             }
         }
@@ -164,6 +170,7 @@ namespace _Entity._Events
 
     /// <summary>
     /// When the <see cref="Entity.CurrentNavigationNode"/> will be modified.
+    /// <see cref="NavigationEngine"/> is updated to take into account this change. 
     /// </summary>
     public class EntityCurrentNavigationNodeChange : AEvent
     {

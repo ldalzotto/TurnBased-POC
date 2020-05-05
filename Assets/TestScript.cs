@@ -8,12 +8,12 @@ public class TestScript : MonoBehaviour
     private void Start()
     {
         AnotherEvetnListener l_list = new AnotherEvetnListener();
-        EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, l_list);
+        EventQueueListener.registerEvent(EventQueueListener.UniqueInstance, l_list);
 
         EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, new AnotherEvent());
         EventQueueContainer.iterate();
 
-        EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, l_list);
+        EventQueueListener.unRegisterEvent(EventQueueListener.UniqueInstance, l_list);
 
         EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, new AnotherEvent());
         EventQueueContainer.iterate();

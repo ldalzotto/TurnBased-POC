@@ -1,7 +1,6 @@
 ﻿
 
 using _Entity._Events;
-using _EventQueue;
 using _Functional;
 using _NavigationGraph;
 using System;
@@ -45,7 +44,6 @@ namespace _Entity
         public static void markForDestruction(Entity p_entity)
         {
             p_entity.MarkedForDestruction = true;
-            EventQueue.insertEventAt(EventQueueContainer.EntityActionQueue, 0, EntityDestroyEvent.alloc(p_entity));
         }
 
         public static void set_currentNavigationNode(Entity p_entity, NavigationNode p_newNavigationNode)

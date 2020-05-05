@@ -77,6 +77,7 @@
     <Compile Include="Assets\EntityComponents\Locomotion\LocomotionSystemComponent.cs" />
     <Compile Include="Assets\EntityComponents\NavigationModifierDefinition.cs" />
     <Compile Include="Assets\EntityComponents\TurnTimelineEllibigility\TurnTimelineEllibilityDefinition.cs" />
+    <Compile Include="Assets\EventQueue\EventQueueContainer.cs" />
     <Compile Include="Assets\GameLoop\GameLoop.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Components\LevelInitializationComponent.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Configuration\EntitySpawnDefinition.cs" />

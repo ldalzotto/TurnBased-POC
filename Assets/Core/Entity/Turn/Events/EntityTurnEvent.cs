@@ -21,7 +21,7 @@ namespace _Entity._Turn
         public override void Execute(EventQueue p_eventQueue)
         {
             MyEvent<Entity>.broadcast(ref Entity.OnEntityTurnStart, ref Entity);
-            
+
             DecisionTree l_decisionTree = DecisionTree.alloc();
             TreeBuilder.buildAggressiveTree(l_decisionTree, Entity);
             var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);

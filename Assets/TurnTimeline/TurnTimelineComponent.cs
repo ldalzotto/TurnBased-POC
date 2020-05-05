@@ -17,7 +17,7 @@ namespace _TurnTimeline
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, StartTurnEvent.alloc(TurnTimeline));
+                EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, StartTurnEvent.alloc(TurnTimeline, EventQueueContainer.EntityActionQueue));
             }
         }
 

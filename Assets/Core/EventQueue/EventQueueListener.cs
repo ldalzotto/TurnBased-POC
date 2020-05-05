@@ -5,6 +5,13 @@ namespace _EventQueue
 {
     public class EventQueueListener
     {
+        public static EventQueueListener UniqueInstance;
+
+        static EventQueueListener()
+        {
+            UniqueInstance = EventQueueListener.alloc();
+        }
+
         public Dictionary<Type, List<IEventListener>> EventsListener;
 
         public static EventQueueListener alloc()

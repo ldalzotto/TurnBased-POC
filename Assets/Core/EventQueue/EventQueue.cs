@@ -3,24 +3,6 @@ using System.Collections.Generic;
 
 namespace _EventQueue
 {
-    public static class EventQueueContainer
-    {
-        public static EventQueue TurnTimelineQueue;
-        public static EventQueue EntityActionQueue;
-        public static EventQueueListener EventQueueListener;
-
-        static EventQueueContainer()
-        {
-            TurnTimelineQueue = EventQueue.alloc();
-            EntityActionQueue = EventQueue.alloc();
-            EventQueueListener = EventQueueListener.alloc();
-        }
-
-        public static void iterate()
-        {
-            EventQueue.iterate(TurnTimelineQueue);
-        }
-    }
     public class EventQueue
     {
         public static Action<AEvent> OnEventExecuted;
@@ -81,7 +63,7 @@ namespace _EventQueue
                         if (l_firstEventAsAsync.IsCompleted())
                         {
                             p_eventQueue.Events.RemoveAt(0);
-                            EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
+                            EventQueueListener.onEventExecuted(EventQueueListener.UniqueInstance, p_eventQueue, l_firstEvent);
                             l_firstEventAsAsync.IsRunning = false;
                             l_firstEventAsAsync.OnCompleted(p_eventQueue);
                             OnEventExecuted?.Invoke(l_firstEvent);
@@ -96,7 +78,7 @@ namespace _EventQueue
                 {
                     p_eventQueue.Events.RemoveAt(0);
                     l_firstEvent.Execute(p_eventQueue);
-                    EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
+                    EventQueueListener.onEventExecuted(EventQueueListener.UniqueInstance, p_eventQueue, l_firstEvent);
                     OnEventExecuted?.Invoke(l_firstEvent);
                 }
             }
