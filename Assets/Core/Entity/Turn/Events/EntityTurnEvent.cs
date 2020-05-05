@@ -3,6 +3,7 @@ using _AI._DecisionTree._Algorithm;
 using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
+using _Functional;
 
 namespace _Entity._Turn
 {
@@ -19,6 +20,8 @@ namespace _Entity._Turn
 
         public override void Execute(EventQueue p_eventQueue)
         {
+            MyEvent<Entity>.broadcast(ref Entity.OnEntityTurnStart, ref Entity);
+            
             DecisionTree l_decisionTree = DecisionTree.alloc();
             TreeBuilder.buildAggressiveTree(l_decisionTree, Entity);
             var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);
@@ -76,6 +79,12 @@ namespace _Entity._Turn
             EndEntityTurnEvent l_instance = new EndEntityTurnEvent();
             l_instance.Entity = p_entity;
             return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+            MyEvent<Entity>.broadcast(ref Entity.OnEntityTurnEnd, ref Entity);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using _Entity;
 using _Entity._Turn;
 using _EventQueue;
+using _Functional;
 using _GameLoop;
 using _RuntimeObject;
 using _UI._Gauge;
@@ -42,9 +43,6 @@ namespace _ActionPoint
         private CachedEntityComponent<ActionPoint> cachedActionPointEntityComponent;
         #endregion
 
-        private OnTurnStart onTurnStart;
-        private OnTurnEnd onTurnEnd;
-
         private UIGaugeComponent m_uiGauge;
 
 
@@ -61,38 +59,38 @@ namespace _ActionPoint
 
             gameObject.SetActive(false);
 
-            onTurnStart = OnTurnStart.alloc(this);
-            onTurnEnd = OnTurnEnd.alloc(this);
+            MyEvent<Entity>.IEventCallback l_onTurnStart = OnTurnStart.alloc(this);
+            MyEvent<Entity>.IEventCallback l_onTurnEnd = OnTurnEnd.alloc(this);
 
-            EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, onTurnStart);
-            EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, onTurnEnd);
+            MyEvent<Entity>.register(ref m_entityRegistrationComponent.AssociatedEntity.OnEntityTurnStart, ref l_onTurnStart);
+            MyEvent<Entity>.register(ref m_entityRegistrationComponent.AssociatedEntity.OnEntityTurnEnd, ref l_onTurnEnd);
         }
 
-
-        class OnTurnStart : AEventListener<StartEntityTurnEvent>
+        struct OnTurnStart : MyEvent<Entity>.IEventCallback
         {
+            public int Handle { get; set; }
             public ActionPointGUIComponent ActionPointGUIComponent;
+
             public static OnTurnStart alloc(ActionPointGUIComponent p_actionPointGUIComponent)
             {
                 OnTurnStart l_instance = new OnTurnStart();
                 l_instance.ActionPointGUIComponent = p_actionPointGUIComponent;
                 return l_instance;
             }
-            public override void OnEventExecuted(EventQueue p_eventQueue, StartEntityTurnEvent p_event)
-            {
-                StartEntityTurnEvent l_startEntityTurnEvent = p_event as StartEntityTurnEvent;
-                if (l_startEntityTurnEvent.Entity == ActionPointGUIComponent.m_entityRegistrationComponent.AssociatedEntity)
-                {
-                    ActionPointGUIComponent.gameObject.SetActive(true);
-                    ActionPointGUIComponentContainer.ActionPointGUIComponents.Add(ActionPointGUIComponent);
-                }
 
+            public EventCallbackResponse Execute(ref Entity p_param1)
+            {
+                ActionPointGUIComponent.gameObject.SetActive(true);
+                ActionPointGUIComponentContainer.ActionPointGUIComponents.Add(ActionPointGUIComponent);
+                return EventCallbackResponse.OK;
             }
         }
 
-        class OnTurnEnd : AEventListener<EndEntityTurnEvent>
+        struct OnTurnEnd : MyEvent<Entity>.IEventCallback
         {
+            public int Handle { get; set; }
             public ActionPointGUIComponent ActionPointGUIComponent;
+
             public static OnTurnEnd alloc(ActionPointGUIComponent p_actionPointGUIComponent)
             {
                 OnTurnEnd l_instance = new OnTurnEnd();
@@ -100,14 +98,13 @@ namespace _ActionPoint
                 return l_instance;
             }
 
-            public override void OnEventExecuted(EventQueue p_eventQueue, EndEntityTurnEvent p_event)
+            public EventCallbackResponse Execute(ref Entity p_param1)
             {
-                if (p_event.Entity == ActionPointGUIComponent.m_entityRegistrationComponent.AssociatedEntity)
-                {
-                    ActionPointGUIComponent.gameObject.SetActive(false);
-                    ActionPointGUIComponentContainer.ActionPointGUIComponents.Remove(ActionPointGUIComponent);
-                }
+                ActionPointGUIComponent.gameObject.SetActive(false);
+                ActionPointGUIComponentContainer.ActionPointGUIComponents.Remove(ActionPointGUIComponent);
+                return EventCallbackResponse.OK;
             }
+
         }
 
         public void Tick(float d)
@@ -118,9 +115,6 @@ namespace _ActionPoint
         public override void OnDestroy()
         {
             base.OnDestroy();
-
-            EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, onTurnStart);
-            EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, onTurnEnd);
             ActionPointGUIComponentContainer.ActionPointGUIComponents.Remove(this);
         }
     }

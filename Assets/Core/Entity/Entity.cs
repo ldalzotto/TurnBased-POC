@@ -22,6 +22,8 @@ namespace _Entity
 
         #region events
         public MyEvent<Entity> OnEntityDestroyed;
+        public MyEvent<Entity> OnEntityTurnStart;
+        public MyEvent<Entity> OnEntityTurnEnd;
         #endregion
 
         public static Entity alloc()
@@ -30,7 +32,10 @@ namespace _Entity
             l_instance.MarkedForDestruction = false;
             l_instance.CurrentNavigationNode = null;
             l_instance.Components = new RefDictionary<Type, AEntityComponent>();
+
             l_instance.OnEntityDestroyed = MyEvent<Entity>.build();
+            l_instance.OnEntityTurnStart = MyEvent<Entity>.build();
+            l_instance.OnEntityTurnEnd = MyEvent<Entity>.build();
 
             EntityContainer.AddEntity(l_instance);
 
