@@ -72,7 +72,8 @@
     <Compile Include="Assets\EntityComponents\ActionPoint\UI\ActionPointGUIComponent.cs" />
     <Compile Include="Assets\EntityComponents\AttackDefinition.cs" />
     <Compile Include="Assets\EntityComponents\EntityCharacteristics\EntityCharacteristicsDefinition.cs" />
-    <Compile Include="Assets\EntityComponents\HealthDefinition.cs" />
+    <Compile Include="Assets\EntityComponents\Health\HealthDefinition.cs" />
+    <Compile Include="Assets\EntityComponents\Health\UI\HealthGUIComponent.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\EntityLocomotionDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\LocomotionSystemComponent.cs" />
     <Compile Include="Assets\EntityComponents\NavigationModifierDefinition.cs" />

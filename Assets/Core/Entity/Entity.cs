@@ -180,6 +180,28 @@ namespace _Entity
 
     }
 
+    public struct CachedEntityComponent<T> where T : AEntityComponent
+    {
+        public static CachedEntityComponent<T> build(Entity p_entity)
+        {
+            CachedEntityComponent<T> l_instanciatedCachedRuntimeComponent = new CachedEntityComponent<T>();
+            l_instanciatedCachedRuntimeComponent.Entity = p_entity;
+            return l_instanciatedCachedRuntimeComponent;
+        }
+
+        private Entity Entity;
+        private T entityComponent;
+
+        public T Get()
+        {
+            if (entityComponent == null)
+            {
+                entityComponent = EntityComponent.get_component<T>(Entity);
+            }
+            return entityComponent;
+        }
+    }
+
     #endregion
 }
 

@@ -41,12 +41,14 @@ namespace _ActionPoint
     {
         #region Component dependencies
         private EntityRegistrationComponent m_entityRegistrationComponent;
+        private CachedEntityComponent<ActionPoint> cachedActionPointEntityComponent;
         #endregion
 
         private OnTurnStart onTurnStart;
         private OnTurnEnd onTurnEnd;
 
         private UIGaugeComponent m_uiGauge;
+
 
         public override void Awake()
         {
@@ -57,6 +59,7 @@ namespace _ActionPoint
         private void Start()
         {
             m_entityRegistrationComponent = RuntimeObject.FindComponent<EntityRegistrationComponent>();
+            cachedActionPointEntityComponent = CachedEntityComponent<ActionPoint>.build(m_entityRegistrationComponent.AssociatedEntity);
 
             gameObject.SetActive(false);
 
@@ -111,7 +114,7 @@ namespace _ActionPoint
 
         public void Tick(float d)
         {
-            m_uiGauge.SetFillRate(ActionPoint.getFillRate(EntityComponent.get_component<ActionPoint>(m_entityRegistrationComponent.AssociatedEntity)));
+            m_uiGauge.SetFillRate(ActionPoint.getFillRate(cachedActionPointEntityComponent.Get()));
         }
 
         public override void OnDestroy()

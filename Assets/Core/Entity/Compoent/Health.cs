@@ -27,6 +27,11 @@ namespace _Health
         {
             p_health.HealthData.CurrentHealth = p_health.HealthData.MaxHealth;
         }
+
+        public static float getHealthRatio(Health p_health)
+        {
+            return p_health.HealthData.CurrentHealth / p_health.HealthData.MaxHealth;
+        }
     }
 
     public struct HealthData

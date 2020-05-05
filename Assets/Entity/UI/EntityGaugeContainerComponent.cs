@@ -2,6 +2,7 @@
 using System.Collections;
 using _RuntimeObject;
 using _ActionPoint;
+using _Health;
 
 namespace _Entity
 {
@@ -12,27 +13,24 @@ namespace _Entity
     public class EntityGaugeContainerComponent : RuntimeComponent
     {
         private ActionPointGUIComponent m_instanciatedActionPointGUIComponent;
-        // private HealthGUIComponent m_instanciatedHealthGUIComponent;
+        private HealthGUIComponent m_instanciatedHealthGUIComponent;
         public void InstanciateActionPointGUI(ActionPointGUIComponent p_ActionPointGUIComponentPrefab)
         {
             m_instanciatedActionPointGUIComponent = GameObject.Instantiate(p_ActionPointGUIComponentPrefab, transform);
         }
 
-        /*
+        
         public void InstanciateHealthGUI(HealthGUIComponent p_healthGUIComponentPrefab)
         {
             m_instanciatedHealthGUIComponent = GameObject.Instantiate(p_healthGUIComponentPrefab, transform);
         }
-        */
 
         private void CalculateObjectOrder()
         {
-            /*
             if (m_instanciatedHealthGUIComponent != null)
             {
                 m_instanciatedHealthGUIComponent.transform.SetSiblingIndex(0);
             }
-            */
 
             if (m_instanciatedActionPointGUIComponent != null)
             {
