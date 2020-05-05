@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core.csproj", "{4AC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirenix.OdinInspector.CompatibilityLayer", "Sirenix.OdinInspector.CompatibilityLayer.csproj", "{02CE3553-31FF-76E7-49F8-53A633CF849C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor.csproj", "{241A8DD9-62D2-1472-9FCD-B9A0188F4322}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirenix.OdinInspector.CompatibilityLayer.Editor", "Sirenix.OdinInspector.CompatibilityLayer.Editor.csproj", "{2B2E355B-6D0B-4169-F296-3E2AC6D15AD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTest", "CoreTest.csproj", "{A8A74A16-F1EB-D165-DAD6-D9460250B977}"
@@ -29,6 +31,10 @@ Global
 		{02CE3553-31FF-76E7-49F8-53A633CF849C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02CE3553-31FF-76E7-49F8-53A633CF849C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02CE3553-31FF-76E7-49F8-53A633CF849C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241A8DD9-62D2-1472-9FCD-B9A0188F4322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241A8DD9-62D2-1472-9FCD-B9A0188F4322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241A8DD9-62D2-1472-9FCD-B9A0188F4322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241A8DD9-62D2-1472-9FCD-B9A0188F4322}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2B2E355B-6D0B-4169-F296-3E2AC6D15AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B2E355B-6D0B-4169-F296-3E2AC6D15AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B2E355B-6D0B-4169-F296-3E2AC6D15AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
