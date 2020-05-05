@@ -5,9 +5,30 @@ using _Locomotion;
 using _Navigation._Modifier;
 using _NavigationEngine;
 using _NavigationGraph;
+using System;
 
 namespace _Entity._Events
 {
+    public class EntityCreateEvent : AEvent
+    {
+        public Action<Entity> OnEntityCreatedLocalCallback;
+        public Entity CreatedEntity;
+
+        public static EntityCreateEvent alloc(Action<Entity> p_onEntityCreatedLocalCallback)
+        {
+            EntityCreateEvent l_instance = new EntityCreateEvent();
+            l_instance.OnEntityCreatedLocalCallback = p_onEntityCreatedLocalCallback;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+            CreatedEntity = Entity.alloc();
+            OnEntityCreatedLocalCallback?.Invoke(CreatedEntity);
+        }
+
+    }
     public class EntityDestroyEvent : AEvent
     {
         public Entity EntityToDestroy;

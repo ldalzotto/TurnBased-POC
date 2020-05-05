@@ -21,13 +21,15 @@ namespace _NavigationEngine
     {
         public EntitiesIndexedByNavigationNodes EntitiesIndexedByNavigationNodes;
 
+        private MyEvent<AEntityComponent>.IEventCallback OnNavigationModifierComponentDetachedCallback;
+
         public static NavigationEngine alloc()
         {
             NavigationEngine l_instance = new NavigationEngine();
             l_instance.EntitiesIndexedByNavigationNodes = EntitiesIndexedByNavigationNodes.build(l_instance);
 
-            MyEvent<AEntityComponent>.IEventCallback l_onNavigationModifierComponentDetachedCallback = new ObstacleStep.OnNavigationModifierComponentDetached();
-            EntityComponentContainer.registerComponentRemovedEvent<NavigationModifier>(ref l_onNavigationModifierComponentDetachedCallback);
+            l_instance.OnNavigationModifierComponentDetachedCallback = new ObstacleStep.OnNavigationModifierComponentDetached();
+            EntityComponentContainer.registerComponentRemovedEvent<NavigationModifier>(ref l_instance.OnNavigationModifierComponentDetachedCallback);
 
             NavigationEngineContainer.UniqueNavigationEngine = l_instance;
             return l_instance;
@@ -35,6 +37,7 @@ namespace _NavigationEngine
 
         public static void free(NavigationEngine p_navigationEngine)
         {
+            EntityComponentContainer.unRegisterComponentRemovedEvent<NavigationModifier>(p_navigationEngine.OnNavigationModifierComponentDetachedCallback.Handle);
             EntitiesIndexedByNavigationNodes.free(ref p_navigationEngine.EntitiesIndexedByNavigationNodes);
             if (NavigationEngineContainer.UniqueNavigationEngine == p_navigationEngine) { NavigationEngineContainer.UniqueNavigationEngine = null; };
         }
@@ -50,7 +53,7 @@ namespace _NavigationEngine
     {
         public Dictionary<NavigationNode, List<Entity>> Entities;
 
-        private MyEvent<Entity>.IEventCallback OnEntityCreatedListener;
+        private OnEntityCreated OnEntityCreatedListener;
         private OnEntityDestroyed OnEntityDestroyedListener;
 
         public static EntitiesIndexedByNavigationNodes build(NavigationEngine p_navigationEngine)
@@ -60,7 +63,7 @@ namespace _NavigationEngine
             l_instance.OnEntityCreatedListener = OnEntityCreated.build(p_navigationEngine);
             initializeEntities(ref l_instance);
 
-            MyEvent<Entity>.register(ref EntityContainer.OnEntityCreated, ref l_instance.OnEntityCreatedListener);
+            EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, l_instance.OnEntityCreatedListener);
 
             l_instance.OnEntityDestroyedListener = OnEntityDestroyed.alloc(p_navigationEngine);
             EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, l_instance.OnEntityDestroyedListener);
@@ -70,8 +73,8 @@ namespace _NavigationEngine
 
         public static void free(ref EntitiesIndexedByNavigationNodes p_entitiesIndexedByNavigationNodes)
         {
-            MyEvent<Entity>.unRegister(ref EntityContainer.OnEntityCreated, p_entitiesIndexedByNavigationNodes.OnEntityCreatedListener.Handle);
-            EventQueueListener.registerEvent(EventQueueContainer.EventQueueListener, p_entitiesIndexedByNavigationNodes.OnEntityDestroyedListener);
+            EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, p_entitiesIndexedByNavigationNodes.OnEntityCreatedListener);
+            EventQueueListener.unRegisterEvent(EventQueueContainer.EventQueueListener, p_entitiesIndexedByNavigationNodes.OnEntityDestroyedListener);
             p_entitiesIndexedByNavigationNodes.Entities.Clear();
         }
 
@@ -80,14 +83,15 @@ namespace _NavigationEngine
             for (int i = 0; i < EntityContainer.Entities.Count; i++)
             {
                 Entity l_entity = EntityContainer.Entities[i];
-                addEntityToNavigationNode(ref p_entitiesIndexedByNavigationNodes, l_entity, l_entity.CurrentNavigationNode);
+                if (l_entity.CurrentNavigationNode != null)
+                {
+                    addEntityToNavigationNode(ref p_entitiesIndexedByNavigationNodes, l_entity, l_entity.CurrentNavigationNode);
+                }
             }
         }
 
-        private struct OnEntityCreated : MyEvent<Entity>.IEventCallback
+        private class OnEntityCreated : AEventListener<EntityCreateEvent>
         {
-            public int Handle { get; set; }
-
             public NavigationEngine NavigationEngine;
 
             public static OnEntityCreated build(NavigationEngine p_navigationEngine)
@@ -97,9 +101,12 @@ namespace _NavigationEngine
                 return l_instance;
             }
 
-            public EventCallbackResponse Execute(ref Entity p_entity)
+            public override void OnEventExecuted(EventQueue p_eventQueue, EntityCreateEvent p_event)
             {
-                return EventCallbackResponse.OK;
+                if(p_event.CreatedEntity!=null && p_event.CreatedEntity.CurrentNavigationNode != null)
+                {
+                    addEntityToNavigationNode(ref NavigationEngine.EntitiesIndexedByNavigationNodes, p_event.CreatedEntity, p_event.CreatedEntity.CurrentNavigationNode);
+                }
             }
         }
 

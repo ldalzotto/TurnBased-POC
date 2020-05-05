@@ -50,7 +50,7 @@ namespace _Health
 
         public void Tick(float d)
         {
-            m_uiGauge.SetFillRate(Health.getHealthRatio(healthEntityComponent.Get()));
+            m_uiGauge.SetFillRate(Health.getHealthRatio(EntityComponent.get_component<Health>(m_entityRegistrationComponent.Get().AssociatedEntity)));
         }
 
         public override void OnDestroy()

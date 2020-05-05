@@ -1,4 +1,5 @@
-﻿using _EventQueue;
+﻿using _Entity._Events;
+using _EventQueue;
 using _Functional;
 using _NavigationGraph;
 using _RuntimeObject;
@@ -29,25 +30,26 @@ namespace _Entity
             initialize(this);
         }
 
-        private void Start()
-        {
-            NavigationNode l_randomNavigationNode = NavigationGraphAlgorithm.pickRandomNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent.NavigationGraph);
-            EventQueue.insertEventAt(EventQueueContainer.TurnTimelineQueue, 0, _Entity._Events.NavigationNodeWarpEntityEvent.alloc(AssociatedEntity, l_randomNavigationNode));
-        }
-
         public static void initialize(EntityRegistrationComponent p_entityRegistrationComponent)
         {
-            p_entityRegistrationComponent.AssociatedEntity = Entity.alloc();
+            EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, EntityCreateEvent.alloc(p_entityRegistrationComponent.onEntityCreated));
+        }
 
-            MyEvent<Entity>.IEventCallback l_onEntityDestroyed = OnEntityDestroyed.build(p_entityRegistrationComponent);
+        private void onEntityCreated(Entity p_entity)
+        {
+            AssociatedEntity = Entity.alloc();
+            MyEvent<Entity>.IEventCallback l_onEntityDestroyed = OnEntityDestroyed.build(this);
             MyEvent<Entity>.register(
-                    ref p_entityRegistrationComponent.AssociatedEntity.OnEntityDestroyed,
+                    ref this.AssociatedEntity.OnEntityDestroyed,
                     ref l_onEntityDestroyed);
 
             EntityDefinition.Initialize(
-                    ref p_entityRegistrationComponent.EntityDefinition,
-                    ref p_entityRegistrationComponent.AssociatedEntity,
-                    p_entityRegistrationComponent.RuntimeObject.RuntimeObjectRootComponent);
+                    ref this.EntityDefinition,
+                    ref this.AssociatedEntity,
+                    this.RuntimeObject.RuntimeObjectRootComponent);
+
+            NavigationNode l_randomNavigationNode = NavigationGraphAlgorithm.pickRandomNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent.NavigationGraph);
+            EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, NavigationNodeWarpEntityEvent.alloc(AssociatedEntity, l_randomNavigationNode));
         }
 
         public override void OnDestroy()

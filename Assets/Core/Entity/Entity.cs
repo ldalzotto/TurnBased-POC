@@ -118,7 +118,7 @@ namespace _Entity
 
         public static void unRegisterComponentAddedEvent<COMPONENT>(int p_handler) where COMPONENT : AEntityComponent
         {
-            if (!ComponentAddedEvents.ContainsKey(typeof(COMPONENT)))
+            if (ComponentAddedEvents.ContainsKey(typeof(COMPONENT)))
             {
                 MyEvent<AEntityComponent>.unRegister(ref ComponentAddedEvents.ValueRef(typeof(COMPONENT)), p_handler);
             }
@@ -158,7 +158,7 @@ namespace _Entity
 
         public static void unRegisterComponentRemovedEvent<COMPONENT>(int p_handler) where COMPONENT : AEntityComponent
         {
-            if (!ComponentRemovedEvents.ContainsKey(typeof(COMPONENT)))
+            if (ComponentRemovedEvents.ContainsKey(typeof(COMPONENT)))
             {
                 MyEvent<AEntityComponent>.unRegister(ref ComponentRemovedEvents.ValueRef(typeof(COMPONENT)), p_handler);
             }
