@@ -83,8 +83,10 @@
     <Compile Include="Assets\Core\EventQueue\EventQueueListener.cs" />
     <Compile Include="Assets\Core\EventQueue\Events\CommonEvents.cs" />
     <Compile Include="Assets\Core\ExternalHooks\ExternalHooks.cs" />
-    <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
-    <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />
+    <Compile Include="Assets\Core\Navigation\Algorithm.cs" />
+    <Compile Include="Assets\Core\Navigation\Modifier\NavigationModifier.cs" />
+    <Compile Include="Assets\Core\Navigation\Modifier\ObstacleModification.cs" />
+    <Compile Include="Assets\Core\Navigation\NavigationGraph.cs" />
     <Compile Include="Assets\Core\Tools\Collections\Helpers.cs" />
     <Compile Include="Assets\Core\Tools\Collections\RefDictionary.cs" />
     <Compile Include="Assets\Core\Tools\Collections\RefList.cs" />

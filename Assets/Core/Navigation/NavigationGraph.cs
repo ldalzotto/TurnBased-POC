@@ -62,8 +62,8 @@ namespace _Navigation
         public static void takeSnapshot(NavigationGraph p_navigationGraph)
         {
             p_navigationGraph.NavigationGraphSnapshot = NavigationGraphSnapshot.alloc(
-                    new Dictionary<NavigationNode, List<NavigationLink>>(p_navigationGraph.NodeLinksIndexedByStartNode),
-                    new Dictionary<NavigationNode, List<NavigationLink>>(p_navigationGraph.NodeLinksIndexedByEndNode)
+                    p_navigationGraph.NodeLinksIndexedByStartNode,
+                    p_navigationGraph.NodeLinksIndexedByEndNode
             );
         }
 
@@ -89,14 +89,25 @@ namespace _Navigation
         private NavigationGraphSnapshot() { }
 
         public static NavigationGraphSnapshot alloc(
-                Dictionary<NavigationNode, List<NavigationLink>> p_nodeLinksIndexedByStartNode,
-                Dictionary<NavigationNode, List<NavigationLink>> p_nodeLinksIndexedByEndNode
+                Dictionary<NavigationNode, List<NavigationLink>> p_sourceNodeLinksIndexedByStartNode,
+                Dictionary<NavigationNode, List<NavigationLink>> p_sourceNodeLinksIndexedByEndNode
             )
         {
             NavigationGraphSnapshot l_instance = new NavigationGraphSnapshot();
-            l_instance.NodeLinksIndexedByStartNode = p_nodeLinksIndexedByStartNode;
-            l_instance.NodeLinksIndexedByEndNode = p_nodeLinksIndexedByEndNode;
+            l_instance.NodeLinksIndexedByStartNode = navigationNodesIndexedByLink_DeepCopy(p_sourceNodeLinksIndexedByStartNode);
+            l_instance.NodeLinksIndexedByEndNode = navigationNodesIndexedByLink_DeepCopy(p_sourceNodeLinksIndexedByEndNode);
             return l_instance;
+        }
+
+        private static Dictionary<NavigationNode, List<NavigationLink>> navigationNodesIndexedByLink_DeepCopy(Dictionary<NavigationNode, List<NavigationLink>> p_source)
+        {
+            Dictionary<NavigationNode, List<NavigationLink>> l_return = new Dictionary<NavigationNode, List<NavigationLink>>(p_source.Count);
+            var l_enumerator = p_source.GetEnumerator();
+            while (l_enumerator.MoveNext())
+            {
+                l_return.Add(l_enumerator.Current.Key, new List<NavigationLink>(l_enumerator.Current.Value));
+            }
+            return l_return;
         }
     }
 

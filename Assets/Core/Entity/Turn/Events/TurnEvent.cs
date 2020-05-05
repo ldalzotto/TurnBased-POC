@@ -23,6 +23,8 @@ namespace _Entity._Turn
         {
             Entity l_nextTurnEntity = TurnTimelineAlgorithm.IncrementTimeline(TurnTimeline);
 
+           // ExternalHooks.LogDebug(l_nextTurnEntity.GetHashCode().ToString());
+
             if (l_nextTurnEntity != null)
             {
                 ActionPoint.resetActionPoints(EntityComponent.get_component<ActionPoint>(l_nextTurnEntity));

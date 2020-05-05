@@ -27,7 +27,7 @@ namespace _GameLoop
 
         private void Awake()
         {
-            ExternalHooks.LogDebug = Debug.Log;
+            ExternalHooks.LogDebug = (string s) => { Debug.Log(Time.frameCount + " : " + s); };
 
             if (!GameSequencer.ContainsKey(GameLoopHook.BeforePhysics)) { GameSequencer[GameLoopHook.BeforePhysics] = new List<GameLoopCallback>(); }
             if (!GameSequencer.ContainsKey(GameLoopHook.Tick)) { GameSequencer[GameLoopHook.Tick] = new List<GameLoopCallback>(); }

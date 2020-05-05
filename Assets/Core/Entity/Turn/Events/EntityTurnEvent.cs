@@ -39,7 +39,7 @@ namespace _Entity._Turn
                             var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
                             while (l_pathEnumerator.MoveNext())
                             {
-                                EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEntityEvent.alloc(Entity, l_pathEnumerator.Current));
+                                EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEvent.alloc(Entity, l_pathEnumerator.Current));
                             }
                             break;
 

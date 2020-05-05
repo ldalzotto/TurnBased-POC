@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\EventQueueDebugWindow.cs" />
     <Compile Include="Assets\EditorUtility\NavigationGraphEditorComponent.cs" />
     <Compile Include="Assets\Entity\EntityDefinition.cs" />
     <Compile Include="Assets\Entity\EntityRegistrationComponent.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Assets\EntityComponents\HealthDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\EntityLocomotionDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\LocomotionSystemComponent.cs" />
+    <Compile Include="Assets\EntityComponents\NavigationModifierDefinition.cs" />
     <Compile Include="Assets\EntityComponents\TurnTimelineEllibigility\TurnTimelineEllibilityDefinition.cs" />
     <Compile Include="Assets\GameLoop\GameLoop.cs" />
     <Compile Include="Assets\Level\LevelInitialization\Components\LevelInitializationComponent.cs" />

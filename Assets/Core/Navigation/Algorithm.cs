@@ -92,7 +92,7 @@ namespace _Navigation
         {
             if (p_request.BeginNode != null && p_request.EndNode != null)
             {
-                if(p_request.BeginNode == p_request.EndNode)
+                if (p_request.BeginNode == p_request.EndNode)
                 {
                     p_request.ResultPath.NavigationNodesTraversalCalculations[p_request.BeginNode] = NavigationNodePathTraversalCalculations.build();
                     return;
@@ -168,7 +168,7 @@ namespace _Navigation
                 if (l_currentEvaluatedNode != null)
                 {
                     p_request.ResultPath.NavigationNodes.Add(l_currentEvaluatedNode);
-              
+
                     NavigationNodePathTraversalCalculations l_navigationNodePathTraversalCalculations = p_request.ResultPath.NavigationNodesTraversalCalculations[l_currentEvaluatedNode];
                     p_request.ResultPath.PathCost = NavigationNodePathTraversalCalculations.calculateTotalScore(ref l_navigationNodePathTraversalCalculations);
 
@@ -274,9 +274,9 @@ namespace _Navigation
         public static NavigationNode getNearestNode(NavigationGraph p_navigationGraph, float3 p_localPosition)
         {
             NavigationNode l_nearestNavigationNode = p_navigationGraph.NavigationNodes[0];
-            for(int i = 1; i < p_navigationGraph.NavigationNodes.Count; i++)
+            for (int i = 1; i < p_navigationGraph.NavigationNodes.Count; i++)
             {
-                if (math.distance(l_nearestNavigationNode.LocalPosition, p_localPosition) > 
+                if (math.distance(l_nearestNavigationNode.LocalPosition, p_localPosition) >
                         math.distance(l_nearestNavigationNode.LocalPosition, p_navigationGraph.NavigationNodes[i].LocalPosition))
                 {
                     l_nearestNavigationNode = p_navigationGraph.NavigationNodes[i];
@@ -408,4 +408,85 @@ namespace _Navigation
     };
 
 
+    public static class NavigationLinkAlteration
+    {
+        /*
+        Alter NavigationNodeLinks by removing the NavigationLinks following the rule dictated by p_navigationLinkAlterationMethod (see ENavigationLinkRemovalMethod for more).
+    */
+        public static void removeNavigationLinks(NavigationGraph p_navigationGraph, ENavigationLinkAlterationMethod p_navigationLinkAlterationMethod, NavigationNode p_involvedNode)
+        {
+            switch (p_navigationLinkAlterationMethod)
+            {
+                case ENavigationLinkAlterationMethod.TO:
+                    // We have to :
+                    //    * gets NavigationLinks going to the p_involvedNode
+                    //    * clear NavigationLinks coming from NavigationNodes that goes to the p_involvedNode
+                    //    * clear NavigationLinks going to the p_involvedNode
+                    List<NavigationLink> l_nodesToList = p_navigationGraph.NodeLinksIndexedByEndNode[p_involvedNode];
+                    for (int i = 0; i < l_nodesToList.Count; i++)
+                    {
+                        NavigationLink l_linkTo = l_nodesToList[i];
+                        List<NavigationLink> l_targetList = p_navigationGraph.NodeLinksIndexedByStartNode[l_linkTo.StartNode];
+                        l_targetList.Remove(l_linkTo);
+                    }
+                    p_navigationGraph.NodeLinksIndexedByEndNode[p_involvedNode].Clear();
+                    break;
+            }
+        }
+
+        /*
+            Alter NavigationNodeLinks by restoring NavigationLinks following the rule dictated by p_navigationLinkAlterationMethod (see ENavigationLinkRemovalMethod for more).
+            - NavigationNodeLinks are restored from the NavigationGraphSnapshot.
+        */
+        public static void restoreNavigationLinksFromSnapshot(NavigationGraph p_navigationGraph, ENavigationLinkAlterationMethod p_navigationLinkAlterationMethod, NavigationNode p_involvedNode)
+        {
+            switch (p_navigationLinkAlterationMethod)
+            {
+                case ENavigationLinkAlterationMethod.TO:
+
+                    // We have to :
+                    //    * copy NavigationLinks going to the p_involvedNode (retrieved from snapshot)
+                    //    * add NavigationLinks coming from NavigationNodes that goes to the p_involvedNode
+                    List<NavigationLink> l_linksThatPointsTowardsInvolvedNode = p_navigationGraph.NodeLinksIndexedByEndNode[p_involvedNode];
+                    l_linksThatPointsTowardsInvolvedNode.Clear();
+                    l_linksThatPointsTowardsInvolvedNode.AddRange(p_navigationGraph.NavigationGraphSnapshot.NodeLinksIndexedByEndNode[p_involvedNode]);
+
+                    for(int i=0;i< l_linksThatPointsTowardsInvolvedNode.Count; i++)
+                    {
+                        NavigationLink l_linkTo = l_linksThatPointsTowardsInvolvedNode[i];
+
+                        var l_linksFrom_snapshot_enumerator = p_navigationGraph.NavigationGraphSnapshot.NodeLinksIndexedByStartNode[l_linkTo.StartNode].GetEnumerator();
+                        while (l_linksFrom_snapshot_enumerator.MoveNext())
+                        {
+                            NavigationLink l_referenceFromLink = l_linksFrom_snapshot_enumerator.Current;
+
+                            if (l_referenceFromLink.EndNode == p_involvedNode)
+                            {
+                                p_navigationGraph.NodeLinksIndexedByStartNode[l_referenceFromLink.StartNode].Add(l_referenceFromLink);
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// This class must be combined with a NavigationNode to work. It describes how the NavigationLinks of the Navigation graph will be altered.
+        /// </summary>
+        public enum ENavigationLinkAlterationMethod : ushort
+        {
+            /// <summary>
+            /// All NavigationLinks where the input NavigationNode is the EndNode will be involved.
+            /// </summary>
+            FROM = 0,
+            /// <summary>
+            /// All NavigationLinks where the input NavigationNode is the StartNode will be involved.
+            /// </summary>
+            TO = 1,
+            /// <summary>
+            /// All NavigationLinks where the input NavigationNode is the EndNode or StartNode will be involved.
+            /// </summary>
+            FROM_TO = 2
+        };
+    }
 }

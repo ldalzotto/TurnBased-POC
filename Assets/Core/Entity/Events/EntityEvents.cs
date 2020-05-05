@@ -2,9 +2,11 @@
 using _ActionPoint;
 using _Attack;
 using _EventQueue;
+using _GameLoop;
 using _Health;
 using _Locomotion;
 using _Navigation;
+using _Navigation._Modifier;
 
 namespace _Entity._Events
 {
@@ -26,15 +28,16 @@ namespace _Entity._Events
     }
 
     /// <summary>
-    /// The <see cref="NavigationNodeMoveEntityEvent"/> moves the <see cref="SourceEntity"/> to the <see cref="NavigationNode"/> <see cref="TargetNavigationNode"/>.
+    /// The <see cref="NavigationNodeMoveEvent"/> moves the <see cref="SourceEntity"/> to the <see cref="NavigationNode"/> <see cref="TargetNavigationNode"/>.
     /// Consumes <see cref="ActionPoint"/>.
     /// </summary>
-    public class NavigationNodeMoveEntityEvent : AAsyncEvent
+    public class NavigationNodeMoveEvent : AAsyncEvent
     {
-        public bool Completed = false;
-        public static NavigationNodeMoveEntityEvent alloc(Entity p_sourceEntity, NavigationNode p_navigationNode)
+        public static NavigationNodeMoveEvent alloc(Entity p_sourceEntity, NavigationNode p_navigationNode)
         {
-            NavigationNodeMoveEntityEvent l_instance = new NavigationNodeMoveEntityEvent();
+            NavigationNodeMoveEvent l_instance = new NavigationNodeMoveEvent();
+            l_instance.Completed = false;
+            l_instance.MovementAllowed = false;
             l_instance.SourceEntity = p_sourceEntity;
             l_instance.TargetNavigationNode = p_navigationNode;
             return l_instance;
@@ -43,6 +46,8 @@ namespace _Entity._Events
         public Entity SourceEntity;
         public NavigationNode TargetNavigationNode;
 
+        public bool Completed;
+        public bool MovementAllowed;
         public override void Execute(EventQueue p_eventQueue)
         {
             if (SourceEntity.MarkedForDestruction)
@@ -54,12 +59,12 @@ namespace _Entity._Events
 
             float l_costToMove = _ActionPoint.Calculations.actionPointBetweenNavigationNodes(SourceEntity.CurrentNavigationNode, TargetNavigationNode);
             ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
-            if (l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove)
+            MovementAllowed = l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove;
+            if (MovementAllowed)
             {
                 EntityComponent.get_component<Locomotion>(SourceEntity).MoveToNavigationNode.Invoke(TargetNavigationNode, (p_startNavigationNode, p_endNavigationNode) =>
                 {
                     ActionPoint.add(l_actionPoint, -1 * l_costToMove);
-                    Entity.set_currentNavigationNode(SourceEntity, p_endNavigationNode);
                     Completed = true;
                 });
             }
@@ -72,6 +77,15 @@ namespace _Entity._Events
         public override bool IsCompleted()
         {
             return Completed;
+        }
+
+        public override void OnCompleted(EventQueue p_eventQueue)
+        {
+            base.OnCompleted(p_eventQueue);
+            if (MovementAllowed)
+            {
+                EventQueue.insertEventAt(p_eventQueue, 0, EntityCurrentNavigationNodeChange.alloc(SourceEntity, TargetNavigationNode));
+            }
         }
     }
 
@@ -91,10 +105,13 @@ namespace _Entity._Events
         public override void Execute(EventQueue p_eventQueue)
         {
             EntityComponent.get_component<Locomotion>(Entity).WarpTo(TargetNavigationNode);
-            Entity.set_currentNavigationNode(Entity, TargetNavigationNode);
+            EventQueue.insertEventAt(p_eventQueue, 0, EntityCurrentNavigationNodeChange.alloc(Entity, TargetNavigationNode));
         }
     }
 
+    /// <summary>
+    /// Attacks the <see cref="TargetEntity"/> with the provided <see cref="Attack"/>.
+    /// </summary>
     public class AttackEntityEvent : AEvent
     {
         public Entity SourceEntity;
@@ -123,6 +140,31 @@ namespace _Entity._Events
                     Attack.resolve(Attack, TargetEntity);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// When the <see cref="Entity.CurrentNavigationNode"/> will be modified.
+    /// </summary>
+    public class EntityCurrentNavigationNodeChange : AEvent
+    {
+        public Entity Entity;
+        public NavigationNode NavigationNode;
+
+        public static EntityCurrentNavigationNodeChange alloc(Entity p_entity, NavigationNode p_navigationNode)
+        {
+            EntityCurrentNavigationNodeChange l_instance = new EntityCurrentNavigationNodeChange();
+            l_instance.Entity = p_entity;
+            l_instance.NavigationNode = p_navigationNode;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+            NavigationNode l_oldNavigationNode = Entity.CurrentNavigationNode;
+            Entity.set_currentNavigationNode(Entity, NavigationNode);
+            ObstacleModification.onNavigationNodeChanged(EntityComponent.get_component<NavigationModifier>(Entity), l_oldNavigationNode, NavigationNode);
         }
     }
 }

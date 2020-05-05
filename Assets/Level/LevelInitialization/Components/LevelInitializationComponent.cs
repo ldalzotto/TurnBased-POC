@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using _Navigation;
 using _TurnTimeline;
 using _Entity._Turn;
+using _EventQueue;
 
 namespace _Level
 {
@@ -29,6 +30,29 @@ namespace _Level
             GameObject.Instantiate(LevelInitializationDefinition.TurnTimelinePrefab, LevelInitializationGameObject.LevelGlobalObjects.transform, false);
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                restartLevel();
+            }
+        }
+
+        private void restartLevel()
+        {
+            GameObject.Destroy(this.gameObject);
+
+            var l_nextLevelTemporaryObject = new GameObject("NextLevel_TemporaryObject");
+            LevelInitializationComponent_PostMorted l_instanciatedLevelInitielizationFSMComponent_PostMortem = l_nextLevelTemporaryObject.AddComponent<LevelInitializationComponent_PostMorted>();
+            l_instanciatedLevelInitielizationFSMComponent_PostMortem.LevelInitializationDefinition = LevelInitializationDefinition;
+        }
+
+        private void OnDestroy()
+        {
+            EventQueue.clearAll(EventQueueContainer.TurnTimelineQueue);
+            EventQueue.clearAll(EventQueueContainer.EntityActionQueue);
+        }
+
     }
 
     struct LevelInitializationGameObject
@@ -47,4 +71,28 @@ namespace _Level
         }
     }
 
+    public class LevelInitializationComponent_PostMorted : MonoBehaviour
+    {
+        public LevelInitializationDefinition LevelInitializationDefinition;
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+            StartCoroutine(Initialize());
+        }
+
+        private IEnumerator Initialize()
+        {
+            yield return new WaitForEndOfFrame();
+            if (LevelInitializationDefinition != null)
+            {
+                GameObject l_baseLevelInitializationPrefab = GameObject.Instantiate(LevelInitializationDefinition.BaseLevelInitializationPrefab);
+                LevelInitializationComponent l_levelInitializationFSMComponent = l_baseLevelInitializationPrefab.GetComponent<LevelInitializationComponent>();
+                l_levelInitializationFSMComponent.LevelInitializationDefinition = LevelInitializationDefinition;
+                l_baseLevelInitializationPrefab.SetActive(true);
+            }
+
+            GameObject.Destroy(this.gameObject);
+        }
+    }
 }

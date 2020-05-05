@@ -22,7 +22,7 @@ namespace _AI._DecisionTree._Builder
                     */
                     if (EntityComponent.get_component<EntityCharacteristics>(l_entity) != null)
                     {
-                        foreach(ADecisionNode l_moveToNavigationNode in createMoveToEntityTree(p_decisionTree, p_decisionTree.RootNode, p_sourceEntity, l_entity))
+                        foreach (ADecisionNode l_moveToNavigationNode in createMoveToEntityTree(p_decisionTree, p_decisionTree.RootNode, p_sourceEntity, l_entity))
                         {
                             DecisionTree.linkDecisionNodes(
                                     p_decisionTree,
@@ -62,8 +62,8 @@ namespace _AI._DecisionTree._Builder
 
             /* If the source entity is already a neighbor of the target entity, we still create a node to move to same position to simulate the fact of staying at the same position. */
             if (NavigationGraphAlgorithm.areNavigationNodesNeighbors(
-                    NavigationGraphContainer.UniqueNavigationGraph, 
-                    p_moveToEntityNode.SourceEntity.CurrentNavigationNode, 
+                    NavigationGraphContainer.UniqueNavigationGraph,
+                    p_moveToEntityNode.SourceEntity.CurrentNavigationNode,
                     p_moveToEntityNode.TargetEntity.CurrentNavigationNode))
             {
                 MoveToNavigationNodeNode l_moveToNavigationNodeNode = MoveToNavigationNodeNode.alloc(p_moveToEntityNode.SourceEntity.CurrentNavigationNode, p_moveToEntityNode.SourceEntity.CurrentNavigationNode);

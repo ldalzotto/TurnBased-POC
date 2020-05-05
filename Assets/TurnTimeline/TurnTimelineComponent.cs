@@ -10,7 +10,7 @@ namespace _TurnTimeline
     public class TurnTimelineComponent : MonoBehaviour
     {
         public TurnTimeline TurnTimeline;
-        
+
         private void Awake()
         {
             TurnTimeline = TurnTimeline.alloc();

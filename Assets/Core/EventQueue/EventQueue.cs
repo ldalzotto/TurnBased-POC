@@ -25,7 +25,7 @@ namespace _EventQueue
     }
     public class EventQueue
     {
-        // public static Action<AEvent> OnEventExecuted;
+        public static Action<AEvent> OnEventExecuted;
 
         public static EventQueue alloc()
         {
@@ -85,6 +85,8 @@ namespace _EventQueue
                             p_eventQueue.Events.RemoveAt(0);
                             EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
                             l_firstEventAsAsync.IsRunning = false;
+                            l_firstEventAsAsync.OnCompleted(p_eventQueue);
+                            OnEventExecuted?.Invoke(l_firstEvent);
                         }
                         else
                         {
@@ -97,10 +99,8 @@ namespace _EventQueue
                     p_eventQueue.Events.RemoveAt(0);
                     l_firstEvent.Execute(p_eventQueue); 
                     EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
+                    OnEventExecuted?.Invoke(l_firstEvent);
                 }
-
-
-                // OnEventExecuted?.Invoke(l_firstEvent);
             }
         }
 
@@ -114,8 +114,22 @@ namespace _EventQueue
     public abstract class AAsyncEvent : AEvent
     {
         public bool IsRunning;
-        public abstract bool IsCompleted();
+
 
         public virtual void ExecuteEveryIteration() { }
+
+
+        /// <summary>
+        /// Used by the <see cref="EventQueue"/> to check if the <see cref="AAsyncEvent"/> is completed.
+        /// When true, the <see cref="AAsyncEvent"/> is discarded by calling <see cref="OnCompleted"/>
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsCompleted();
+
+        /// <summary>
+        /// The last function called by the <see cref="EventQueue"/> before the <see cref="AAsyncEvent"/> is discarded.
+        /// </summary>
+        public virtual void OnCompleted(EventQueue p_eventQueue) { }
+
     }
 }
