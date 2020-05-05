@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using _Entity;
-using _Entity._Turn;
-using System;
+﻿using _Entity._Turn;
 using _EventQueue;
+using UnityEngine;
 
 namespace _TurnTimeline
 {

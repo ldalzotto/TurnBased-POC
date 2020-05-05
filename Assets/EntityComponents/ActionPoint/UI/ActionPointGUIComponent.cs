@@ -4,9 +4,7 @@ using _EventQueue;
 using _GameLoop;
 using _RuntimeObject;
 using _UI._Gauge;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace _ActionPoint
 {
@@ -88,7 +86,7 @@ namespace _ActionPoint
                     ActionPointGUIComponent.gameObject.SetActive(true);
                     ActionPointGUIComponentContainer.ActionPointGUIComponents.Add(ActionPointGUIComponent);
                 }
-                   
+
             }
         }
 
@@ -104,7 +102,7 @@ namespace _ActionPoint
 
             public override void OnEventExecuted(EventQueue p_eventQueue, EndEntityTurnEvent p_event)
             {
-                if(p_event.Entity == ActionPointGUIComponent.m_entityRegistrationComponent.AssociatedEntity)
+                if (p_event.Entity == ActionPointGUIComponent.m_entityRegistrationComponent.AssociatedEntity)
                 {
                     ActionPointGUIComponent.gameObject.SetActive(false);
                     ActionPointGUIComponentContainer.ActionPointGUIComponents.Remove(ActionPointGUIComponent);

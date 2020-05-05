@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using _RuntimeObject;
-using _ActionPoint;
+﻿using _ActionPoint;
 using _Health;
+using _RuntimeObject;
+using UnityEngine;
 
 namespace _Entity
 {
@@ -19,7 +18,7 @@ namespace _Entity
             m_instanciatedActionPointGUIComponent = GameObject.Instantiate(p_ActionPointGUIComponentPrefab, transform);
         }
 
-        
+
         public void InstanciateHealthGUI(HealthGUIComponent p_healthGUIComponentPrefab)
         {
             m_instanciatedHealthGUIComponent = GameObject.Instantiate(p_healthGUIComponentPrefab, transform);

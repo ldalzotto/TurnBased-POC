@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Sirenix.OdinInspector;
 using UnityEngine.UI;
 
 namespace _UI._Gauge

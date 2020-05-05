@@ -1,6 +1,5 @@
 ﻿using _Functional;
 using _GameLoop;
-using System.Collections;
 
 namespace _EventQueue._Events
 {

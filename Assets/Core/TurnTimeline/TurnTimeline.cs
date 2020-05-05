@@ -1,10 +1,7 @@
 ﻿
 using _Entity;
-using _Entity._Turn;
 using _EntityCharacteristics;
-using _EventQueue;
 using _Functional;
-using System;
 using System.Collections.Generic;
 
 namespace _TurnTimeline
@@ -44,7 +41,7 @@ namespace _TurnTimeline
                     }
                 }
             }
-            
+
             TurnTimelineContainer.UniqueTurnTimeline = l_instance;
 
             return l_instance;

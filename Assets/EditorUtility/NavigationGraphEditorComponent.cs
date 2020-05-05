@@ -1,14 +1,13 @@
 ﻿
 #if UNITY_EDITOR
-using UnityEngine;
-using UnityEditor;
-using System.Linq;
 using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using System;
-using Sirenix.OdinInspector.Editor;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
-namespace _Navigation
+namespace _NavigationGraph
 {
     [ExecuteInEditMode]
     public class NavigationGraphEditorComponent : SerializedMonoBehaviour
@@ -314,7 +313,7 @@ namespace _Navigation
         [BoxGroup("NavigationLink Creation")]
         [LabelText("EndNode")]
         [SerializeField]
-        private int m_navigationLinkCreation_endNode;
+        private int m_navigationLinkCreation_endNode = 0;
 
         [BoxGroup("NavigationLink Creation")]
         [Button("Create")]

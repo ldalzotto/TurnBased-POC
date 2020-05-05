@@ -1,5 +1,4 @@
-﻿
-using _Entity;
+﻿using _Entity;
 
 namespace _Health
 {
@@ -17,7 +16,7 @@ namespace _Health
         public static void addToCurrentHealth(Health p_health, float p_delta)
         {
             p_health.HealthData.CurrentHealth += p_delta;
-            if(p_health.HealthData.CurrentHealth <= 0)
+            if (p_health.HealthData.CurrentHealth <= 0)
             {
                 Entity.markForDestruction(p_health.AssociatedEntity);
             }

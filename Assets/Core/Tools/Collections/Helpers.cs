@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System;
-using System.Runtime.Serialization;
+﻿using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.Serialization;
 
 internal static class ThrowHelper
 {

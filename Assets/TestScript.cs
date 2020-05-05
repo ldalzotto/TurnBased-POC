@@ -1,9 +1,4 @@
-﻿using _ActionPoint;
-using _AI._DecisionTree;
-using _AI._DecisionTree._Algorithm;
-using _Attack;
-using _Entity;
-using _Entity._Turn;
+﻿using _Entity._Turn;
 using _EventQueue;
 using UnityEngine;
 

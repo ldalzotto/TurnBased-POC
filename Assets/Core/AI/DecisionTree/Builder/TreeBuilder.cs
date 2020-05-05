@@ -2,7 +2,7 @@
 using _Attack;
 using _Entity;
 using _EntityCharacteristics;
-using _Navigation;
+using _NavigationGraph;
 using System.Collections.Generic;
 
 namespace _AI._DecisionTree._Builder

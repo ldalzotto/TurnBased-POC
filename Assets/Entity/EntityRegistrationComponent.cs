@@ -1,11 +1,7 @@
-﻿using _Entity._Turn;
-using _EventQueue;
+﻿using _EventQueue;
 using _Functional;
-using _Locomotion;
-using _Navigation;
+using _NavigationGraph;
 using _RuntimeObject;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,12 +10,12 @@ namespace _Entity
     public static class EntityRegistrationComponentContainer
     {
         public static Dictionary<Entity, EntityRegistrationComponent> EntityRegistrationComponentByEntities;
-        
+
         static EntityRegistrationComponentContainer()
         {
             EntityRegistrationComponentByEntities = new Dictionary<Entity, EntityRegistrationComponent>();
         }
-        
+
     }
 
     public class EntityRegistrationComponent : RuntimeComponent
@@ -58,7 +54,7 @@ namespace _Entity
         {
             base.OnDestroy();
 
-            if(AssociatedEntity != null && !AssociatedEntity.MarkedForDestruction)
+            if (AssociatedEntity != null && !AssociatedEntity.MarkedForDestruction)
             {
                 Entity.destroyEntity(AssociatedEntity);
             }

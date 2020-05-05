@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
+using UnityEngine;
 
-namespace _Navigation
+namespace _NavigationGraph
 {
     /// <summary>
     /// The NavigationGraphAsset stores all NavigationNodes and NavigationLinks in a serialized form.

@@ -1,4 +1,4 @@
-﻿using _Navigation;
+﻿using _NavigationGraph;
 using Unity.Mathematics;
 
 namespace _ActionPoint

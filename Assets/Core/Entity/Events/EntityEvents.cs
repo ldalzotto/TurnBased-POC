@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using _ActionPoint;
+﻿using _ActionPoint;
 using _Attack;
 using _EventQueue;
-using _GameLoop;
-using _Health;
 using _Locomotion;
-using _Navigation;
 using _Navigation._Modifier;
+using _NavigationEngine;
+using _NavigationGraph;
 
 namespace _Entity._Events
 {
@@ -164,7 +162,7 @@ namespace _Entity._Events
             base.Execute(p_eventQueue);
             NavigationNode l_oldNavigationNode = Entity.CurrentNavigationNode;
             Entity.set_currentNavigationNode(Entity, NavigationNode);
-            ObstacleModification.onNavigationNodeChanged(EntityComponent.get_component<NavigationModifier>(Entity), l_oldNavigationNode, NavigationNode);
+            NavigationEngine.ResolveEntityNavigationNodeChange(NavigationEngineContainer.UniqueNavigationEngine, Entity, l_oldNavigationNode, NavigationNode);
         }
     }
 }

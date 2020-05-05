@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using _Entity;
+﻿using _Entity;
 using _RuntimeObject;
+using System;
+using UnityEngine;
 
 namespace _Locomotion
 {

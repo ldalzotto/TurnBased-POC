@@ -26,5 +26,5 @@ namespace _EntityCharacteristics
         public float Speed;
     }
 }
-     
+
 

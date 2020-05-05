@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace _Navigation
+namespace _NavigationGraph
 {
     public static class NavigationGraphContainer
     {

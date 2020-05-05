@@ -1,14 +1,14 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
 
 namespace _EventQueue
 {
-    public class EventQueueListener 
+    public class EventQueueListener
     {
         public Dictionary<Type, List<IEventListener>> EventsListener;
 
-        public static EventQueueListener alloc() {
+        public static EventQueueListener alloc()
+        {
             EventQueueListener l_instance = new EventQueueListener();
             l_instance.EventsListener = new Dictionary<Type, List<IEventListener>>(4);
             return l_instance;
@@ -20,7 +20,7 @@ namespace _EventQueue
             if (p_eventQueueListener.EventsListener.ContainsKey(l_eventType))
             {
                 List<IEventListener> l_eventListeners = p_eventQueueListener.EventsListener[l_eventType];
-                for(int i = l_eventListeners.Count - 1; i >= 0; i--)
+                for (int i = l_eventListeners.Count - 1; i >= 0; i--)
                 {
                     l_eventListeners[i].I_OnEventExecuted(p_eventQueue, p_event);
                 }

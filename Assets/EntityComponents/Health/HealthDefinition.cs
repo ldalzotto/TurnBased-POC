@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using _Entity;
+﻿using _Entity;
 using _RuntimeObject;
+using System;
+using UnityEngine;
 
 namespace _Health
 {
@@ -16,7 +15,7 @@ namespace _Health
         {
             Health l_health = Health.alloc(ref HealthData);
             Health.resetHealth(l_health);
-            EntityComponent.add_component<Health>(p_entity, l_health); 
+            EntityComponent.add_component<Health>(p_entity, l_health);
             p_runtimeObjectRootComponent.GetComponentInChildren<EntityGaugeContainerComponent>().InstanciateHealthGUI(HealthGUIComponentPrefab);
         }
     }

@@ -1,10 +1,8 @@
-﻿using _ActionPoint;
-using _AI._DecisionTree;
+﻿using _AI._DecisionTree;
 using _AI._DecisionTree._Algorithm;
 using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
-using System.Collections;
 
 namespace _Entity._Turn
 {

@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
-using _Navigation;
+using _NavigationGraph;
 using System;
 using _RuntimeObject;
 using _Entity;

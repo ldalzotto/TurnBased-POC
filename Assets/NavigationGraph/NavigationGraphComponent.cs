@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using _NavigationEngine;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEngine;
 
-namespace _Navigation
+namespace _NavigationGraph
 {
     /// <summary>
-    /// The entry point for <see cref="_Navigation.NavigationGraph"/> operations.
-    /// Instanciate the <see cref="_Navigation.NavigationGraph"/> object.
+    /// The entry point for <see cref="_NavigationGraph.NavigationGraph"/> operations.
+    /// Instanciate the <see cref="_NavigationGraph.NavigationGraph"/> object.
     /// </summary>
     public class NavigationGraphComponent : MonoBehaviour
     {
@@ -28,6 +28,8 @@ namespace _Navigation
         public NavigationGraph NavigationGraph;
         public Dictionary<NavigationNode, GameObject> NavigationNodeGameRepresentation = new Dictionary<NavigationNode, GameObject>();
 
+        public NavigationEngine NavigationEngine;
+
         private void Awake()
         {
             NavigationGraph = NavigationGraphAsset.InstanciateNavigationGraph();
@@ -37,6 +39,8 @@ namespace _Navigation
             {
                 NavigationNodeGameRepresentation[NavigationGraph.NavigationNodes[i]] = NavigationNodeComponent.instanciateFromPrefab(transform, NavigationGraph.NavigationNodes[i], NavigationNodeComponentPrefab);
             }
+
+            NavigationEngine = NavigationEngine.alloc();
         }
 
         private void OnDestroy()
@@ -46,6 +50,7 @@ namespace _Navigation
                 NavigationGraphComponentContainer.UniqueNavigationGraphComponent = null;
             }
             NavigationGraph.free(NavigationGraph);
+            NavigationEngine.free(NavigationEngine);
         }
 
         /// <summary>

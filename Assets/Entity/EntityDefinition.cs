@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using _RuntimeObject;
 using Sirenix.OdinInspector;
-using _RuntimeObject;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace _Entity
 {

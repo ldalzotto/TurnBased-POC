@@ -1,24 +1,19 @@
-﻿using System.Collections;
-using _Entity;
+﻿using _Entity;
 using _Functional;
+using _Navigation._Modifier;
+using _NavigationGraph;
 
-namespace _Navigation._Modifier
+namespace _NavigationEngine
 {
-    public static class ObstacleModification
+    public static class ObstacleStep
     {
-        static ObstacleModification()
-        {
-            MyEvent<AEntityComponent>.IEventCallback l_callback = new OnNavigationModifierComponentDetached();
-            EntityComponentContainer.registerComponentRemovedEvent<NavigationModifier>(ref l_callback);
-        }
-
-        public static void onNavigationNodeChanged(NavigationModifier p_navigationModifier, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
+        public static void ResolveNavigationObstacleAlterations(Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             if (p_oldNavigationNode != p_newNavigationNode)
             {
-                if (p_navigationModifier != null && p_navigationModifier.NavigationModifierData.IsObstacle)
+                NavigationModifier l_entityNavigationModifier = EntityComponent.get_component<NavigationModifier>(p_entity);
+                if (l_entityNavigationModifier != null && l_entityNavigationModifier.NavigationModifierData.IsObstacle)
                 {
-
                     if (p_oldNavigationNode != null)
                     {
                         NavigationLinkAlteration.restoreNavigationLinksFromSnapshot(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
@@ -31,7 +26,7 @@ namespace _Navigation._Modifier
             }
         }
 
-        struct OnNavigationModifierComponentDetached : MyEvent<AEntityComponent>.IEventCallback
+        public struct OnNavigationModifierComponentDetached : MyEvent<AEntityComponent>.IEventCallback
         {
             public int Handle { get; set; }
 
@@ -51,10 +46,9 @@ namespace _Navigation._Modifier
                         }
                     }
                 }
-                
+
                 return EventCallbackResponse.OK;
             }
         }
     }
-
 }

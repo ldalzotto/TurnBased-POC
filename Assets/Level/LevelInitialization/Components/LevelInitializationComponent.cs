@@ -1,10 +1,7 @@
-﻿using UnityEngine;
+﻿using _EventQueue;
+using _NavigationGraph;
 using System.Collections;
-using System.Collections.Generic;
-using _Navigation;
-using _TurnTimeline;
-using _Entity._Turn;
-using _EventQueue;
+using UnityEngine;
 
 namespace _Level
 {

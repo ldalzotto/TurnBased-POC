@@ -2,9 +2,7 @@
 using _GameLoop;
 using _RuntimeObject;
 using _UI._Gauge;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace _Health
 {

@@ -1,11 +1,11 @@
 ﻿
 
-using System;
-using System.Collections.Generic;
 using _Entity._Events;
 using _EventQueue;
 using _Functional;
-using _Navigation;
+using _NavigationGraph;
+using System;
+using System.Collections.Generic;
 
 namespace _Entity
 {

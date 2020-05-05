@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using _Entity;
+﻿using _Entity;
 using System.Collections.Generic;
 
 namespace _TurnTimeline
@@ -55,6 +54,7 @@ namespace _TurnTimeline
 
             return l_lowerTimelineScore;
         }
+
     }
 
 }

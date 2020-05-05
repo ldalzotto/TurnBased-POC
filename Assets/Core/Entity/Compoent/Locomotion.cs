@@ -1,6 +1,6 @@
 ﻿using _Entity;
+using _NavigationGraph;
 using System;
-using _Navigation;
 
 namespace _Locomotion
 {

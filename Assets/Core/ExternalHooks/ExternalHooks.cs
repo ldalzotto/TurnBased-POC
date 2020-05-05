@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using _Functional;
+﻿using _Functional;
+using System;
 
 namespace _GameLoop
 {

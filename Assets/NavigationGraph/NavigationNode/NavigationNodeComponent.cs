@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using _RuntimeObject;
+﻿using _RuntimeObject;
+using UnityEngine;
 
-namespace _Navigation
+namespace _NavigationGraph
 {
     /// <summary>
-    /// Game representation of <see cref="_Navigation.NavigationNode"/>.
+    /// Game representation of <see cref="_NavigationGraph.NavigationNode"/>.
     /// </summary>
     public class NavigationNodeComponent : RuntimeComponent
     {

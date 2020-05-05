@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
-namespace _Navigation
+namespace _NavigationGraph
 {
     /// <summary>
     /// Structure used by all algorithm that calculates <see cref="NavigationPath"/>.
@@ -451,7 +451,7 @@ namespace _Navigation
                     l_linksThatPointsTowardsInvolvedNode.Clear();
                     l_linksThatPointsTowardsInvolvedNode.AddRange(p_navigationGraph.NavigationGraphSnapshot.NodeLinksIndexedByEndNode[p_involvedNode]);
 
-                    for(int i=0;i< l_linksThatPointsTowardsInvolvedNode.Count; i++)
+                    for (int i = 0; i < l_linksThatPointsTowardsInvolvedNode.Count; i++)
                     {
                         NavigationLink l_linkTo = l_linksThatPointsTowardsInvolvedNode[i];
 

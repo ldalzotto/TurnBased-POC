@@ -1,10 +1,7 @@
-﻿using System.Collections;
+﻿using _ActionPoint;
 using _EventQueue;
-using _TurnTimeline;
-using _ActionPoint;
-using _GameLoop;
-using _Functional;
 using _EventQueue._Events;
+using _TurnTimeline;
 
 namespace _Entity._Turn
 {
@@ -23,7 +20,7 @@ namespace _Entity._Turn
         {
             Entity l_nextTurnEntity = TurnTimelineAlgorithm.IncrementTimeline(TurnTimeline);
 
-           // ExternalHooks.LogDebug(l_nextTurnEntity.GetHashCode().ToString());
+            // ExternalHooks.LogDebug(l_nextTurnEntity.GetHashCode().ToString());
 
             if (l_nextTurnEntity != null)
             {

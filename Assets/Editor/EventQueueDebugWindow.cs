@@ -1,9 +1,7 @@
 ﻿using _EventQueue;
 using Sirenix.OdinInspector.Editor;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEngine;
 
 public class EventQueueDebugWindow : OdinEditorWindow
 {
@@ -19,7 +17,8 @@ public class EventQueueDebugWindow : OdinEditorWindow
     {
         base.OnEnable();
         ExecutedEvents = new List<AEvent>();
-        EventQueue.OnEventExecuted = (AEvent p_event) => {
+        EventQueue.OnEventExecuted = (AEvent p_event) =>
+        {
             ExecutedEvents.Add(p_event);
         };
     }

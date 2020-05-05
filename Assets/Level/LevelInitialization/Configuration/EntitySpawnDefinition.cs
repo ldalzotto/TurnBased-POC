@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using UnityEditor;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace _Level
 {
@@ -12,7 +11,7 @@ namespace _Level
 
         public static void spawnEntities(EntitySpawnDefinition p_entitySpawnDefinition, Transform p_parent)
         {
-            for(int i = 0; i < p_entitySpawnDefinition.RandomEntityNumber; i++)
+            for (int i = 0; i < p_entitySpawnDefinition.RandomEntityNumber; i++)
             {
                 GameObject.Instantiate(p_entitySpawnDefinition.EntityPrefab, p_parent);
             }

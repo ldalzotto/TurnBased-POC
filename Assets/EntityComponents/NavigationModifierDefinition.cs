@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using _Entity;
-using System;
+﻿using _Entity;
 using _RuntimeObject;
+using System;
+using UnityEngine;
 
 namespace _Navigation._Modifier
 {
@@ -14,7 +13,7 @@ namespace _Navigation._Modifier
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
         {
             NavigationModifier l_navigationModifier = NavigationModifier.alloc(ref NavigationModifierData);
-            EntityComponent.add_component<NavigationModifier>(p_entity, l_navigationModifier);
+            EntityComponent.add_component(p_entity, l_navigationModifier);
         }
     }
 }

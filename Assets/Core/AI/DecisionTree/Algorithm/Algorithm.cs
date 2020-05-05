@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using _ActionPoint;
+﻿using _ActionPoint;
 using _Entity;
+using System.Collections.Generic;
 using Unity.Mathematics;
 
 namespace _AI._DecisionTree._Algorithm
@@ -24,7 +24,7 @@ namespace _AI._DecisionTree._Algorithm
                     {
                         //We traverse the link and go one level deeper
                         ADecisionNode l_nextNode = l_currentTraversalStack.DecisionNode.LinkedNodes[l_currentTraversalStack.LinkIterationCounter];
-                        
+
                         l_currentTraversalStack.LinkIterationCounter += 1;
                         TraversalStack l_oneLevelDepperStack = TraversalStack.build(l_nextNode, l_currentTraversalStack.EntityDecisionContextdata);
                         l_traversalStacks.AddRef(ref l_oneLevelDepperStack);
@@ -163,7 +163,7 @@ namespace _AI._DecisionTree._Algorithm
             /// The amount of damage done by Attack.
             /// </summary>
             public float DamageScore;
-        
+
             public static float totalScore(ref AIDecisionScore p_aiDecisionScore)
             {
                 return p_aiDecisionScore.DamageScore + p_aiDecisionScore.PathScore;

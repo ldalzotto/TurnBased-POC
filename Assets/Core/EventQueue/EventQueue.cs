@@ -1,6 +1,4 @@
-﻿using _Functional;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace _EventQueue
@@ -97,7 +95,7 @@ namespace _EventQueue
                 else
                 {
                     p_eventQueue.Events.RemoveAt(0);
-                    l_firstEvent.Execute(p_eventQueue); 
+                    l_firstEvent.Execute(p_eventQueue);
                     EventQueueListener.onEventExecuted(EventQueueContainer.EventQueueListener, p_eventQueue, l_firstEvent);
                     OnEventExecuted?.Invoke(l_firstEvent);
                 }

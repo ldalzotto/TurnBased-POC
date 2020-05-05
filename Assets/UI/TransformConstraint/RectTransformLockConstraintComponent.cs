@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using _GameLoop;
 using System.Collections.Generic;
-using _GameLoop;
+using UnityEngine;
 
 namespace _UI._TransforConstraint
 {
