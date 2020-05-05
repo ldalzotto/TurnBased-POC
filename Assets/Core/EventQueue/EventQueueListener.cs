@@ -42,14 +42,17 @@ namespace _EventQueue
         public static void unRegisterEvent(EventQueueListener p_eventQueueListener, IEventListener p_eventListener)
         {
             Type l_eventType = p_eventListener.get_eventType();
-            List<IEventListener> l_eventListeners = p_eventQueueListener.EventsListener[l_eventType];
-
-            for (int i = 0; i < l_eventListeners.Count; i++)
+            if (p_eventQueueListener.EventsListener.ContainsKey(l_eventType))
             {
-                if (l_eventListeners[i].compareUniqueKey(p_eventListener))
+                List<IEventListener> l_eventListeners = p_eventQueueListener.EventsListener[l_eventType];
+
+                for (int i = 0; i < l_eventListeners.Count; i++)
                 {
-                    l_eventListeners.RemoveAt(i);
-                    break;
+                    if (l_eventListeners[i].compareUniqueKey(p_eventListener))
+                    {
+                        l_eventListeners.RemoveAt(i);
+                        break;
+                    }
                 }
             }
         }

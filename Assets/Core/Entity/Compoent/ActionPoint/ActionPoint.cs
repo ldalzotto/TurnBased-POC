@@ -23,6 +23,10 @@ namespace _ActionPoint
         {
             ActionPointData.resetActionPoints(ref p_actionPoint.ActionPointData);
         }
+
+        public static float getFillRate(ActionPoint p_actionPoint) {
+            return p_actionPoint.ActionPointData.CurrentActionPoints / p_actionPoint.ActionPointData.InitialActionPoints;
+        }
     }
 
     public struct ActionPointData

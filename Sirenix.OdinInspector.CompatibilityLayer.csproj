@@ -279,6 +279,9 @@
     <Reference Include="Sirenix.Utilities.Editor">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Assets/Plugins/Sirenix/Assemblies/Sirenix.Utilities.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/PackageCache/com.unity.render-pipelines.core@7.3.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>G:/Programs/Unity/2019.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
     </Reference>

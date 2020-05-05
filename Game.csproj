@@ -67,7 +67,9 @@
     <Compile Include="Assets\EditorUtility\NavigationGraphEditorComponent.cs" />
     <Compile Include="Assets\Entity\EntityDefinition.cs" />
     <Compile Include="Assets\Entity\EntityRegistrationComponent.cs" />
-    <Compile Include="Assets\EntityComponents\ActionPointDefinition.cs" />
+    <Compile Include="Assets\Entity\UI\EntityGaugeContainerComponent.cs" />
+    <Compile Include="Assets\EntityComponents\ActionPoint\ActionPointDefinition.cs" />
+    <Compile Include="Assets\EntityComponents\ActionPoint\UI\ActionPointGUIComponent.cs" />
     <Compile Include="Assets\EntityComponents\AttackDefinition.cs" />
     <Compile Include="Assets\EntityComponents\EntityCharacteristics\EntityCharacteristicsDefinition.cs" />
     <Compile Include="Assets\EntityComponents\HealthDefinition.cs" />
@@ -91,6 +93,8 @@
     <Compile Include="Assets\Runtime\UnityComponents\RuntimeObjectRootComponent.cs" />
     <Compile Include="Assets\TestScript.cs" />
     <Compile Include="Assets\TurnTimeline\TurnTimelineComponent.cs" />
+    <Compile Include="Assets\UI\Gauge\Scripts\UIGaugeComponent.cs" />
+    <Compile Include="Assets\UI\TransformConstraint\RectTransformLockConstraintComponent.cs" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Serialization.Config.xml" />
@@ -99,6 +103,7 @@
     <None Include="Assets\Plugins\Sirenix\Readme.txt" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.OdinInspector.Editor.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\link.xml" />
+    <None Include="Assets\UI\Gauge\Shader\UIGaugeShader.shader" />
     <Reference Include="Unity.Mathematics">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
     </Reference>
@@ -314,6 +319,9 @@
     </Reference>
     <Reference Include="Sirenix.Utilities.Editor">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Assets/Plugins/Sirenix/Assemblies/Sirenix.Utilities.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/PackageCache/com.unity.render-pipelines.core@7.3.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>G:/Programs/Unity/2019.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

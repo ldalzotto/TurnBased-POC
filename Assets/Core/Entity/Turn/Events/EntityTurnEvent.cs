@@ -53,13 +53,31 @@ namespace _Entity._Turn
                     }
                 }
             }
-
             // This means that at least one action is performed.
             // Thus, we try to re-evaluate action choice to be sure that there is nothing else to do for the associated Entity.
-            if(l_eventQueueSizeBeforeInsersion != p_eventQueue.Events.Count)
+            if (l_eventQueueSizeBeforeInsersion != p_eventQueue.Events.Count)
             {
                 EventQueue.enqueueEvent(p_eventQueue, StartEntityTurnEvent.alloc(Entity));
             }
+            else
+            {
+                EventQueue.enqueueEvent(p_eventQueue, EndEntityTurnEvent.alloc(Entity));
+            }
+        }
+    }
+
+    /// <summary>
+    /// This event is used only to trigger Event hooks.
+    /// </summary>
+    public class EndEntityTurnEvent : AEvent
+    {
+        public Entity Entity;
+
+        public static EndEntityTurnEvent alloc(Entity p_entity)
+        {
+            EndEntityTurnEvent l_instance = new EndEntityTurnEvent();
+            l_instance.Entity = p_entity;
+            return l_instance;
         }
     }
 }
