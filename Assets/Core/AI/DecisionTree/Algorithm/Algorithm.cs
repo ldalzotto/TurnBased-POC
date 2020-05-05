@@ -18,19 +18,18 @@ namespace _AI._DecisionTree._Algorithm
             {
                 ref TraversalStack l_currentTraversalStack = ref l_traversalStacks.ValueRef(l_traversalStacks.Count - 1);
                 //If there if the current node ha links
-                if (p_decisionTree.DecisionLinks.ContainsKey(l_currentTraversalStack.DecisionNode))
+                if (l_currentTraversalStack.DecisionNode.LinkedNodes != null)
                 {
-                    RefList<DecisionLink> l_links = p_decisionTree.DecisionLinks[l_currentTraversalStack.DecisionNode];
-                    if (l_currentTraversalStack.LinkIterationCounter < l_links.Count)
+                    if (l_currentTraversalStack.LinkIterationCounter < l_currentTraversalStack.DecisionNode.LinkedNodes.Count)
                     {
                         //We traverse the link and go one level deeper
-                        ref DecisionLink l_link = ref l_links.ValueRef(l_currentTraversalStack.LinkIterationCounter);
-
+                        ADecisionNode l_nextNode = l_currentTraversalStack.DecisionNode.LinkedNodes[l_currentTraversalStack.LinkIterationCounter];
+                        
                         l_currentTraversalStack.LinkIterationCounter += 1;
-                        TraversalStack l_oneLevelDepperStack = TraversalStack.build(l_link.Target, l_currentTraversalStack.EntityDecisionContextdata);
+                        TraversalStack l_oneLevelDepperStack = TraversalStack.build(l_nextNode, l_currentTraversalStack.EntityDecisionContextdata);
                         l_traversalStacks.AddRef(ref l_oneLevelDepperStack);
 
-                        l_link.Target.TreeTraversal(l_link.Source, ref l_traversalStacks.ValueRef(l_traversalStacks.Count - 1).EntityDecisionContextdata);
+                        l_nextNode.TreeTraversal(l_currentTraversalStack.DecisionNode, ref l_traversalStacks.ValueRef(l_traversalStacks.Count - 1).EntityDecisionContextdata);
                     }
                     else
                     {

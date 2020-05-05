@@ -5,28 +5,19 @@ namespace _AI._DecisionTree
 {
     public class DecisionTree
     {
-        public Dictionary<ADecisionNode, RefList<DecisionLink>> DecisionLinks;
         public RootDecisionNode RootNode;
 
         public static DecisionTree alloc()
         {
             DecisionTree l_instance = new DecisionTree();
-            l_instance.DecisionLinks = new Dictionary<ADecisionNode, RefList<DecisionLink>>();
             l_instance.RootNode = new RootDecisionNode();
             return l_instance;
         }
 
         public static void linkDecisionNodes(DecisionTree p_decisiontree, ADecisionNode p_sourceNode, ADecisionNode p_targetNode)
         {
-            DecisionLink l_instanciatedLink = DecisionLink.build(p_sourceNode, p_targetNode);
-            if (!p_decisiontree.DecisionLinks.ContainsKey(p_sourceNode))
-            {
-                p_decisiontree.DecisionLinks.Add(p_sourceNode, new RefList<DecisionLink>() {l_instanciatedLink});
-            }
-            else
-            {
-                p_decisiontree.DecisionLinks[p_sourceNode].Add(l_instanciatedLink);
-            }
+            if (p_sourceNode.LinkedNodes == null) { p_sourceNode.LinkedNodes = new List<ADecisionNode>(); }
+            p_sourceNode.LinkedNodes.Add(p_targetNode);
         }
     }
 
@@ -36,6 +27,7 @@ namespace _AI._DecisionTree
     /// </summary>
     public abstract class ADecisionNode
     {
+        public List<ADecisionNode> LinkedNodes;
         public EDecisionNodeConsumerAction DecisionNodeConsumerAction;
 
         public virtual void TreeTraversal(ADecisionNode p_sourceNode, ref EntityDecisionContext p_entityDecisionContextdata)
@@ -48,21 +40,6 @@ namespace _AI._DecisionTree
     {
     }
 
-    public struct DecisionLink
-    {
-        public ADecisionNode Source;
-        public ADecisionNode Target;
-
-        public static DecisionLink build(ADecisionNode p_sourceNode, ADecisionNode p_targetNode)
-        {
-            DecisionLink l_instance = new DecisionLink()
-            {
-                Source = p_sourceNode,
-                Target = p_targetNode
-            };
-            return l_instance;
-        }
-    }
 
     /// <summary>
     /// This enumeration is used by the consumer of the <see cref="DecisionTree"/>. It indicates whether or not an operation
