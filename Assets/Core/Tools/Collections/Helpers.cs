@@ -489,15 +489,3 @@ internal enum ExceptionResource
     Argument_InvalidRegistryViewCheck
 }
 
-
-
-
-
-
-
-
-
-
-
-
-

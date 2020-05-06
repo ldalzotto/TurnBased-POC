@@ -33,11 +33,11 @@ namespace _NavigationEngine
             if (NavigationEngineContainer.UniqueNavigationEngine == p_navigationEngine) { NavigationEngineContainer.UniqueNavigationEngine = null; };
         }
 
-        public static void ResolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
+        public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_entity, p_oldNavigationNode, p_newNavigationNode);
-            ObstacleStep.ResolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
+            ObstacleStep.resolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
         }
     }
 
@@ -93,6 +93,10 @@ namespace _NavigationEngine
     public static class EntityQuery
     {
 
+        /// <summary>
+        /// Returns true if <paramref name="p_entitiesIndexedByNavigationNodes"/> has any <see cref="Entity"/> that has a component of type COMPONENT
+        /// and is satisfying the <paramref name="p_filterCondition"/> condition. 
+        /// </summary>
         public static bool isThereAtLeastOfComponentOfType<COMPONENT>(
                         ref EntitiesIndexedByNavigationNodes p_entitiesIndexedByNavigationNodes,
                         NavigationNode p_requestedNode,

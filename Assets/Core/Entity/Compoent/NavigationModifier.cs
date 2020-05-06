@@ -15,6 +15,11 @@ namespace _Navigation._Modifier
             l_instance.NavigationModifierData = p_navigationModifierData;
             return l_instance;
         }
+
+        public static bool IsObstacle(NavigationModifier p_navigationModifier)
+        {
+            return p_navigationModifier.NavigationModifierData.IsObstacle;
+        }
     }
 
 

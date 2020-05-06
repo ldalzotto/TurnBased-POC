@@ -16,7 +16,7 @@ namespace _NavigationEngine
         /// The next <see cref="NavigationNode"/> where the <paramref name="p_entity"/> will be.
         /// This value can be null, meaning that the <paramref name="p_entity"/>"s <see cref="NavigationModifier"/> component has been detached.
         /// </param>
-        public static void ResolveNavigationObstacleAlterations(NavigationEngine p_navigationEngine, Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
+        public static void resolveNavigationObstacleAlterations(NavigationEngine p_navigationEngine, Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             if (p_oldNavigationNode != p_newNavigationNode)
             {
@@ -29,7 +29,7 @@ namespace _NavigationEngine
                         if (p_oldNavigationNode != null)
                         {
                             // We restore p_oldNavigationNode NavigationLinks only if there is no more NavigationModifier.Obstacle
-                            if (!EntityQuery.isThereAtLeastOfComponentOfType<NavigationModifier>(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_oldNavigationNode, NavigationModifier_IsObstacle))
+                            if (!EntityQuery.isThereAtLeastOfComponentOfType<NavigationModifier>(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_oldNavigationNode, NavigationModifier.IsObstacle))
                             {
                                 NavigationLinkAlteration.restoreNavigationLinksFromSnapshot(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
                                        p_oldNavigationNode);
@@ -43,7 +43,7 @@ namespace _NavigationEngine
                     else
                     {
                         // We restore p_oldNavigationNode NavigationLinks only if there is no more NavigationModifier.Obstacle
-                        if (!EntityQuery.isThereAtLeastOfComponentOfType<NavigationModifier>(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_oldNavigationNode, NavigationModifier_IsObstacle))
+                        if (!EntityQuery.isThereAtLeastOfComponentOfType<NavigationModifier>(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_oldNavigationNode, NavigationModifier.IsObstacle))
                         {
                             NavigationLinkAlteration.restoreNavigationLinksFromSnapshot(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
                                    p_oldNavigationNode);
@@ -52,7 +52,5 @@ namespace _NavigationEngine
                 }
             }
         }
-
-        private static bool NavigationModifier_IsObstacle(NavigationModifier p_navigationModifier) { return p_navigationModifier.NavigationModifierData.IsObstacle; }
     }
 }

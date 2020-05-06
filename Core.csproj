@@ -80,6 +80,7 @@
     <Compile Include="Assets\Core\Entity\Entity.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
     <Compile Include="Assets\Core\Entity\Events\EntityEvents.cs" />
+    <Compile Include="Assets\Core\Entity\Events\EntityEventsComposition.cs" />
     <Compile Include="Assets\Core\Entity\Turn\Events\EntityTurnEvent.cs" />
     <Compile Include="Assets\Core\Entity\Turn\Events\TurnEvent.cs" />
     <Compile Include="Assets\Core\EventQueue\EventQueue.cs" />

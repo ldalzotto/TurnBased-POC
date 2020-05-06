@@ -163,8 +163,7 @@ namespace _Entity._Events
                     // Maybe reacting to an Interface or tag ?
                     if (TargetEntity.MarkedForDestruction)
                     {
-                        EventQueue.insertEventAt(p_eventQueue, 0, EntityDestroyEvent.alloc(TargetEntity));
-                        EventQueue.insertEventAt(p_eventQueue, 0, EntityCurrentNavigationNodeChange.alloc(TargetEntity, null));
+                        EntityEventsComposition.pushEntityDestroyedEvents(p_eventQueue, TargetEntity);
                     }
                 }
             }
@@ -196,7 +195,7 @@ namespace _Entity._Events
             base.Execute(p_eventQueue);
             NavigationNode l_oldNavigationNode = Entity.CurrentNavigationNode;
             Entity.set_currentNavigationNode(Entity, NavigationNode);
-            NavigationEngine.ResolveEntityNavigationNodeChange(NavigationEngineContainer.UniqueNavigationEngine, Entity, l_oldNavigationNode, NavigationNode);
+            NavigationEngine.resolveEntityNavigationNodeChange(NavigationEngineContainer.UniqueNavigationEngine, Entity, l_oldNavigationNode, NavigationNode);
         }
     }
 }

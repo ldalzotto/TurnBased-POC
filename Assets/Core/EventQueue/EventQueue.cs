@@ -29,9 +29,34 @@ namespace _EventQueue
         public static void insertBefore(EventQueue p_eventQueue, AEvent p_comparisonEvent, AEvent p_insertedEvent)
         {
             int l_index = p_eventQueue.Events.IndexOf(p_comparisonEvent);
+
+            // If the event has been found in the EventQueue.
             if (l_index >= 0)
             {
                 insertEventAt(p_eventQueue, l_index, p_insertedEvent);
+            }
+        }
+
+        public static void insertAfter(EventQueue p_eventQueue, AEvent p_comparisonEvent, AEvent p_insertedEvent)
+        {
+            int l_index = p_eventQueue.Events.IndexOf(p_comparisonEvent);
+
+            // If the event has been found in the EventQueue.
+            if (l_index >= 0)
+            {
+                insertEventAt(p_eventQueue, l_index + 1, p_insertedEvent);
+            }
+        }
+
+        public static IEnumerator<EVENT> get_allEvents<EVENT>(EventQueue p_eventQueue) where EVENT : AEvent
+        {
+            for (int i = 0; i < p_eventQueue.Events.Count; i++)
+            {
+                AEvent l_event = p_eventQueue.Events[i];
+                if (l_event is EVENT)
+                {
+                    yield return l_event as EVENT;
+                }
             }
         }
 
