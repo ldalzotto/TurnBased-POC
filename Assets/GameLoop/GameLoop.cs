@@ -3,6 +3,7 @@ using _Functional;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace _GameLoop
 {
@@ -28,6 +29,9 @@ namespace _GameLoop
         private void Awake()
         {
             ExternalHooks.LogDebug = (string s) => { Debug.Log(Time.frameCount + " : " + s); };
+            ExternalHooks.Profiler_BeginSample = (string name) => { Profiler.BeginSample(name); };
+            ExternalHooks.Profiler_EndSample = () => { Profiler.EndSample(); };
+
 
             if (!GameSequencer.ContainsKey(GameLoopHook.BeforePhysics)) { GameSequencer[GameLoopHook.BeforePhysics] = new List<GameLoopCallback>(); }
             if (!GameSequencer.ContainsKey(GameLoopHook.Tick)) { GameSequencer[GameLoopHook.Tick] = new List<GameLoopCallback>(); }
