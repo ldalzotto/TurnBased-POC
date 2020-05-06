@@ -338,12 +338,11 @@ namespace _NavigationGraph
             }
         }
 
-
-        /*
-            Find all NavigationNodes that the p_requestedNode can travel to and have direct NavigationLink between them.
-                - "Reachable" : Means that it exists a path between the p_requestedNode and the returned NavigationNode
-                - "Neighbor" : Means that the p_requestedNode and the returned NavigationNode have a direct NavigationLink between them.
-        */
+        /// <summary>
+        /// Find all NavigationNodes that the <paramref name="p_requestedNode"/> can travel to and have direct <see cref="NavigationLink"/> between them.
+        /// - "Reachable" : Means that it exists a path between the <paramref name="p_requestedNode"/> and the returned NavigationNode
+        /// - "Neighbor" : Means that the <paramref name="p_requestedNode"/> and the returned NavigationNode have a direct NavigationLink between them.
+        /// </summary>
         public static IEnumerable<NavigationNode> getReachableNeighborNavigationNodes(NavigationGraph p_navigationGraph, NavigationNode p_requestedNode, NavigationGraphFlag p_navigationGraphFlag)
         {
             var l_navigationLinksGoingFromTheRequestedNode = NavigationGraph.get_nodeLinksIndexedByStartNode(p_navigationGraph, p_navigationGraphFlag)[p_requestedNode];
@@ -357,13 +356,13 @@ namespace _NavigationGraph
 
         /// <summary>
         /// Checks if the <paramref name="p_requestedNode1"/> and <paramref name="p_requestedNode2"/> have a direct <see cref="NavigationLink"/> connection.
+        /// The checked <see cref="NavigationLink"/> is oriented from <paramref name="p_requestedNode1"/> to <paramref name="p_requestedNode2"/>.
         /// </summary>
-        /// <returns></returns>
-        public static bool areNavigationNodesNeighbors(NavigationGraph p_navigationGraph, NavigationNode p_requestedNode1, NavigationNode p_requestedNode2)
+        public static bool areNavigationNodesNeighbors(NavigationGraph p_navigationGraph, NavigationNode p_requestedNode1, NavigationNode p_requestedNode2, NavigationGraphFlag p_navigationGraphFlag)
         {
-            foreach (NavigationNode l_reachableNavigationNode in getReachableNeighborNavigationNodes(p_navigationGraph, p_requestedNode2, NavigationGraphFlag.SNAPSHOT))
+            foreach (NavigationNode l_reachableNavigationNode in getReachableNeighborNavigationNodes(p_navigationGraph, p_requestedNode1, p_navigationGraphFlag))
             {
-                if (l_reachableNavigationNode == p_requestedNode1)
+                if (l_reachableNavigationNode == p_requestedNode2)
                 {
                     return true;
                 }

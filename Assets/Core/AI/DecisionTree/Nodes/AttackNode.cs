@@ -30,7 +30,7 @@ namespace _AI._DecisionTree
 
         public override void TreeTraversal(ADecisionNode p_sourceNode, ref EntityDecisionContext p_entityDecisionContextdata)
         {
-            if (NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode))
+            if (NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode, NavigationGraphFlag.SNAPSHOT))
             {
                 if (p_entityDecisionContextdata.ActionPoint.CurrentActionPoints >= Attack.AttackData.APCost)
                 {

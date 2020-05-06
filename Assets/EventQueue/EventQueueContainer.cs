@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace _EventQueue
+﻿namespace _EventQueue
 {
     public static class EventQueueContainer
     {

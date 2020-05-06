@@ -64,7 +64,8 @@ namespace _AI._DecisionTree._Builder
             if (NavigationGraphAlgorithm.areNavigationNodesNeighbors(
                     NavigationGraphContainer.UniqueNavigationGraph,
                     p_moveToEntityNode.SourceEntity.CurrentNavigationNode,
-                    p_moveToEntityNode.TargetEntity.CurrentNavigationNode))
+                    p_moveToEntityNode.TargetEntity.CurrentNavigationNode,
+                    NavigationGraphFlag.SNAPSHOT))
             {
                 MoveToNavigationNodeNode l_moveToNavigationNodeNode = MoveToNavigationNodeNode.alloc(p_moveToEntityNode.SourceEntity.CurrentNavigationNode, p_moveToEntityNode.SourceEntity.CurrentNavigationNode);
                 DecisionTree.linkDecisionNodes(p_aiDecisionTree, p_moveToEntityNode, l_moveToNavigationNodeNode);

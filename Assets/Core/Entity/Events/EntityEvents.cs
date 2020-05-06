@@ -77,7 +77,8 @@ namespace _Entity._Events
 
             float l_costToMove = _ActionPoint.Calculations.actionPointBetweenNavigationNodes(SourceEntity.CurrentNavigationNode, TargetNavigationNode);
             ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
-            MovementAllowed = l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove;
+            MovementAllowed = (l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove
+                && NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetNavigationNode, NavigationGraphFlag.CURRENT));
             if (MovementAllowed)
             {
                 EntityComponent.get_component<Locomotion>(SourceEntity).MoveToNavigationNode.Invoke(TargetNavigationNode, (p_startNavigationNode, p_endNavigationNode) =>
@@ -129,6 +130,7 @@ namespace _Entity._Events
 
     /// <summary>
     /// Attacks the <see cref="TargetEntity"/> with the provided <see cref="Attack"/>.
+    /// May cause the <see cref="TargetEntity"/> to be destroyed.
     /// </summary>
     public class AttackEntityEvent : AEvent
     {
@@ -149,7 +151,7 @@ namespace _Entity._Events
         {
             if (
                 !SourceEntity.MarkedForDestruction && !TargetEntity.MarkedForDestruction &&
-                NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode))
+                NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode, NavigationGraphFlag.SNAPSHOT))
             {
                 ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
                 if (l_actionPoint.ActionPointData.CurrentActionPoints >= Attack.AttackData.APCost)
@@ -162,6 +164,7 @@ namespace _Entity._Events
                     if (TargetEntity.MarkedForDestruction)
                     {
                         EventQueue.insertEventAt(p_eventQueue, 0, EntityDestroyEvent.alloc(TargetEntity));
+                        EventQueue.insertEventAt(p_eventQueue, 0, EntityCurrentNavigationNodeChange.alloc(TargetEntity, null));
                     }
                 }
             }
@@ -169,12 +172,15 @@ namespace _Entity._Events
     }
 
     /// <summary>
-    /// When the <see cref="Entity.CurrentNavigationNode"/> will be modified.
+    /// Updates the <see cref="Entity.CurrentNavigationNode"/> to <see cref="NavigationNode"/>.
     /// <see cref="NavigationEngine"/> is updated to take into account this change. 
     /// </summary>
     public class EntityCurrentNavigationNodeChange : AEvent
     {
         public Entity Entity;
+        /// <summary>
+        /// The target <see cref="NavigationNode"/> can be null. Meaning that the <see cref="Entity"/> is no more on the <see cref="NavigationGraph"/>.
+        /// </summary>
         public NavigationNode NavigationNode;
 
         public static EntityCurrentNavigationNodeChange alloc(Entity p_entity, NavigationNode p_navigationNode)

@@ -1,5 +1,4 @@
 ﻿using _Entity;
-using _Functional;
 using _Navigation._Modifier;
 using _NavigationGraph;
 
@@ -7,48 +6,53 @@ namespace _NavigationEngine
 {
     public static class ObstacleStep
     {
-        public static void ResolveNavigationObstacleAlterations(Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
+
+        /// <summary>
+        /// If the <paramref name="p_entity"/> has a <see cref="NavigationModifier"/> component, then the fact that he has moved involves that the 
+        /// <see cref="NavigationGraph"/> layout is no more valid. <see cref="NavigationLink"/> must be recomputed to take into account the change.
+        /// </summary>
+        /// 
+        /// <param name="p_newNavigationNode"> 
+        /// The next <see cref="NavigationNode"/> where the <paramref name="p_entity"/> will be.
+        /// This value can be null, meaning that the <paramref name="p_entity"/>"s <see cref="NavigationModifier"/> component has been detached.
+        /// </param>
+        public static void ResolveNavigationObstacleAlterations(NavigationEngine p_navigationEngine, Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             if (p_oldNavigationNode != p_newNavigationNode)
             {
                 NavigationModifier l_entityNavigationModifier = EntityComponent.get_component<NavigationModifier>(p_entity);
                 if (l_entityNavigationModifier != null && l_entityNavigationModifier.NavigationModifierData.IsObstacle)
                 {
-                    if (p_oldNavigationNode != null)
+                    if (p_newNavigationNode != null)
                     {
-                        NavigationLinkAlteration.restoreNavigationLinksFromSnapshot(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
-                            p_oldNavigationNode);
+
+                        if (p_oldNavigationNode != null)
+                        {
+                            // We restore p_oldNavigationNode NavigationLinks only if there is no more NavigationModifier.Obstacle
+                            if (!EntityQuery.isThereAtLeastOfComponentOfType<NavigationModifier>(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_oldNavigationNode, NavigationModifier_IsObstacle))
+                            {
+                                NavigationLinkAlteration.restoreNavigationLinksFromSnapshot(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
+                                       p_oldNavigationNode);
+                            }
+                        }
+
+                        NavigationLinkAlteration.removeNavigationLinks(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
+                            p_newNavigationNode);
+
                     }
-
-                    NavigationLinkAlteration.removeNavigationLinks(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
-                        p_newNavigationNode);
-                }
-            }
-        }
-
-        public struct OnNavigationModifierComponentDetached : MyEvent<AEntityComponent>.IEventCallback
-        {
-            public int Handle { get; set; }
-
-            public EventCallbackResponse Execute(ref AEntityComponent p_component)
-            {
-                // We check if the navigation graph is not null because the OnNavigationModifierComponentDetached event can be called when the level is unloaded.
-                // As we don't know the order of execution from this event from freeing the navigation graph, we check to be sure.
-                if (NavigationGraphContainer.UniqueNavigationGraph != null)
-                {
-                    NavigationModifier l_navigationModifier = p_component as NavigationModifier;
-                    if (l_navigationModifier != null && l_navigationModifier.NavigationModifierData.IsObstacle)
+                    else
                     {
-                        if (l_navigationModifier.AssociatedEntity.CurrentNavigationNode != null)
+                        // We restore p_oldNavigationNode NavigationLinks only if there is no more NavigationModifier.Obstacle
+                        if (!EntityQuery.isThereAtLeastOfComponentOfType<NavigationModifier>(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_oldNavigationNode, NavigationModifier_IsObstacle))
                         {
                             NavigationLinkAlteration.restoreNavigationLinksFromSnapshot(NavigationGraphContainer.UniqueNavigationGraph, NavigationLinkAlteration.ENavigationLinkAlterationMethod.TO,
-                                  l_navigationModifier.AssociatedEntity.CurrentNavigationNode);
+                                   p_oldNavigationNode);
                         }
                     }
                 }
-
-                return EventCallbackResponse.OK;
             }
         }
+
+        private static bool NavigationModifier_IsObstacle(NavigationModifier p_navigationModifier) { return p_navigationModifier.NavigationModifierData.IsObstacle; }
     }
 }
