@@ -1,8 +1,6 @@
 ﻿using _ActionPoint;
 using _Attack;
 using _EventQueue;
-using _Health;
-using _HealthRecovery;
 using _Locomotion;
 using _NavigationEngine;
 using _NavigationGraph;
@@ -166,7 +164,7 @@ namespace _Entity._Events
                     // Maybe reacting to an Interface or tag ?
                     if (TargetEntity.MarkedForDestruction)
                     {
-                        EntityEventsComposition.pushEntityDestroyedEvents(p_eventQueue, TargetEntity);
+                        EntityEventsComposition.addEntityDestroyedEvents(p_eventQueue.Events, TargetEntity, true);
                     }
                 }
             }
@@ -198,27 +196,15 @@ namespace _Entity._Events
             base.Execute(p_eventQueue);
             NavigationNode l_oldNavigationNode = Entity.CurrentNavigationNode;
             Entity.set_currentNavigationNode(Entity, NavigationNode);
-            NavigationEngine.resolveEntityNavigationNodeChange(NavigationEngineContainer.UniqueNavigationEngine, p_eventQueue, Entity, l_oldNavigationNode, NavigationNode);
+            NavigationEngine.resolveEntityNavigationNodeChange(NavigationEngineContainer.UniqueNavigationEngine, Entity, l_oldNavigationNode, NavigationNode);
+
+            for (int i = NavigationEngineContainer.UniqueNavigationEngine.CachedProducedEventsStackByTriggers.Count - 1; i >= 0; i--)
+            {
+                EventQueue.insertEventAt(p_eventQueue, 0, NavigationEngineContainer.UniqueNavigationEngine.CachedProducedEventsStackByTriggers[i]);
+            }
+
         }
     }
 
-    public class HealthRecoveryEvent : AEvent
-    {
-        public Entity TargetEntity;
-        public HealthRecovery HealthRecoveryComponent;
 
-        public static HealthRecoveryEvent alloc(Entity p_targetEntity, HealthRecovery p_healthRecoveryComponent)
-        {
-            HealthRecoveryEvent l_instance = new HealthRecoveryEvent();
-            l_instance.TargetEntity = p_targetEntity;
-            l_instance.HealthRecoveryComponent = p_healthRecoveryComponent;
-            return l_instance;
-        }
-
-        public override void Execute(EventQueue p_eventQueue)
-        {
-            base.Execute(p_eventQueue);
-            Health.addToCurrentHealth(EntityComponent.get_component<Health>(TargetEntity), HealthRecoveryComponent.HealthRecoveryData.RecoveredHealth);
-        }
-    }
 }

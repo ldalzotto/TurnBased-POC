@@ -139,9 +139,9 @@ public class NavigationTest
         Entity l_healthTrigger = Entity.alloc();
 
         HealthRecoveryData l_healthRecoveryData = new HealthRecoveryData() { RecoveredHealth = 10.0f };
-        EntityComponent.add_component(l_healthTrigger, HealthRecovery.alloc(l_healthRecoveryData)); 
+        EntityComponent.add_component(l_healthTrigger, HealthRecoveryTrigger.alloc(l_healthRecoveryData));
         EntityComponent.add_component(l_healthTrigger, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
-        
+
         EventQueue.enqueueEvent(
           TestEventQueue,
           NavigationNodeWarpEntityEvent.alloc(

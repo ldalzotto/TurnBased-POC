@@ -12,7 +12,7 @@ namespace _HealthRecovery
         public HealthRecoveryData HealthRecoveryData;
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
         {
-            EntityComponent.add_component<HealthRecovery>(p_entity, HealthRecovery.alloc(HealthRecoveryData));
+            EntityComponent.add_component<HealthRecoveryTrigger>(p_entity, HealthRecoveryTrigger.alloc(HealthRecoveryData));
         }
     }
 

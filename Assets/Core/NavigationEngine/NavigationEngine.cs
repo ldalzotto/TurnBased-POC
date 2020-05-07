@@ -18,11 +18,13 @@ namespace _NavigationEngine
     public class NavigationEngine
     {
         public EntitiesIndexedByNavigationNodes EntitiesIndexedByNavigationNodes;
+        public List<AEvent> CachedProducedEventsStackByTriggers;
 
         public static NavigationEngine alloc()
         {
             NavigationEngine l_instance = new NavigationEngine();
             l_instance.EntitiesIndexedByNavigationNodes = EntitiesIndexedByNavigationNodes.build(l_instance);
+            l_instance.CachedProducedEventsStackByTriggers = new List<AEvent>();
 
             NavigationEngineContainer.UniqueNavigationEngine = l_instance;
             return l_instance;
@@ -34,12 +36,15 @@ namespace _NavigationEngine
             if (NavigationEngineContainer.UniqueNavigationEngine == p_navigationEngine) { NavigationEngineContainer.UniqueNavigationEngine = null; };
         }
 
-        public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine, EventQueue p_callingQueue,
+        public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
+            p_navigationEngine.CachedProducedEventsStackByTriggers.Clear();
+
             EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_entity, p_oldNavigationNode, p_newNavigationNode);
             ObstacleStep.resolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
-            HealthRecoveryStep.resolveHealthRecovery(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode, p_callingQueue);
+            TriggerResolutionStep.resolveTrigger(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
+            // HealthRecoveryStep.resolveHealthRecovery(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode, p_callingQueue);
         }
     }
 

@@ -17,7 +17,7 @@ namespace _Level
                 GameObject.Instantiate(p_entitySpawnDefinition.EntityPrefab, p_parent);
             }
 
-            for(int i=0;i< 15; i++)
+            for (int i = 0; i < 15; i++)
             {
                 GameObject.Instantiate(p_entitySpawnDefinition.HealthEntityPrefab, p_parent);
             }
