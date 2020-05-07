@@ -1,4 +1,5 @@
 ﻿using _Entity;
+using _EventQueue;
 using _NavigationGraph;
 using System;
 using System.Collections.Generic;
@@ -33,11 +34,12 @@ namespace _NavigationEngine
             if (NavigationEngineContainer.UniqueNavigationEngine == p_navigationEngine) { NavigationEngineContainer.UniqueNavigationEngine = null; };
         }
 
-        public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
+        public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine, EventQueue p_callingQueue,
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_entity, p_oldNavigationNode, p_newNavigationNode);
             ObstacleStep.resolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
+            HealthRecoveryStep.resolveHealthRecovery(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode, p_callingQueue);
         }
     }
 
@@ -128,6 +130,37 @@ namespace _NavigationEngine
             }
 
             return false;
+        }
+
+        public static COMPONENT get_firstComponentOfType<COMPONENT>(ref EntitiesIndexedByNavigationNodes p_entitiesIndexedByNavigationNodes,
+                        NavigationNode p_requestedNode,
+                        Func<COMPONENT, bool> p_filterCondition = null) where COMPONENT : AEntityComponent
+        {
+            if (p_entitiesIndexedByNavigationNodes.Entities.ContainsKey(p_requestedNode))
+            {
+                List<Entity> l_entities = p_entitiesIndexedByNavigationNodes.Entities[p_requestedNode];
+                for (int i = 0; i < l_entities.Count; i++)
+                {
+                    COMPONENT l_component = EntityComponent.get_component<COMPONENT>(l_entities[i]);
+                    if (l_component != null)
+                    {
+                        if (p_filterCondition != null)
+                        {
+                            if (p_filterCondition.Invoke(l_component))
+                            {
+                                return l_component;
+                            }
+                        }
+                        else
+                        {
+                            return l_component;
+                        }
+
+                    }
+                }
+            }
+
+            return null;
         }
 
     }

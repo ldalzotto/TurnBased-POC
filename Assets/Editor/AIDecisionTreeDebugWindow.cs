@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
-using UnityEditor;
-using System.Collections.Generic;
-using static _AI._DecisionTree._Algorithm.Algorithm;
 using Sirenix.Serialization;
 using System;
-using Sirenix.OdinInspector;
+using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
+using static _AI._DecisionTree._Algorithm.Algorithm;
 
 public class AIDecisionTreeDebugWindow : OdinEditorWindow
 {

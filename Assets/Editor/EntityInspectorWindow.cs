@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEditor;
-using System.Collections.Generic;
-using _Entity;
-using Sirenix.OdinInspector.Editor;
+﻿using _Entity;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities.Editor;
-using System;
+using Sirenix.OdinInspector.Editor;
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
 
 public class EntityInspectorWindow : OdinEditorWindow
 {
@@ -24,7 +21,7 @@ public class EntityInspectorWindow : OdinEditorWindow
     private void Refresh()
     {
         EntityRegistrationComponents.Clear();
-      
+
         new List<EntityRegistrationComponent>(GameObject.FindObjectsOfType<EntityRegistrationComponent>())
             .ForEach(
                     (EntityRegistrationComponent p_entityRegistrationComponent)

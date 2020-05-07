@@ -4,7 +4,6 @@ using _NavigationGraph;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Serialization;
-using Sirenix.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +19,7 @@ public class EventQueueDebugWindow : OdinEditorWindow
     }
 
     [FoldoutGroup("Log File")]
-    [FilePath(AbsolutePath =true)]
+    [FilePath(AbsolutePath = true)]
     public string UnityProjectPath;
 
     [FoldoutGroup("Log File")]
@@ -78,7 +77,7 @@ public class EventQueueDebugWindow : OdinEditorWindow
             EventEntry l_eventEntry = new EventEntry()
             {
                 ExecutionTime = DateTime.Now.ToString("hh:mm:ss.fff tt"),
-                ExecutedEvent = (AEvent) SerializationUtility.CreateCopy(p_event)
+                ExecutedEvent = (AEvent)SerializationUtility.CreateCopy(p_event)
             };
             ExecutedEvents.Add(l_eventEntry);
         };

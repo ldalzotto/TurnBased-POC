@@ -25,7 +25,7 @@ namespace _TurnTimeline
                     HasStarted = true;
                 }
             }
-            
+
         }
 
         private void OnDestroy()

@@ -1,7 +1,5 @@
 ﻿using _Entity._Turn;
 using _EventQueue;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaitForUserInputForNextTurn : MonoBehaviour

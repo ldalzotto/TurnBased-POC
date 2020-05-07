@@ -76,6 +76,7 @@
     <Compile Include="Assets\Core\Entity\Compoent\Health.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\Locomotion.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\NavigationModifier.cs" />
+    <Compile Include="Assets\Core\Entity\Compoent\Trigger\HealthRecovery.cs" />
     <Compile Include="Assets\Core\Entity\Compoent\TurnTimelineElligibility.cs" />
     <Compile Include="Assets\Core\Entity\Entity.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Assets\Core\EventQueue\Events\CommonEvents.cs" />
     <Compile Include="Assets\Core\ExternalHooks\ExternalHooks.cs" />
     <Compile Include="Assets\Core\NavigationEngine\NavigationEngine.cs" />
+    <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\HealthRecoveryStep.cs" />
     <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\ObstacleStep.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />

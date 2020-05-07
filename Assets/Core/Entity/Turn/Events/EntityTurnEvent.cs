@@ -4,7 +4,6 @@ using _AI._DecisionTree._Algorithm;
 using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
-using _Functional;
 
 namespace _Entity._Turn
 {
