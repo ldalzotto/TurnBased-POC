@@ -15,13 +15,17 @@ namespace _Entity
     /// </summary>
     public class Entity
     {
+        public EntityGameWorldInstanceID EntityGameWorldInstanceID;
         public bool MarkedForDestruction;
-        public NavigationNode CurrentNavigationNode { get; private set; }
+        public NavigationNode CurrentNavigationNode;
         public RefDictionary<Type, AEntityComponent> Components;
 
         #region events
+        [NonSerialized]
         public MyEvent<Entity> OnEntityDestroyed;
+        [NonSerialized]
         public MyEvent<Entity> OnEntityTurnStart;
+        [NonSerialized]
         public MyEvent<Entity> OnEntityTurnEnd;
         #endregion
 
@@ -63,6 +67,14 @@ namespace _Entity
 
             EntityContainer.Entities.Remove(p_entity);
         }
+    }
+
+    /// <summary>
+    /// Used for debug purpose, to be able to find the associated GameObject is possible.
+    /// </summary>
+    public struct EntityGameWorldInstanceID
+    {
+        public int ID;
     }
 
     #region Entity Component

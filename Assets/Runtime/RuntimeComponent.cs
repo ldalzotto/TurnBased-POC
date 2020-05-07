@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace _RuntimeObject
 {
     [ExecuteAfter(typeof(RuntimeObjectRootComponent))]
-    public abstract class RuntimeComponent : MonoBehaviour
+    public abstract class RuntimeComponent : SerializedMonoBehaviour
     {
         public RuntimeObject RuntimeObject;
 

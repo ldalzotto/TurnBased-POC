@@ -12,7 +12,9 @@ namespace _Locomotion
         /// <summary>
         /// A callback that physically move the <see cref="Entity"/>.
         /// </summary>
+        [NonSerialized]
         public Action<NavigationNode, Action<NavigationNode, NavigationNode>> MoveToNavigationNode;
+        [NonSerialized]
         public Action<NavigationNode> WarpTo;
 
         public static Locomotion alloc(Action<NavigationNode, Action<NavigationNode, NavigationNode>> p_moveToNavigationNode, Action<NavigationNode> p_warpTo)

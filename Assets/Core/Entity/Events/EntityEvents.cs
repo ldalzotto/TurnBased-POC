@@ -10,6 +10,7 @@ namespace _Entity._Events
 {
     public class EntityCreateEvent : AEvent
     {
+        [NonSerialized]
         public Action<Entity> OnEntityCreatedLocalCallback;
         public Entity CreatedEntity;
 

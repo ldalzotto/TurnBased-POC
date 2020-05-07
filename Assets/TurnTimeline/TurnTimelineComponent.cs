@@ -13,12 +13,19 @@ namespace _TurnTimeline
             TurnTimeline = TurnTimeline.alloc();
         }
 
+        private bool HasStarted = false;
+
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (!HasStarted)
             {
-                EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, StartTurnEvent.alloc(TurnTimeline, EventQueueContainer.EntityActionQueue));
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, StartTurnEvent.alloc(TurnTimeline, EventQueueContainer.EntityActionQueue));
+                    HasStarted = true;
+                }
             }
+            
         }
 
         private void OnDestroy()

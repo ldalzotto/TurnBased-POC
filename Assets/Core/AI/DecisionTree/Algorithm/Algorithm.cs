@@ -1,5 +1,6 @@
 ﻿using _ActionPoint;
 using _Entity;
+using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 
@@ -7,6 +8,9 @@ namespace _AI._DecisionTree._Algorithm
 {
     public static class Algorithm
     {
+
+        public static Action<RefList<AIDecisionTreeChoice>> OnAIDecisionTreeTraversed;
+
         public static ref AIDecisionTreeChoice traverseDecisionTree(DecisionTree p_decisionTree, Entity p_calledEntity)
         {
             RefList<AIDecisionTreeChoice> l_choices = new RefList<AIDecisionTreeChoice>();
@@ -59,7 +63,11 @@ namespace _AI._DecisionTree._Algorithm
                 }
             }
 
-            return ref pickTreeChoice(l_choices);
+            ref AIDecisionTreeChoice l_pickedChoice = ref pickTreeChoice(l_choices);
+
+            OnAIDecisionTreeTraversed?.Invoke(l_choices);
+
+            return ref l_pickedChoice;
         }
 
         /// <summary>

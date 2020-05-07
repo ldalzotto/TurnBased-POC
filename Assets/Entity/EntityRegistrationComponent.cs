@@ -3,6 +3,7 @@ using _EventQueue;
 using _Functional;
 using _NavigationGraph;
 using _RuntimeObject;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace _Entity
 
     }
 
+    [Serializable]
     public class EntityRegistrationComponent : RuntimeComponent
     {
         public EntityDefinition EntityDefinition;
@@ -37,7 +39,8 @@ namespace _Entity
 
         private void onEntityCreated(Entity p_entity)
         {
-            AssociatedEntity = Entity.alloc();
+            AssociatedEntity = p_entity;
+            AssociatedEntity.EntityGameWorldInstanceID = new EntityGameWorldInstanceID() { ID = GetInstanceID() };
             MyEvent<Entity>.IEventCallback l_onEntityDestroyed = OnEntityDestroyed.build(this);
             MyEvent<Entity>.register(
                     ref this.AssociatedEntity.OnEntityDestroyed,

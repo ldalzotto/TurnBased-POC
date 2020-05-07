@@ -112,14 +112,22 @@ namespace _NavigationGraph
 
     public class NavigationNode
     {
+        public NavigationNodeGameWorldInstanceID GameInstanceID;
         public float3 LocalPosition;
-
         private NavigationNode() { }
 
         public static NavigationNode alloc()
         {
             return new NavigationNode();
         }
+    }
+
+    /// <summary>
+    /// For debug purposes
+    /// </summary>
+    public struct NavigationNodeGameWorldInstanceID
+    {
+        public int ID;
     }
 
     public class NavigationLink

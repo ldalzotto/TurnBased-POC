@@ -20,6 +20,7 @@ namespace _NavigationGraph
             if (l_navigationNodeComponent)
             {
                 l_navigationNodeComponent.AssociatedNavigationNode = p_associatedNavigationNode;
+                p_associatedNavigationNode.GameInstanceID = new NavigationNodeGameWorldInstanceID() { ID = l_navigationNodeComponent.GetInstanceID() };
             }
             return l_instanciatedGameObject;
         }
