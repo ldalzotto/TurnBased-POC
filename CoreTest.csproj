@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CoreTest\NavigationTest.cs" />
+    <Compile Include="Assets\CoreTest\NavigationEngineTest.cs" />
     <None Include="Assets\CoreTest\CoreTest.asmdef" />
     <Reference Include="UnityEngine.TestRunner">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/UnityEngine.TestRunner.dll</HintPath>
