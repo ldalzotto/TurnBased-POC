@@ -44,7 +44,7 @@ public class AIDecisionTreeDebugWindow : OdinEditorWindow
     {
         base.OnEnable();
         ExecutedEvents = new List<object>();
-        _AI._DecisionTree._Algorithm.Algorithm.OnAIDecisionTreeTraversed = (RefList<AIDecisionTreeChoice> p_choices) =>
+        _AI._DecisionTree._Algorithm.Algorithm.OnAIDecisionTreeTraversed = (AIdecisionTreeTraversalResponse p_choices) =>
         {
             ExecutedEvents.Add(
                 new AIDecisionTreeEntry()

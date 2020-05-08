@@ -9,9 +9,9 @@ namespace _AI._DecisionTree._Algorithm
     public static class Algorithm
     {
 
-        public static Action<RefList<AIDecisionTreeChoice>> OnAIDecisionTreeTraversed;
+        public static Action<AIdecisionTreeTraversalResponse> OnAIDecisionTreeTraversed;
 
-        public static ref AIDecisionTreeChoice traverseDecisionTree(DecisionTree p_decisionTree, Entity p_calledEntity)
+        public static AIdecisionTreeTraversalResponse traverseDecisionTree(DecisionTree p_decisionTree, Entity p_calledEntity)
         {
             RefList<AIDecisionTreeChoice> l_choices = new RefList<AIDecisionTreeChoice>();
 
@@ -64,10 +64,9 @@ namespace _AI._DecisionTree._Algorithm
             }
 
             ref AIDecisionTreeChoice l_pickedChoice = ref pickTreeChoice(l_choices);
-
-            OnAIDecisionTreeTraversed?.Invoke(l_choices);
-
-            return ref l_pickedChoice;
+            AIdecisionTreeTraversalResponse l_response = AIdecisionTreeTraversalResponse.build(ref l_pickedChoice, l_choices);
+            OnAIDecisionTreeTraversed?.Invoke(l_response);
+            return l_response;
         }
 
         /// <summary>
@@ -175,6 +174,21 @@ namespace _AI._DecisionTree._Algorithm
             public static float totalScore(ref AIDecisionScore p_aiDecisionScore)
             {
                 return p_aiDecisionScore.DamageScore + p_aiDecisionScore.PathScore;
+            }
+        }
+
+
+        public struct AIdecisionTreeTraversalResponse
+        {
+            public AIDecisionTreeChoice PickedChoice;
+            public RefList<AIDecisionTreeChoice> AllChoices;
+
+            public static AIdecisionTreeTraversalResponse build(ref AIDecisionTreeChoice p_pickedChoice, RefList<AIDecisionTreeChoice> p_allChoices)
+            {
+                AIdecisionTreeTraversalResponse l_instance = new AIdecisionTreeTraversalResponse();
+                l_instance.PickedChoice = p_pickedChoice;
+                l_instance.AllChoices = p_allChoices;
+                return l_instance;
             }
         }
 

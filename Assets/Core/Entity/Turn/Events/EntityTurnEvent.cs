@@ -34,9 +34,9 @@ namespace _Entity._Turn
                 var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);
 
 
-                for (int i = 0; i < l_choice.DecisionNodesChoiceOrdered.Length; i++)
+                for (int i = 0; i < l_choice.PickedChoice.DecisionNodesChoiceOrdered.Length; i++)
                 {
-                    ADecisionNode l_decisionNode = l_choice.DecisionNodesChoiceOrdered[i];
+                    ADecisionNode l_decisionNode = l_choice.PickedChoice.DecisionNodesChoiceOrdered[i];
                     if (l_decisionNode.DecisionNodeConsumerAction == EDecisionNodeConsumerAction.EXECUTE)
                     {
                         switch (l_decisionNode)
