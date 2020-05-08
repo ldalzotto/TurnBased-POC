@@ -8,6 +8,7 @@ namespace _Level
     {
         public int RandomEntityNumber;
         public GameObject EntityPrefab;
+        public int NumberOfHealthEntity;
         public GameObject HealthEntityPrefab;
 
         public static void spawnEntities(EntitySpawnDefinition p_entitySpawnDefinition, Transform p_parent)
@@ -17,7 +18,7 @@ namespace _Level
                 GameObject.Instantiate(p_entitySpawnDefinition.EntityPrefab, p_parent);
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < p_entitySpawnDefinition.NumberOfHealthEntity; i++)
             {
                 GameObject.Instantiate(p_entitySpawnDefinition.HealthEntityPrefab, p_parent);
             }

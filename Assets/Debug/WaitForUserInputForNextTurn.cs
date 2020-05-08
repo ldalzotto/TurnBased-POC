@@ -13,15 +13,32 @@ public class WaitForUserInputForNextTurn : MonoBehaviour
     {
         public override void OnEventExecuted(EventQueue p_eventQueue, StartTurnEvent p_event)
         {
-            EventQueue.insertBefore(p_eventQueue, p_event.FutureEndTurnEvent, new WaitForUserInput());
+            EventQueue.insertBefore(p_eventQueue, p_event.FutureEndTurnEvent, WaitForUserInput.alloc());
         }
     }
 
     public class WaitForUserInput : AAsyncEvent
     {
+        private bool Pressed;
+
+        private WaitForUserInput() { }
+
+        public static WaitForUserInput alloc()
+        {
+            WaitForUserInput l_instance = new WaitForUserInput();
+            l_instance.Pressed = false;
+            return l_instance;
+        }
+
+        public override void ExecuteEveryIteration()
+        {
+            base.ExecuteEveryIteration();
+            Pressed = Input.GetKeyDown(KeyCode.RightArrow);
+        }
+
         public override bool IsCompleted()
         {
-            return Input.GetKeyDown(KeyCode.RightArrow);
+            return Pressed;
         }
     }
 }

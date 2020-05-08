@@ -23,8 +23,6 @@ namespace _HealthRecovery
         {
             if (EntityComponent.get_component<Health>(p_other) != null)
             {
-                ExternalHooks.LogDebug("HealthRecovery_OnTriggerEnter");
-
                 p_producedEventsStack.Add(HealthRecoveryEvent.alloc(p_other, this));
                 EntityEventsComposition.addEntityDestroyedEvents(p_producedEventsStack, AssociatedEntity);
             }
