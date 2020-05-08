@@ -23,7 +23,8 @@ namespace _AI._DecisionTree._Builder
                 if (EntityComponentContainer.Components.ContainsKey(typeof(HealthRecoveryTrigger)))
                 {
                     buildMoveToHealthTrigger(p_decisionTree, p_sourceEntity);
-                } else
+                }
+                else
                 {
                     buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
                 }
@@ -42,7 +43,7 @@ namespace _AI._DecisionTree._Builder
                 for (int i = 0; i < l_entitiesToGo.Count; i++)
                 {
                     Entity l_entity = l_entitiesToGo[i].AssociatedEntity;
-                    if(l_entity != p_sourceEntity)
+                    if (l_entity != p_sourceEntity)
                     {
                         foreach (ADecisionNode l_moveToNavigationNode in createMoveToEntityTree(p_decisionTree, p_decisionTree.RootNode, p_sourceEntity, l_entity))
                         {
@@ -52,7 +53,7 @@ namespace _AI._DecisionTree._Builder
                                     AttackNode.alloc(p_sourceEntity, l_entity, EntityComponent.get_component<Attack>(p_sourceEntity)));
                         }
                     }
-                    
+
                 }
             }
         }

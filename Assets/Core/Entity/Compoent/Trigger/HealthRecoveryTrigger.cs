@@ -1,7 +1,6 @@
 ﻿using _Entity;
 using _Entity._Events;
 using _EventQueue;
-using _GameLoop;
 using _Health;
 using _NavigationEngine;
 using System.Collections.Generic;
