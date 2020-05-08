@@ -2,6 +2,8 @@
 using _Attack;
 using _Entity;
 using _EntityCharacteristics;
+using _Health;
+using _HealthRecovery;
 using _NavigationGraph;
 using System.Collections.Generic;
 
@@ -11,16 +13,36 @@ namespace _AI._DecisionTree._Builder
     {
         public static void buildAggressiveTree(DecisionTree p_decisionTree, Entity p_sourceEntity)
         {
-            for (int i = 0; i < EntityContainer.Entities.Count; i++)
+            Health p_sourceEntityHealth = EntityComponent.get_component<Health>(p_sourceEntity);
+            if (Health.getHealthRatio(p_sourceEntityHealth) > 0.5f)
             {
-                Entity l_entity = EntityContainer.Entities[i];
-                if (l_entity != p_sourceEntity)
+                buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
+            }
+            else
+            {
+                if (EntityComponentContainer.Components.ContainsKey(typeof(HealthRecoveryTrigger)))
                 {
-                    /* 
-                        For now, only Entities with characteristics are considered elligible to move to.
-                        //TODO, having a more complex targetting system.
-                    */
-                    if (EntityComponent.get_component<EntityCharacteristics>(l_entity) != null)
+                    buildMoveToHealthTrigger(p_decisionTree, p_sourceEntity);
+                } else
+                {
+                    buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
+                }
+            }
+        }
+
+        private static void buildMoveToRangeOfEntity(DecisionTree p_decisionTree, Entity p_sourceEntity)
+        {
+            /* 
+                         For now, only Entities with characteristics are considered elligible to move to.
+                         //TODO, having a more complex targetting system.
+                     */
+            if (EntityComponentContainer.Components.ContainsKey(typeof(EntityCharacteristics)))
+            {
+                var l_entitiesToGo = EntityComponentContainer.Components[typeof(EntityCharacteristics)];
+                for (int i = 0; i < l_entitiesToGo.Count; i++)
+                {
+                    Entity l_entity = l_entitiesToGo[i].AssociatedEntity;
+                    if(l_entity != p_sourceEntity)
                     {
                         foreach (ADecisionNode l_moveToNavigationNode in createMoveToEntityTree(p_decisionTree, p_decisionTree.RootNode, p_sourceEntity, l_entity))
                         {
@@ -30,6 +52,22 @@ namespace _AI._DecisionTree._Builder
                                     AttackNode.alloc(p_sourceEntity, l_entity, EntityComponent.get_component<Attack>(p_sourceEntity)));
                         }
                     }
+                    
+                }
+            }
+        }
+
+        private static void buildMoveToHealthTrigger(DecisionTree p_decisionTree, Entity p_sourceEntity)
+        {
+            if (EntityComponentContainer.Components.ContainsKey(typeof(HealthRecoveryTrigger)))
+            {
+                var l_healthRecoveryTriggers = EntityComponentContainer.Components[typeof(HealthRecoveryTrigger)];
+                for (int i = 0; i < l_healthRecoveryTriggers.Count; i++)
+                {
+                    HealthRecoveryTrigger l_healthRecoveryTrigger = l_healthRecoveryTriggers[i] as HealthRecoveryTrigger;
+                    MoveToNavigationNodeNode l_moveToNavigationNodeNode = MoveToNavigationNodeNode.alloc(p_sourceEntity.CurrentNavigationNode,
+                        l_healthRecoveryTrigger.AssociatedEntity.CurrentNavigationNode);
+                    DecisionTree.linkDecisionNodes(p_decisionTree, p_decisionTree.RootNode, l_moveToNavigationNodeNode);
                 }
             }
         }
