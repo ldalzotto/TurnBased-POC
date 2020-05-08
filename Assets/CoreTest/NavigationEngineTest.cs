@@ -1,20 +1,16 @@
 ﻿using _ActionPoint;
-using _Attack;
 using _Entity;
 using _Entity._Events;
-using _EntityCharacteristics;
 using _EventQueue;
 using _GameLoop;
-using _Health;
-using _HealthRecovery;
 using _Locomotion;
 using _NavigationEngine;
 using _NavigationGraph;
 using _TurnTimeline;
+using _Util;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEngine;
 
 public class NavigationTest
 {
@@ -25,11 +21,11 @@ public class NavigationTest
     {
         TestEventQueue = EventQueue.alloc();
         ExternalHooks.LogDebug = (string s) => { };
-        _TurnTimeline.TurnTimeline.alloc();
+        TurnTimeline.alloc();
         NavigationEngine.alloc();
         NavigationGraph l_navigationGraph = NavigationGraph.alloc();
         NavigationGraphContainer.UniqueNavigationGraph = l_navigationGraph;
-        CreateGridNavigation(l_navigationGraph, 4, 4);
+        NavigationGraphBuild.CreateGridNavigation(l_navigationGraph, 4, 4);
         NavigationGraph.takeSnapshot(l_navigationGraph);
     }
 
@@ -50,139 +46,123 @@ public class NavigationTest
         TestEventQueue = null;
     }
 
-    private void CreateGridNavigation(NavigationGraph p_navigationGraph, int XNumber, int ZNumber)
+    class NavigationEngineTestTriggerComponent : AEntityComponent, INavigationTriggerComponent
     {
-        CreateGridNavigationStructure(XNumber, ZNumber, out Dictionary<int, Vector3> l_navigationNodes, out List<GridNavigationLink> l_navigationLinks);
-
-        List<NavigationNode> l_instancedNavigationNodes = new List<NavigationNode>(l_navigationNodes.Count);
-
-        for (int i = 0; i < l_navigationNodes.Count; i++)
+        public bool IsTriggered;
+        public Entity TriggeredEntity;
+        public Action<Entity, List<AEvent>> OnTriggerEnterHook; 
+        public static NavigationEngineTestTriggerComponent alloc(Action<Entity, List<AEvent>> p_onTriggerEnterHook = null)
         {
-            NavigationNode l_instancedNavigationNode = NavigationGraph.instanciateAndAddNode(p_navigationGraph);
-            l_instancedNavigationNode.LocalPosition = l_navigationNodes[i];
-            l_instancedNavigationNodes.Add(l_instancedNavigationNode);
+            NavigationEngineTestTriggerComponent l_instance = new NavigationEngineTestTriggerComponent();
+            l_instance.IsTriggered = false;
+            l_instance.OnTriggerEnterHook = p_onTriggerEnterHook;
+            return l_instance;
         }
 
-        foreach (GridNavigationLink l_link in l_navigationLinks)
+        public void OnTriggerEnter(Entity p_other, List<AEvent> p_producedEventsStack)
         {
-            NavigationGraph.createLinkBetween(p_navigationGraph, l_instancedNavigationNodes[l_link.StartNode], l_instancedNavigationNodes[l_link.EndNode],
-                    math.distance(l_instancedNavigationNodes[l_link.StartNode].LocalPosition, l_instancedNavigationNodes[l_link.EndNode].LocalPosition));
-        }
-    }
-
-    struct GridNavigationLink
-    {
-        public int StartNode;
-        public int EndNode;
-    }
-
-    private void CreateGridNavigationStructure(int XNumber, int ZNumber, out Dictionary<int, Vector3> p_navigationNodes, out List<GridNavigationLink> p_navigationLinks)
-    {
-        int currentKey = 0;
-
-        Dictionary<int, Dictionary<int, int>> l_XandZtoKeyLookupTable = new Dictionary<int, Dictionary<int, int>>();
-        p_navigationNodes = new Dictionary<int, Vector3>();
-        p_navigationLinks = new List<GridNavigationLink>();
-
-        // Node creation
-        for (int x = 0; x < XNumber; x++)
-        {
-            if (!l_XandZtoKeyLookupTable.ContainsKey(x)) { l_XandZtoKeyLookupTable[x] = new Dictionary<int, int>(); }
-
-            for (int z = 0; z < ZNumber; z++)
-            {
-                p_navigationNodes.Add(currentKey, new Vector3(x, 0, z));
-                l_XandZtoKeyLookupTable[x][z] = currentKey;
-                currentKey += 1;
-            }
-        }
-
-        for (int x = 0; x < XNumber; x++)
-        {
-            for (int z = 0; z < ZNumber; z++)
-            {
-                if (l_XandZtoKeyLookupTable.ContainsKey(x + 1))
-                {
-                    p_navigationLinks.Add(new GridNavigationLink()
-                    {
-                        StartNode = l_XandZtoKeyLookupTable[x][z],
-                        EndNode = l_XandZtoKeyLookupTable[x + 1][z]
-                    });
-                    p_navigationLinks.Add(new GridNavigationLink()
-                    {
-                        StartNode = l_XandZtoKeyLookupTable[x + 1][z],
-                        EndNode = l_XandZtoKeyLookupTable[x][z]
-                    });
-                }
-
-                if (l_XandZtoKeyLookupTable[x].ContainsKey(z - 1))
-                {
-                    p_navigationLinks.Add(new GridNavigationLink()
-                    {
-                        StartNode = l_XandZtoKeyLookupTable[x][z],
-                        EndNode = l_XandZtoKeyLookupTable[x][z - 1]
-                    });
-                    p_navigationLinks.Add(new GridNavigationLink()
-                    {
-                        StartNode = l_XandZtoKeyLookupTable[x][z - 1],
-                        EndNode = l_XandZtoKeyLookupTable[x][z]
-                    });
-                }
-            }
+            IsTriggered = true;
+            TriggeredEntity = p_other;
+            OnTriggerEnterHook?.Invoke(p_other, p_producedEventsStack);
         }
     }
 
     [Test]
-    public void NavigationTriggerComponentTest()
+    public void TriggerComponentTest_warp()
     {
-        // Health trigger
-        Entity l_healthTrigger = Entity.alloc();
+        // Initializing trigger Entity
+        Entity l_testTriggerEntity = Entity.alloc();
 
-        HealthRecoveryData l_healthRecoveryData = new HealthRecoveryData() { RecoveredHealth = 10.0f };
-        EntityComponent.add_component(l_healthTrigger, HealthRecoveryTrigger.alloc(l_healthRecoveryData));
-        EntityComponent.add_component(l_healthTrigger, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
 
+        // We warp the l_testTriggeredEntity to a random NavigationNode
         EventQueue.enqueueEvent(
           TestEventQueue,
           NavigationNodeWarpEntityEvent.alloc(
-              l_healthTrigger,
-              NavigationGraphAlgorithm.getNearestNode(
-                  NavigationGraphContainer.UniqueNavigationGraph,
-                  new float3(1.0f, 0.0f, 1.0f)
-                  )
+              l_testTriggerEntity,
+              NavigationGraphAlgorithm.pickRandomNode(NavigationGraphContainer.UniqueNavigationGraph)
           )
-      );
+        );
 
         EventQueue.iterate(TestEventQueue);
 
-        //
-
-        Entity l_entity1 = Entity.alloc();
-        EntityCharacteristicsData l_entityCharacteristicsData = new EntityCharacteristicsData() { Speed = 20.0f };
-        TurnTimelineElligibilityData l_turnTimelineElligibilityData = TurnTimelineElligibilityData.build(true);
-        ActionPointData l_actionPointData = new ActionPointData() { InitialActionPoints = 3.0f };
-        AttackData l_attackData = new AttackData() { APCost = 1.0f, Damage = 1.0f };
-        HealthData l_healthData = new HealthData() { MaxHealth = 100.0f, CurrentHealth = 100.0f };
-
-        EntityComponent.add_component(l_entity1, EntityCharacteristics.alloc(ref l_entityCharacteristicsData));
-        EntityComponent.add_component(l_entity1, TurnTimelineElligibility.alloc(ref l_turnTimelineElligibilityData));
-        EntityComponent.add_component(l_entity1, ActionPoint.alloc(ref l_actionPointData));
-        EntityComponent.add_component(l_entity1, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
-        EntityComponent.add_component(l_entity1, Attack.alloc(ref l_attackData));
-        EntityComponent.add_component(l_entity1, Health.alloc(ref l_healthData));
+        // We create the Entity that will be involved in the trigger
+        Entity l_entity = Entity.alloc();
+        EntityComponent.add_component(l_entity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
 
         EventQueue.enqueueEvent(
             TestEventQueue,
             NavigationNodeWarpEntityEvent.alloc(
-                l_entity1,
-                l_healthTrigger.CurrentNavigationNode
+                l_entity,
+                l_testTriggerEntity.CurrentNavigationNode
             )
         );
 
         EventQueue.iterate(TestEventQueue);
 
-        Assert.IsTrue(EntityComponent.get_component<Health>(l_entity1).HealthData.CurrentHealth == 110.0f);
-        Assert.IsTrue(!EntityContainer.Entities.Contains(l_healthTrigger));
+
+        NavigationEngineTestTriggerComponent l_triggerComponent = EntityComponent.get_component<NavigationEngineTestTriggerComponent>(l_testTriggerEntity);
+
+        Assert.IsTrue(l_triggerComponent.IsTriggered);
+        Assert.IsTrue(l_triggerComponent.TriggeredEntity == l_entity);
+    }
+
+    [Test]
+    public void TriggerComponentTest_navigationNodeMove()
+    {
+        // Initializing trigger Entity
+        Entity l_testTriggerEntity = Entity.alloc();
+
+        EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+
+        // We warp the l_testTriggeredEntity to a random NavigationNode
+        EventQueue.enqueueEvent(
+          TestEventQueue,
+          NavigationNodeWarpEntityEvent.alloc(
+              l_testTriggerEntity,
+              NavigationGraphAlgorithm.pickRandomNode(NavigationGraphContainer.UniqueNavigationGraph)
+          )
+        );
+
+        EventQueue.iterate(TestEventQueue);
+
+        // We create the Entity that will be involved in the trigger
+        Entity l_entity = Entity.alloc();
+        EntityComponent.add_component(l_entity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+
+        ActionPointData l_actionPointdata = new ActionPointData() { InitialActionPoints = 999f, CurrentActionPoints = 999f };
+        EntityComponent.add_component(l_entity, ActionPoint.alloc(ref l_actionPointdata));
+
+        var l_entityNavigationNodeEnumerator =
+              NavigationGraphAlgorithm.getReachableNeighborNavigationNodes(NavigationGraphContainer.UniqueNavigationGraph, l_testTriggerEntity.CurrentNavigationNode, NavigationGraphFlag.CURRENT).GetEnumerator();
+        l_entityNavigationNodeEnumerator.MoveNext();
+
+        EventQueue.enqueueEvent(
+           TestEventQueue,
+           NavigationNodeWarpEntityEvent.alloc(
+               l_entity,
+               l_entityNavigationNodeEnumerator.Current
+           )
+         );
+
+
+        NavigationNodeMoveEvent l_navigationNodeMoveEvent = NavigationNodeMoveEvent.alloc(l_entity, l_testTriggerEntity.CurrentNavigationNode);
+        EventQueue.enqueueEvent(
+            TestEventQueue,
+            l_navigationNodeMoveEvent
+        );
+
+        while (!l_navigationNodeMoveEvent.IsCompleted())
+        {
+            EventQueue.iterate(TestEventQueue);
+        }
+
+        NavigationEngineTestTriggerComponent l_triggerComponent = EntityComponent.get_component<NavigationEngineTestTriggerComponent>(l_testTriggerEntity);
+
+        Assert.IsTrue(l_triggerComponent.IsTriggered);
+        Assert.IsTrue(l_triggerComponent.TriggeredEntity == l_entity);
     }
 
 }

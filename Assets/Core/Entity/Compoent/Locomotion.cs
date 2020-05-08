@@ -6,7 +6,7 @@ namespace _Locomotion
 {
     public class Locomotion : AEntityComponent
     {
-        public static void EMPTY_MOVE_TO_NAVIGATION_NODE(NavigationNode n1, Action<NavigationNode, NavigationNode> p1) { }
+        public static void EMPTY_MOVE_TO_NAVIGATION_NODE(NavigationNode n1, Action<NavigationNode, NavigationNode> p1) { p1(null, null); }
         public static void EMPTY_WARP(NavigationNode n1) { }
 
         /// <summary>

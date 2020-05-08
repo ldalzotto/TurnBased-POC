@@ -80,6 +80,7 @@ namespace _Entity._Events
             ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
             MovementAllowed = (l_actionPoint.ActionPointData.CurrentActionPoints >= l_costToMove
                 && NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetNavigationNode, NavigationGraphFlag.CURRENT));
+            
             if (MovementAllowed)
             {
                 EntityComponent.get_component<Locomotion>(SourceEntity).MoveToNavigationNode.Invoke(TargetNavigationNode, (p_startNavigationNode, p_endNavigationNode) =>

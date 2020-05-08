@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CoreTest\NavigationEngineTest.cs" />
+    <Compile Include="Assets\CoreTest\Util\NavigationGraphBuild.cs" />
     <None Include="Assets\CoreTest\CoreTest.asmdef" />
     <Reference Include="UnityEngine">
       <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
