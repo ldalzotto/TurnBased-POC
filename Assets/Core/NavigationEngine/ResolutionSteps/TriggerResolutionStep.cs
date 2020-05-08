@@ -6,6 +6,10 @@ namespace _NavigationEngine
 {
     public static class TriggerResolutionStep
     {
+        /// <summary>
+        /// Calls trigger event <see cref="INavigationTriggerComponent.OnTriggerEnter(Entity, List{_EventQueue.AEvent})"/> if the <paramref name="p_movingEntity"/> 
+        /// moves to a <see cref="NavigationNode"/> that contains any <see cref="INavigationTriggerComponent"/>.
+        /// </summary>
         public static void resolveTrigger(NavigationEngine p_navigationEngine, Entity p_movingEntity,
                NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {

@@ -6,7 +6,7 @@ public class WaitForUserInputForNextTurn : MonoBehaviour
 {
     private void Awake()
     {
-        EventQueueListener.registerEvent(EventQueueListener.UniqueInstance, new OnStartTurnEvent());
+       EventQueueListener.registerEvent(EventQueueListener.UniqueInstance, new OnStartTurnEvent());
     }
 
     public class OnStartTurnEvent : AEventListener<StartTurnEvent>

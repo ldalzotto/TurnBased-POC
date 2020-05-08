@@ -12,8 +12,8 @@ namespace _NavigationEngine
     }
 
     /// <summary>
-    /// The <see cref="NavigationEngine"/> is responsible of logic executed when an <see cref="Entity"/> has it's <see cref="Entity.CurrentNavigationNode"/> changed.
-    /// When this occurs, the <see cref="NavigationEngine"/> triggers event based on the which <see cref="Entity"/> there is at the next <see cref="NavigationNode"/>.
+    /// The <see cref="NavigationEngine"/> is responsible of logic executed when an <see cref="Entity"/> has it's <see cref="Entity.CurrentNavigationNode"/> modified.
+    /// When this occurs, the <see cref="NavigationEngine"/> triggers event based on <see cref="INavigationTriggerComponent"/> events triggered.
     /// </summary>
     public class NavigationEngine
     {
@@ -36,6 +36,14 @@ namespace _NavigationEngine
             if (NavigationEngineContainer.UniqueNavigationEngine == p_navigationEngine) { NavigationEngineContainer.UniqueNavigationEngine = null; };
         }
 
+        /// <summary>
+        /// Tick the <see cref="NavigationEngine"/> : 
+        ///     - Updates the position of the <paramref name="p_entity"/> on the <see cref="NavigationNode"/> indexed containers 
+        ///     (see <see cref="EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref EntitiesIndexedByNavigationNodes, Entity, NavigationNode, NavigationNode)"/>).
+        ///     - If the <paramref name="p_entity"/> is defined as an obstacle <see cref="_Navigation._Modifier.NavigationModifier"/>, then obstacles representation
+        ///     of the <see cref="NavigationGraph"/> is updated (see <see cref="ObstacleStep.resolveNavigationObstacleAlterations(NavigationEngine, Entity, NavigationNode, NavigationNode)"/>).
+        ///     - Calls <see cref="INavigationTriggerComponent.OnTriggerEnter(Entity, List{_EventQueue.AEvent})"/> events is elligible (see <see cref="TriggerResolutionStep.resolveTrigger(NavigationEngine, Entity, NavigationNode, NavigationNode)"/>).
+        /// </summary>
         public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
@@ -44,7 +52,6 @@ namespace _NavigationEngine
             EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_entity, p_oldNavigationNode, p_newNavigationNode);
             ObstacleStep.resolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
             TriggerResolutionStep.resolveTrigger(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
-            // HealthRecoveryStep.resolveHealthRecovery(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode, p_callingQueue);
         }
     }
 
