@@ -91,6 +91,7 @@
     <Compile Include="Assets\Core\NavigationEngine\NavigationEngine.cs" />
     <Compile Include="Assets\Core\NavigationEngine\NavigationTriggerComponent\INavigationTriggerComponent.cs" />
     <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\ObstacleStep.cs" />
+    <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\TriggerResolutionOrder.cs" />
     <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\TriggerResolutionStep.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Assets\Core\Tools\Collections\RefDictionary.cs" />
     <Compile Include="Assets\Core\Tools\Collections\RefList.cs" />
     <Compile Include="Assets\Core\Tools\Functional\Event\MyEvent.cs" />
+    <Compile Include="Assets\Core\Tools\Math\Dichotomy.cs" />
     <Compile Include="Assets\Core\Tools\Math\MyRandom.cs" />
     <Compile Include="Assets\Core\Tools\Memory\MemoryBuffer.cs" />
     <Compile Include="Assets\Core\TurnTimeline\Algorithm.cs" />

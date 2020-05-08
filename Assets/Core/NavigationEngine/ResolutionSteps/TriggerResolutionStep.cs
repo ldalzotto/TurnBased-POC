@@ -18,18 +18,20 @@ namespace _NavigationEngine
                 if (p_navigationEngine.EntitiesIndexedByNavigationNodes.Entities.ContainsKey(p_newNavigationNode))
                 {
                     List<Entity> l_entitiesOnTheNewNavigationNode = p_navigationEngine.EntitiesIndexedByNavigationNodes.Entities[p_newNavigationNode];
+                    List<INavigationTriggerComponent> l_currentEntityTriggerComponents = new List<INavigationTriggerComponent>();
+
                     for (int i = 0; i < l_entitiesOnTheNewNavigationNode.Count; i++)
                     {
                         Entity l_entity = l_entitiesOnTheNewNavigationNode[i];
                         if (l_entity != p_movingEntity)
                         {
-                            var l_components = l_entity.Components.GetRefEnumerator();
-                            while (l_components.MoveNext())
+
+                            TriggerResolutionOrder.extractTriggerComponentSortedByExecutionOrder(l_currentEntityTriggerComponents, l_entity);
+
+                            for (int j = 0; j < l_currentEntityTriggerComponents.Count; j++)
                             {
-                                if (l_components.GetCurrentRef().value is INavigationTriggerComponent)
-                                {
-                                    ((INavigationTriggerComponent)l_components.GetCurrentRef().value).OnTriggerEnter(p_movingEntity, p_navigationEngine.CachedProducedEventsStackByTriggers);
-                                }
+                                INavigationTriggerComponent l_resolvedComponent = l_currentEntityTriggerComponents[j];
+                                l_resolvedComponent.OnTriggerEnter(p_movingEntity, p_navigationEngine.CachedProducedEventsStackByTriggers);
                             }
                         }
                     }
@@ -37,6 +39,8 @@ namespace _NavigationEngine
             }
 
         }
+
+
     }
 }
 

@@ -14,6 +14,8 @@ using System.Collections.Generic;
 
 public class NavigationTest
 {
+
+
     public static EventQueue TestEventQueue;
 
     [SetUp]
@@ -22,6 +24,7 @@ public class NavigationTest
         TestEventQueue = EventQueue.alloc();
         ExternalHooks.LogDebug = (string s) => { };
         TurnTimeline.alloc();
+
         NavigationEngine.alloc();
         NavigationGraph l_navigationGraph = NavigationGraph.alloc();
         NavigationGraphContainer.UniqueNavigationGraph = l_navigationGraph;
@@ -50,7 +53,8 @@ public class NavigationTest
     {
         public bool IsTriggered;
         public Entity TriggeredEntity;
-        public Action<Entity, List<AEvent>> OnTriggerEnterHook; 
+        public Action<Entity, List<AEvent>> OnTriggerEnterHook;
+
         public static NavigationEngineTestTriggerComponent alloc(Action<Entity, List<AEvent>> p_onTriggerEnterHook = null)
         {
             NavigationEngineTestTriggerComponent l_instance = new NavigationEngineTestTriggerComponent();
@@ -59,7 +63,7 @@ public class NavigationTest
             return l_instance;
         }
 
-        public void OnTriggerEnter(Entity p_other, List<AEvent> p_producedEventsStack)
+        public virtual void OnTriggerEnter(Entity p_other, List<AEvent> p_producedEventsStack)
         {
             IsTriggered = true;
             TriggeredEntity = p_other;
@@ -165,4 +169,93 @@ public class NavigationTest
         Assert.IsTrue(l_triggerComponent.TriggeredEntity == l_entity);
     }
 
+    class NavigationEngineTestTriggerComponent_Order1st : NavigationEngineTestTriggerComponent
+    {
+
+        public static float TRIGGER_RESOLUTION_PRIORITY;
+        static NavigationEngineTestTriggerComponent_Order1st()
+        {
+            TRIGGER_RESOLUTION_PRIORITY = Dichotomy.EvaluatePriority(null, null);
+            TriggerResolutionOrder.TriggerComponentResolutionOrder.Add(typeof(NavigationEngineTestTriggerComponent_Order1st), Dichotomy.EvaluatePriority(null, null));
+        }
+
+        public new static NavigationEngineTestTriggerComponent_Order1st alloc(Action<Entity, List<AEvent>> p_onTriggerEnterHook = null)
+        {
+            NavigationEngineTestTriggerComponent_Order1st l_instance = new NavigationEngineTestTriggerComponent_Order1st();
+            l_instance.IsTriggered = false;
+            l_instance.OnTriggerEnterHook = p_onTriggerEnterHook;
+            return l_instance;
+        }
+    }
+
+    class NavigationEngineTestTriggerComponent_Order2nd : NavigationEngineTestTriggerComponent
+    {
+
+        public NavigationEngineTestTriggerComponent_Order1st TriggerSupposedToBeBefore;
+        public bool ExecutedAfterTriggerSupposedToBeBefore;
+        public static NavigationEngineTestTriggerComponent_Order2nd alloc(NavigationEngineTestTriggerComponent_Order1st p_triggerSupposedToBeBefore,
+                            Action<Entity, List<AEvent>> p_onTriggerEnterHook = null)
+        {
+            NavigationEngineTestTriggerComponent_Order2nd l_instance = new NavigationEngineTestTriggerComponent_Order2nd();
+            l_instance.TriggerSupposedToBeBefore = p_triggerSupposedToBeBefore;
+            l_instance.OnTriggerEnterHook = p_onTriggerEnterHook;
+            return l_instance;
+        }
+
+        static NavigationEngineTestTriggerComponent_Order2nd()
+        {
+            TriggerResolutionOrder.TriggerComponentResolutionOrder.Add(typeof(NavigationEngineTestTriggerComponent_Order2nd),
+                    Dichotomy.EvaluatePriority(null, new float[] { NavigationEngineTestTriggerComponent_Order1st.TRIGGER_RESOLUTION_PRIORITY }));
+        }
+
+        public override void OnTriggerEnter(Entity p_other, List<AEvent> p_producedEventsStack)
+        {
+            base.OnTriggerEnter(p_other, p_producedEventsStack);
+            ExecutedAfterTriggerSupposedToBeBefore = TriggerSupposedToBeBefore.IsTriggered;
+        }
+    }
+
+    [Test]
+    public void TriggerComponentTest_executionOrder()
+    {
+        // Initializing trigger Entity
+        Entity l_testTriggerEntity = Entity.alloc();
+
+        NavigationEngineTestTriggerComponent_Order1st l_firstTrigger = NavigationEngineTestTriggerComponent_Order1st.alloc();
+        NavigationEngineTestTriggerComponent_Order2nd l_secondTrigger = NavigationEngineTestTriggerComponent_Order2nd.alloc(l_firstTrigger);
+
+        EntityComponent.add_component(l_testTriggerEntity, l_secondTrigger);
+        EntityComponent.add_component(l_testTriggerEntity, l_firstTrigger);
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+
+        // We warp the l_testTriggeredEntity to a random NavigationNode
+        EventQueue.enqueueEvent(
+          TestEventQueue,
+          NavigationNodeWarpEntityEvent.alloc(
+              l_testTriggerEntity,
+              NavigationGraphAlgorithm.pickRandomNode(NavigationGraphContainer.UniqueNavigationGraph)
+          )
+        );
+
+        EventQueue.iterate(TestEventQueue);
+
+        // We create the Entity that will be involved in the trigger
+        Entity l_entity = Entity.alloc();
+        EntityComponent.add_component(l_entity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+
+        EventQueue.enqueueEvent(
+            TestEventQueue,
+            NavigationNodeWarpEntityEvent.alloc(
+                l_entity,
+                l_testTriggerEntity.CurrentNavigationNode
+            )
+        );
+
+        EventQueue.iterate(TestEventQueue);
+
+
+        NavigationEngineTestTriggerComponent l_triggerComponent = EntityComponent.get_component<NavigationEngineTestTriggerComponent>(l_testTriggerEntity);
+
+        Assert.IsTrue(l_secondTrigger.ExecutedAfterTriggerSupposedToBeBefore);
+    }
 }

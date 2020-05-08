@@ -14,7 +14,7 @@ namespace _Health
         {
             GameLoop.AddGameLoopCallback(GameLoopHook.Tick, new GameLoopCallback()
             {
-                GameLoopPriority = GameLoopCallback.EvaluatePriority(null, null),
+                GameLoopPriority = Dichotomy.EvaluatePriority(null, null),
                 Callback = HealthGUIComponentContainer.Tick
             });
         }

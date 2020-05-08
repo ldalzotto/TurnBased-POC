@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using _NavigationGraph;
+﻿using _NavigationGraph;
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace _Util
 {

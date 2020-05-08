@@ -4,8 +4,6 @@ using _AI._DecisionTree._Algorithm;
 using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
-using System.Threading.Tasks;
-using static _AI._DecisionTree._Algorithm.Algorithm;
 
 namespace _Entity._Turn
 {

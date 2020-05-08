@@ -48,11 +48,11 @@ namespace _NavigationEngine
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             p_navigationEngine.CachedProducedEventsStackByTriggers.Clear();
-
             EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_entity, p_oldNavigationNode, p_newNavigationNode);
             ObstacleStep.resolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
             TriggerResolutionStep.resolveTrigger(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
         }
+
     }
 
     public struct EntitiesIndexedByNavigationNodes
