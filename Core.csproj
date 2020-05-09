@@ -91,7 +91,6 @@
     <Compile Include="Assets\Core\NavigationEngine\NavigationEngine.cs" />
     <Compile Include="Assets\Core\NavigationEngine\NavigationTriggerComponent\INavigationTriggerComponent.cs" />
     <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\ObstacleStep.cs" />
-    <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\TriggerResolutionOrder.cs" />
     <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\TriggerResolutionStep.cs" />
     <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
     <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />

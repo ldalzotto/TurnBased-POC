@@ -6,6 +6,10 @@ using _TurnTimeline;
 
 namespace _Entity._Turn
 {
+    /// <summary>
+    /// Requests the <see cref="TurnTimeline"/> to get the next <see cref="Entity"/> to play and start it's turn.
+    /// This event is called only once per <see cref="Entity"/> turn. Thus, all logic that must be execute only once must be put here.
+    /// </summary>
     public class StartTurnEvent : AEvent
     {
         public TurnTimeline TurnTimeline;
@@ -30,19 +34,20 @@ namespace _Entity._Turn
         {
             Entity l_nextTurnEntity = TurnTimelineAlgorithm.IncrementTimeline(TurnTimeline);
 
-            // ExternalHooks.LogDebug(l_nextTurnEntity.GetHashCode().ToString());
-
             if (l_nextTurnEntity != null)
             {
                 ActionPoint.resetActionPoints(EntityComponent.get_component<ActionPoint>(l_nextTurnEntity));
+
                 MyEvent<Entity>.broadcast(ref l_nextTurnEntity.OnEntityTurnStart, ref l_nextTurnEntity);
 
+                // We wait for the EntityActionQueue to finish.
                 EventQueue.enqueueEvent(p_eventQueue, IterateAndWaitForEmptyQueue.alloc(EntityActionQueue));
-                FutureEndTurnEvent = EndTurnEvent.alloc(TurnTimeline, EntityActionQueue, l_nextTurnEntity);
-                EventQueue.enqueueEvent(p_eventQueue, FutureEndTurnEvent);
+
+                // We enqueue an EndTurnEvent to trigger end turn related events. The EndTurnEvent will enqueue another StartTurnEvent on completion.
+                EventQueue.enqueueEvent(p_eventQueue, EndTurnEvent.alloc(TurnTimeline, EntityActionQueue, l_nextTurnEntity));
 
                 EventQueue.clearAll(EntityActionQueue);
-                EventQueue.enqueueEvent(EntityActionQueue, StartEntityTurnEvent.alloc(l_nextTurnEntity));
+                EventQueue.enqueueEvent(EntityActionQueue, EntityTurnIterationEvent.alloc(l_nextTurnEntity));
             }
         }
     }

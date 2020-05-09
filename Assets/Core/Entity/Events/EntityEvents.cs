@@ -174,7 +174,8 @@ namespace _Entity._Events
 
     /// <summary>
     /// Updates the <see cref="Entity.CurrentNavigationNode"/> to <see cref="NavigationNode"/>.
-    /// <see cref="NavigationEngine"/> is updated to take into account this change. 
+    /// <see cref="NavigationEngine"/> is updated to trigger <see cref="INavigationTriggerComponent"/> events if elligible.
+    /// /!\ All <see cref="Entity.CurrentNavigationNode"/> modification must be done via this event as he manages the update of the <see cref="NavigationEngine"/>.
     /// </summary>
     public class EntityCurrentNavigationNodeChange : AEvent
     {

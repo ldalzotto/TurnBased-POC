@@ -53,11 +53,11 @@ namespace _GameLoop
 
         private void Update()
         {
+            float delta = Time.deltaTime;
+
             MyEvent.broadcast(ref ExternalHooks.OnTickStartEvent);
 
             EventQueueContainer.iterate();
-
-            float delta = Time.deltaTime;
 
             List<GameLoopCallback> l_tickCallbacks = GameSequencer[GameLoopHook.Tick];
 

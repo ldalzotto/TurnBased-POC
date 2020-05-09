@@ -13,7 +13,7 @@ namespace _NavigationEngine
 
     /// <summary>
     /// The <see cref="NavigationEngine"/> is responsible of logic executed when an <see cref="Entity"/> has it's <see cref="Entity.CurrentNavigationNode"/> modified.
-    /// When this occurs, the <see cref="NavigationEngine"/> triggers event based on <see cref="INavigationTriggerComponent"/> events triggered.
+    /// When this occurs, the <see cref="NavigationEngine"/> triggers event based on the presence of <see cref="INavigationTriggerComponent"/>.
     /// </summary>
     public class NavigationEngine
     {
@@ -38,12 +38,14 @@ namespace _NavigationEngine
 
         /// <summary>
         /// Tick the <see cref="NavigationEngine"/> : 
-        ///     - Updates the position of the <paramref name="p_entity"/> on the <see cref="NavigationNode"/> indexed containers 
+        ///     - Updates the position of the <paramref name="p_entity"/> on the <see cref="NavigationNode"/> indexed containers.
         ///     (see <see cref="EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref EntitiesIndexedByNavigationNodes, Entity, NavigationNode, NavigationNode)"/>).
         ///     - If the <paramref name="p_entity"/> is defined as an obstacle <see cref="_Navigation._Modifier.NavigationModifier"/>, then obstacles representation
         ///     of the <see cref="NavigationGraph"/> is updated (see <see cref="ObstacleStep.resolveNavigationObstacleAlterations(NavigationEngine, Entity, NavigationNode, NavigationNode)"/>).
-        ///     - Calls <see cref="INavigationTriggerComponent.OnTriggerEnter(Entity, List{_EventQueue.AEvent})"/> events is elligible (see <see cref="TriggerResolutionStep.resolveTrigger(NavigationEngine, Entity, NavigationNode, NavigationNode)"/>).
+        ///     - Calls the trigger events if elligible (see <see cref="TriggerResolutionStep.resolveTrigger(NavigationEngine, Entity, NavigationNode, NavigationNode)"/>).
         /// </summary>
+        /// <param name="p_oldNavigationNode"> Thr old <see cref="NavigationNode"/> can be null. Meaning that the <paramref name="p_entity"/> wasn't positioned inside the <see cref="NavigationGraph"/> before. </param>
+        /// <param name="p_newNavigationNode"> The target <see cref="NavigationNode"/> can be null. Meaning that the <paramref name="p_entity"/> have been destroyed. </param>
         public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
@@ -104,6 +106,9 @@ namespace _NavigationEngine
         }
     }
 
+    /// <summary>
+    /// Query the <see cref="EntitiesIndexedByNavigationNodes.Entities"/>.
+    /// </summary>
     public static class EntityQuery
     {
 
@@ -143,37 +148,5 @@ namespace _NavigationEngine
 
             return false;
         }
-
-        public static COMPONENT get_firstComponentOfType<COMPONENT>(ref EntitiesIndexedByNavigationNodes p_entitiesIndexedByNavigationNodes,
-                        NavigationNode p_requestedNode,
-                        Func<COMPONENT, bool> p_filterCondition = null) where COMPONENT : AEntityComponent
-        {
-            if (p_entitiesIndexedByNavigationNodes.Entities.ContainsKey(p_requestedNode))
-            {
-                List<Entity> l_entities = p_entitiesIndexedByNavigationNodes.Entities[p_requestedNode];
-                for (int i = 0; i < l_entities.Count; i++)
-                {
-                    COMPONENT l_component = EntityComponent.get_component<COMPONENT>(l_entities[i]);
-                    if (l_component != null)
-                    {
-                        if (p_filterCondition != null)
-                        {
-                            if (p_filterCondition.Invoke(l_component))
-                            {
-                                return l_component;
-                            }
-                        }
-                        else
-                        {
-                            return l_component;
-                        }
-
-                    }
-                }
-            }
-
-            return null;
-        }
-
     }
 }
