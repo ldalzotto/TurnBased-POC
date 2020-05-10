@@ -19,14 +19,14 @@ namespace _Locomotion
 
         static LocomotionSystemComponentContainer()
         {
-            GameLoop.AddGameLoopCallback(GameLoopHook.BeforePhysics, new GameLoopCallback() { GameLoopPriority = 0.0f, Callback = LocomotionSystemComponentContainer.FixedTick });
+            GameLoop.AddGameLoopCallback(GameLoopHook.Tick, new GameLoopCallback() { GameLoopPriority = 0.0f, Callback = LocomotionSystemComponentContainer.Tick });
         }
 
-        private static void FixedTick(float d)
+        private static void Tick(float d)
         {
             for (int i = 0; i < LocomotionSystemComponents.Count; i++)
             {
-                LocomotionSystemComponents[i].FixedTick(d);
+                LocomotionSystemComponents[i].Tick(d);
             }
         }
     }
@@ -39,10 +39,6 @@ namespace _Locomotion
     /// </summary>
     public class LocomotionSystemComponent : RuntimeComponent
     {
-        #region Component Dependencies
-        public CachedComponent<Rigidbody> RigidBody;
-        #endregion
-
         public float TravelSpeed;
         public Entity AssociatedEntity;
 
@@ -56,7 +52,6 @@ namespace _Locomotion
         public override void Awake()
         {
             base.Awake();
-            RigidBody = CachedComponent<Rigidbody>.New(RuntimeObject.RuntimeObjectRootComponent.gameObject);
             LocomotionSystemComponentContainer.LocomotionSystemComponents.Add(this);
         }
 
@@ -82,19 +77,17 @@ namespace _Locomotion
 
         public void warp(NavigationNode p_navigationNode)
         {
-            RigidBody.Get().MovePosition(
-                NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent, p_navigationNode)
-            );
+            RuntimeObject.RuntimeObjectRootComponent.transform.position = NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent, p_navigationNode);
         }
 
 
 
-        public void FixedTick(float d)
+        public void Tick(float d)
         {
             if (m_headingTowardsTargetNode)
             {
-                Vector3 l_initialDirection = Vector3.Normalize(m_currentDestination - RigidBody.Get().position);
-                Vector3 l_targetPosition = RigidBody.Get().position + (l_initialDirection * TravelSpeed * d);
+                Vector3 l_initialDirection = Vector3.Normalize(m_currentDestination - RuntimeObject.RuntimeObjectRootComponent.transform.position);
+                Vector3 l_targetPosition = RuntimeObject.RuntimeObjectRootComponent.transform.position + (l_initialDirection * TravelSpeed * d);
                 Vector3 l_finalDirection = Vector3.Normalize(m_currentDestination - l_targetPosition);
 
                 // If the initial direction is not the same as the final direction, this means that the destination point has been crossed
@@ -107,7 +100,7 @@ namespace _Locomotion
                     */
                     l_targetPosition = m_currentDestination;
                 }
-                RigidBody.Get().MovePosition(l_targetPosition);
+                RuntimeObject.RuntimeObjectRootComponent.transform.position = l_targetPosition;
 
                 if (l_isDestinationReached)
                 {
