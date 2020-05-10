@@ -1,4 +1,5 @@
 ﻿using _EventQueue;
+using _NavigationEngine._Events;
 using System.Collections.Generic;
 
 namespace _Entity._Events

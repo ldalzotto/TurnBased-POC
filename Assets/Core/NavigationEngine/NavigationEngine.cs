@@ -46,13 +46,14 @@ namespace _NavigationEngine
         /// </summary>
         /// <param name="p_oldNavigationNode"> Thr old <see cref="NavigationNode"/> can be null. Meaning that the <paramref name="p_entity"/> wasn't positioned inside the <see cref="NavigationGraph"/> before. </param>
         /// <param name="p_newNavigationNode"> The target <see cref="NavigationNode"/> can be null. Meaning that the <paramref name="p_entity"/> have been destroyed. </param>
-        public static void resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
+        public static List<AEvent> resolveEntityNavigationNodeChange(NavigationEngine p_navigationEngine,
                                     Entity p_entity, NavigationNode p_oldNavigationNode, NavigationNode p_newNavigationNode)
         {
             p_navigationEngine.CachedProducedEventsStackByTriggers.Clear();
             EntitiesIndexedByNavigationNodes.onNavigationNodeChange(ref p_navigationEngine.EntitiesIndexedByNavigationNodes, p_entity, p_oldNavigationNode, p_newNavigationNode);
             ObstacleStep.resolveNavigationObstacleAlterations(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
             TriggerResolutionStep.resolveTrigger(p_navigationEngine, p_entity, p_oldNavigationNode, p_newNavigationNode);
+            return p_navigationEngine.CachedProducedEventsStackByTriggers;
         }
 
     }
