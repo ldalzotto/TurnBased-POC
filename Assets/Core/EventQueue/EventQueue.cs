@@ -116,6 +116,10 @@ namespace _EventQueue
         public virtual void Execute(EventQueue p_eventQueue) { }
     }
 
+    /// <summary>
+    /// <see cref="AAsyncEvent"/> are <see cref="AEvent"/> that are removed from the <see cref="EventQueue"/> when the condition
+    /// <see cref="IsCompleted()"/> returns true.
+    /// </summary>
     public abstract class AAsyncEvent : AEvent
     {
         public bool IsRunning;

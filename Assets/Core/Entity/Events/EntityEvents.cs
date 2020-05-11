@@ -176,6 +176,9 @@ namespace _Entity._Events
         }
     }
 
+    /// <summary>
+    /// Plays the <see cref="AnimationInput"/> at the provided <see cref="LayerID"/>.
+    /// </summary>
     public class AnimationVisualFeedbackPlayEvent : AEvent
     {
         public AnimationVisualFeedback AnimationVisualFeedback;
