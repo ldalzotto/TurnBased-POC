@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using _RuntimeObject;
-using _AnimatorPlayable;
+﻿using _AnimatorPlayable;
 using _GameLoop;
+using _RuntimeObject;
+using System;
+using UnityEngine;
 
 namespace _Entity._Animation
 {
@@ -20,12 +19,11 @@ namespace _Entity._Animation
 
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
         {
-            AnimatorPlayableComponent l_animatorPlayableComponent 
+            AnimatorPlayableComponent l_animatorPlayableComponent
                    = p_runtimeObjectRootComponent.m_InstanciatedRuntimeObject.RuntimeObjectRootComponent.gameObject.GetComponentInChildren<AnimatorPlayableComponent>();
             if (l_animatorPlayableComponent != null)
             {
-                AnimationVisualFeedbackData.AnimatorPlayable = l_animatorPlayableComponent.AnimatorPlayable;
-                EntityComponent.add_component<AnimationVisualFeedback>(p_entity, AnimationVisualFeedback.alloc(ref AnimationVisualFeedbackData));
+                EntityComponent.add_component<AnimationVisualFeedback>(p_entity, AnimationVisualFeedback.alloc(ref AnimationVisualFeedbackData, l_animatorPlayableComponent.AnimatorPlayable));
             }
         }
     }

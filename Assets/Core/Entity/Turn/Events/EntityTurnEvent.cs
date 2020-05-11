@@ -56,7 +56,7 @@ namespace _Entity._Turn
                                     if (l_animationVisualFeedback != null)
                                     {
                                         EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlayAsyncEvent.alloc(l_animationVisualFeedback,
-                                               (int)AnimationLayers.LOCOMOTION, l_animationVisualFeedback.AnimationVisualFeedbackData.LocomotionAnimation.GetAnimationInput()));
+                                               (int)AnimationLayers.LOCOMOTION, l_animationVisualFeedback.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.LOCOMOTION).GetAnimationInput()));
                                     }
 
                                     var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
@@ -76,14 +76,15 @@ namespace _Entity._Turn
 
                                 {
                                     AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
-                                    if (l_animationVisualFeedback != null)
-                                    {
-                                        EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlaySyncEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.CONTEXT_ACTION,
-                                               l_animationVisualFeedback.AnimationVisualFeedbackData.AttackAnimation.GetAnimationInput()));
-                                    }
-
+                                 
                                     for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
                                     {
+                                        if (l_animationVisualFeedback != null)
+                                        {
+                                            EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlaySyncEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.CONTEXT_ACTION,
+                                                   l_animationVisualFeedback.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.ATTACK).GetAnimationInput()));
+                                        }
+
                                         EventQueue.enqueueEvent(p_eventQueue, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
                                     }
                                 }

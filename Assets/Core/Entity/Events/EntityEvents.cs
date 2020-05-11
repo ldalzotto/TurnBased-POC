@@ -1,5 +1,4 @@
 ﻿using _ActionPoint;
-using _AnimatorPlayable;
 using _AnimatorPlayable._Interface;
 using _Attack;
 using _Entity._Animation;
@@ -198,7 +197,7 @@ namespace _Entity._Events
         public override void Execute(EventQueue p_eventQueue)
         {
             base.Execute(p_eventQueue);
-            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput);
+            AnimationVisualFeedback.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput);
         }
     }
 
@@ -224,13 +223,13 @@ namespace _Entity._Events
         private void OnAnimationEnd()
         {
             Completed = true;
-            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.DestroyLayer(LayerID);
+            AnimationVisualFeedback.AnimatorPlayable.DestroyLayer(LayerID);
         }
 
         public override void Execute(EventQueue p_eventQueue)
         {
             base.Execute(p_eventQueue);
-            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput, OnAnimationEnd);
+            AnimationVisualFeedback.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput, OnAnimationEnd);
         }
 
         public override bool IsCompleted()
@@ -255,7 +254,7 @@ namespace _Entity._Events
         public override void Execute(EventQueue p_eventQueue)
         {
             base.Execute(p_eventQueue);
-            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.DestroyLayer(LayerID);
+            AnimationVisualFeedback.AnimatorPlayable.DestroyLayer(LayerID);
         }
     }
 }

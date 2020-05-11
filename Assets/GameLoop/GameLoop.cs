@@ -43,7 +43,7 @@ namespace _GameLoop
             if (!GameSequencer.ContainsKey(GameLoopHook.Tick)) { GameSequencer[GameLoopHook.Tick] = new List<GameLoopCallback>(); }
             if (!GameSequencer.ContainsKey(GameLoopHook.LateTick)) { GameSequencer[GameLoopHook.LateTick] = new List<GameLoopCallback>(); }
         }
-        
+
         private void FixedUpdate()
         {
             float delta = Time.fixedDeltaTime;
