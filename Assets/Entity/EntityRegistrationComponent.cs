@@ -49,7 +49,8 @@ namespace _Entity
 
             AssociatedEntity.EntityGameWorld = EntityGameWorld.build(l_entityRootTransform);
 
-            EntityModelTransformSynchronizer = TransformSynchronizer.alloc(RuntimeObject.RuntimeObjectRootComponent.transform, l_entityRootTransform);
+            TransformComponentSynchronizer.alloc(l_entityRootTransform);
+            EntityModelTransformSynchronizer = TransformSynchronizer.alloc(RuntimeObject.RuntimeObjectRootComponent.transform, l_entityRootTransform.TransformComponentSynchronizer);
             TransformSynchronizerContainer.TransformSynchronizers.Add(EntityModelTransformSynchronizer);
 
             MyEvent<Entity>.IEventCallback l_onEntityDestroyed = OnEntityDestroyed.build(this);

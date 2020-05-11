@@ -76,7 +76,6 @@
     <Compile Include="Assets\EntityComponents\Health\UI\HealthGUIComponent.cs" />
     <Compile Include="Assets\EntityComponents\HealthRecoveryDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Locomotion\EntityLocomotionDefinition.cs" />
-    <Compile Include="Assets\EntityComponents\Locomotion\LocomotionSystemComponent.cs" />
     <Compile Include="Assets\EntityComponents\NavigationModifierDefinition.cs" />
     <Compile Include="Assets\EntityComponents\TurnTimelineEllibigility\TurnTimelineEllibilityDefinition.cs" />
     <Compile Include="Assets\EventQueue\EventQueueContainer.cs" />

@@ -35,32 +35,32 @@ namespace _GameWorld
     public class TransformSynchronizer
     {
         public Transform Transform;
-        public TransformComponent TransformComponent;
+        public TransformComponentSynchronizer TransformComponentSynchronizer;
 
-        public static TransformSynchronizer alloc(Transform p_transform, TransformComponent p_transformComponent)
+        public static TransformSynchronizer alloc(Transform p_transform, TransformComponentSynchronizer p_transformComponentSynchronizer)
         {
             TransformSynchronizer l_instance = new TransformSynchronizer();
             l_instance.Transform = p_transform;
-            l_instance.TransformComponent = p_transformComponent;
+            l_instance.TransformComponentSynchronizer = p_transformComponentSynchronizer;
             return l_instance;
         }
 
         public void LateTick(float d)
         {
-            if (TransformComponent.TransformComponentDeltaFlags.UpdatePosition)
+            if (TransformComponentSynchronizer.UpdatePosition)
             {
-                Transform.position = TransformComponent.WorldPosition;
-                TransformComponent.TransformComponentDeltaFlags.UpdatePosition = false;
+                Transform.position = TransformComponentSynchronizer.TransformComponent.WorldPosition;
+                TransformComponentSynchronizer.UpdatePosition = false;
             }
-            if (TransformComponent.TransformComponentDeltaFlags.UpdateRotation)
+            if (TransformComponentSynchronizer.UpdateRotation)
             {
-                Transform.rotation = TransformComponent.WorldRotation;
-                TransformComponent.TransformComponentDeltaFlags.UpdateRotation = false;
+                Transform.rotation = TransformComponentSynchronizer.TransformComponent.WorldRotation;
+                TransformComponentSynchronizer.UpdateRotation = false;
             }
-            if (TransformComponent.TransformComponentDeltaFlags.UpdateScale)
+            if (TransformComponentSynchronizer.UpdateScale)
             {
-                Transform.localScale = TransformComponent.LocalScale;
-                TransformComponent.TransformComponentDeltaFlags.UpdateScale = false;
+                Transform.localScale = TransformComponentSynchronizer.TransformComponent.LocalScale;
+                TransformComponentSynchronizer.UpdateScale = false;
             }
         }
     }

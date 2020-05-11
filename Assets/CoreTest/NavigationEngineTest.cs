@@ -78,7 +78,7 @@ public class NavigationTest
         Entity l_testTriggerEntity = Entity.alloc();
 
         EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
-        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData()));
 
         // We warp the l_testTriggeredEntity to a random NavigationNode
         EventQueue.enqueueEvent(
@@ -93,7 +93,7 @@ public class NavigationTest
 
         // We create the Entity that will be involved in the trigger
         Entity l_entity = Entity.alloc();
-        EntityComponent.add_component(l_entity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
 
         EventQueue.enqueueEvent(
             TestEventQueue,
@@ -119,7 +119,7 @@ public class NavigationTest
         Entity l_testTriggerEntity = Entity.alloc();
 
         EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
-        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData()));
 
         // We warp the l_testTriggeredEntity to a random NavigationNode
         EventQueue.enqueueEvent(
@@ -134,7 +134,7 @@ public class NavigationTest
 
         // We create the Entity that will be involved in the trigger
         Entity l_entity = Entity.alloc();
-        EntityComponent.add_component(l_entity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
 
         ActionPointData l_actionPointdata = new ActionPointData() { InitialActionPoints = 999f, CurrentActionPoints = 999f };
         EntityComponent.add_component(l_entity, ActionPoint.alloc(ref l_actionPointdata));
@@ -226,7 +226,7 @@ public class NavigationTest
 
         EntityComponent.add_component(l_testTriggerEntity, l_secondTrigger);
         EntityComponent.add_component(l_testTriggerEntity, l_firstTrigger);
-        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData()));
 
         // We warp the l_testTriggeredEntity to a random NavigationNode
         EventQueue.enqueueEvent(
@@ -241,7 +241,7 @@ public class NavigationTest
 
         // We create the Entity that will be involved in the trigger
         Entity l_entity = Entity.alloc();
-        EntityComponent.add_component(l_entity, Locomotion.alloc(Locomotion.EMPTY_MOVE_TO_NAVIGATION_NODE, Locomotion.EMPTY_WARP));
+        EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
 
         EventQueue.enqueueEvent(
             TestEventQueue,

@@ -29,6 +29,8 @@ namespace _GameLoop
 
         private void Awake()
         {
+            Physics.autoSimulation = false;
+
             ExternalHooks.LogDebug = (string s) => { Debug.Log(Time.frameCount + " : " + s); };
             ExternalHooks.Profiler_BeginSample = (string name) => { Profiler.BeginSample(name); };
             ExternalHooks.Profiler_EndSample = () => { Profiler.EndSample(); };

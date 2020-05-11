@@ -9,7 +9,7 @@ namespace _TrasformHierarchy
     public class TransformComponent
     {
         public bool HasChanged;
-        public TransformComponentDeltaFlags TransformComponentDeltaFlags;
+        public TransformComponentSynchronizer TransformComponentSynchronizer;
 
         private TransformComponent parent;
 
@@ -38,7 +38,7 @@ namespace _TrasformHierarchy
                 {
                     localPosition = value;
                     invalidate(this);
-                    TransformComponentDeltaFlags.UpdatePosition = true;
+                    if (TransformComponentSynchronizer != null) { TransformComponentSynchronizer.UpdatePosition = true; }
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace _TrasformHierarchy
                 {
                     localRotation = value;
                     invalidate(this);
-                    TransformComponentDeltaFlags.UpdateRotation = true;
+                    if (TransformComponentSynchronizer != null) { TransformComponentSynchronizer.UpdateRotation = true; }
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace _TrasformHierarchy
                 {
                     localScale = value;
                     invalidate(this);
-                    TransformComponentDeltaFlags.UpdateScale = true;
+                    if (TransformComponentSynchronizer != null) { TransformComponentSynchronizer.UpdateScale = true; }
                 }
             }
         }
@@ -192,9 +192,25 @@ namespace _TrasformHierarchy
 
     }
 
-    public struct TransformComponentDeltaFlags {
+    public class TransformComponentSynchronizer
+    {
+        public TransformComponent TransformComponent;
+
         public bool UpdatePosition;
         public bool UpdateRotation;
         public bool UpdateScale;
+
+        public static TransformComponentSynchronizer alloc(TransformComponent p_transformComponent)
+        {
+            TransformComponentSynchronizer l_instance = new TransformComponentSynchronizer();
+            l_instance.TransformComponent = p_transformComponent;
+            p_transformComponent.TransformComponentSynchronizer = l_instance;
+
+            l_instance.UpdatePosition = false;
+            l_instance.UpdateRotation = false;
+            l_instance.UpdateScale = false;
+
+            return l_instance;
+        }
     }
 }

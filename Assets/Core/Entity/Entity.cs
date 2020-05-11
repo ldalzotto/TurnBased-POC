@@ -101,6 +101,14 @@ namespace _Entity
     public abstract class AEntityComponent
     {
         public Entity AssociatedEntity;
+
+        /// <summary>
+        /// Called when the <see cref="AEntityComponent"/> is no more a part of the <see cref="Entity"/>.
+        /// </summary>
+        public virtual void OnComponentRemoved()
+        {
+
+        }
     }
 
     public static class EntityComponent
@@ -175,6 +183,7 @@ namespace _Entity
                           ref p_component
                     );
             }
+
         }
 
         public static int registerComponentRemovedEvent<COMPONENT>(ref MyEvent<AEntityComponent>.IEventCallback p_callback) where COMPONENT : AEntityComponent
@@ -210,6 +219,8 @@ namespace _Entity
                            ref p_component
                      );
             }
+
+            p_component.OnComponentRemoved();
         }
 
     }

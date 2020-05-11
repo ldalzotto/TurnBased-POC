@@ -83,11 +83,12 @@ namespace _Entity._Events
 
             if (MovementAllowed)
             {
-                EntityComponent.get_component<Locomotion>(SourceEntity).MoveToNavigationNode.Invoke(TargetNavigationNode, (p_startNavigationNode, p_endNavigationNode) =>
-                {
-                    ActionPoint.add(l_actionPoint, -1 * l_costToMove);
-                    Completed = true;
-                });
+                LocomotionSystemV2.HeadTowardsNode(EntityComponent.get_component<Locomotion>(SourceEntity).LocomotionSystemV2, TargetNavigationNode,
+                    (p_startNavigationNode, p_endNavigationNode) =>
+                    {
+                        ActionPoint.add(l_actionPoint, -1 * l_costToMove);
+                        Completed = true;
+                    });
             }
             else
             {
@@ -125,7 +126,7 @@ namespace _Entity._Events
 
         public override void Execute(EventQueue p_eventQueue)
         {
-            EntityComponent.get_component<Locomotion>(Entity).WarpTo(TargetNavigationNode);
+            LocomotionSystemV2.warp(EntityComponent.get_component<Locomotion>(Entity).LocomotionSystemV2, TargetNavigationNode);
             EventQueue.insertEventAt(p_eventQueue, 0, EntityCurrentNavigationNodeChange.alloc(Entity, TargetNavigationNode));
         }
     }
