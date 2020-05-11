@@ -1,8 +1,10 @@
 ﻿using _Entity._Events;
 using _EventQueue;
 using _Functional;
+using _GameWorld;
 using _NavigationGraph;
 using _RuntimeObject;
+using _TrasformHierarchy;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +27,7 @@ namespace _Entity
     {
         public EntityDefinition EntityDefinition;
         public Entity AssociatedEntity;
+        private TransformSynchronizer EntityModelTransformSynchronizer;
 
         public override void Awake()
         {
@@ -41,11 +44,20 @@ namespace _Entity
         {
             AssociatedEntity = p_entity;
             AssociatedEntity.EntityGameWorldInstanceID = new EntityGameWorldInstanceID() { ID = GetInstanceID() };
+
+            TransformComponent l_entityRootTransform = TransformComponent.alloc();
+
+            AssociatedEntity.EntityGameWorld = EntityGameWorld.build(l_entityRootTransform);
+
+            EntityModelTransformSynchronizer = TransformSynchronizer.alloc(RuntimeObject.RuntimeObjectRootComponent.transform, l_entityRootTransform);
+            TransformSynchronizerContainer.TransformSynchronizers.Add(EntityModelTransformSynchronizer);
+
             MyEvent<Entity>.IEventCallback l_onEntityDestroyed = OnEntityDestroyed.build(this);
             MyEvent<Entity>.register(
                     ref this.AssociatedEntity.OnEntityDestroyed,
                     ref l_onEntityDestroyed);
 
+            // Initializing Entity components
             EntityDefinition.Initialize(
                     ref this.EntityDefinition,
                     ref this.AssociatedEntity,
@@ -63,6 +75,7 @@ namespace _Entity
             {
                 Entity.destroyEntity(AssociatedEntity);
             }
+            TransformSynchronizerContainer.TransformSynchronizers.Remove(EntityModelTransformSynchronizer);
         }
 
         struct OnEntityDestroyed : MyEvent<Entity>.IEventCallback

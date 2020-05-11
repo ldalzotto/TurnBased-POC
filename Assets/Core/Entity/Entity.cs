@@ -3,6 +3,7 @@
 using _Entity._Events;
 using _Functional;
 using _NavigationGraph;
+using _TrasformHierarchy;
 using System;
 using System.Collections.Generic;
 
@@ -16,6 +17,8 @@ namespace _Entity
     public class Entity
     {
         public EntityGameWorldInstanceID EntityGameWorldInstanceID;
+        public EntityGameWorld EntityGameWorld;
+
         public bool MarkedForDestruction;
         public NavigationNode CurrentNavigationNode;
         public RefDictionary<Type, AEntityComponent> Components;
@@ -41,6 +44,8 @@ namespace _Entity
             l_instance.OnEntityTurnEnd = MyEvent<Entity>.build();
 
             EntityContainer.AddEntity(l_instance);
+
+            //     EntityComponent.add_component<EntityGameWorld>(l_instance, EntityGameWorld.alloc(GameWorldTransform.alloc(), GameWorldTransform.alloc()));
 
             return l_instance;
         }
@@ -76,6 +81,20 @@ namespace _Entity
     {
         public int ID;
     }
+
+    public struct EntityGameWorld
+    {
+        public TransformComponent RootGround;
+
+
+        public static EntityGameWorld build(TransformComponent p_rootGround)
+        {
+            EntityGameWorld l_instance = new EntityGameWorld();
+            l_instance.RootGround = p_rootGround;
+            return l_instance;
+        }
+    }
+
 
     #region Entity Component
 

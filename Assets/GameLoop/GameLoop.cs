@@ -2,6 +2,7 @@
 using _Functional;
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -31,6 +32,9 @@ namespace _GameLoop
             ExternalHooks.LogDebug = (string s) => { Debug.Log(Time.frameCount + " : " + s); };
             ExternalHooks.Profiler_BeginSample = (string name) => { Profiler.BeginSample(name); };
             ExternalHooks.Profiler_EndSample = () => { Profiler.EndSample(); };
+
+            ExternalHooks.Transform_get_worldPosition = (object p_transform) => { return ((Transform)p_transform).position; };
+            ExternalHooks.Transform_set_worldPosition = (object p_transform, ref float3 p_worldPosition) => { ((Transform)p_transform).position = p_worldPosition; };
 
 
             if (!GameSequencer.ContainsKey(GameLoopHook.BeforePhysics)) { GameSequencer[GameLoopHook.BeforePhysics] = new List<GameLoopCallback>(); }

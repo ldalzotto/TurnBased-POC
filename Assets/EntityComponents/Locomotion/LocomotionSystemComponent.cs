@@ -77,7 +77,8 @@ namespace _Locomotion
 
         public void warp(NavigationNode p_navigationNode)
         {
-            RuntimeObject.RuntimeObjectRootComponent.transform.position = NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent, p_navigationNode);
+            //    EntityComponent.get_component<EntityGameWorld>(AssociatedEntity).RootTransform
+            AssociatedEntity.EntityGameWorld.RootGround.WorldPosition = NavigationGraphComponent.get_WorldPositionFromNavigationNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent, p_navigationNode);
         }
 
 
@@ -86,8 +87,8 @@ namespace _Locomotion
         {
             if (m_headingTowardsTargetNode)
             {
-                Vector3 l_initialDirection = Vector3.Normalize(m_currentDestination - RuntimeObject.RuntimeObjectRootComponent.transform.position);
-                Vector3 l_targetPosition = RuntimeObject.RuntimeObjectRootComponent.transform.position + (l_initialDirection * TravelSpeed * d);
+                Vector3 l_initialDirection = Vector3.Normalize(m_currentDestination - (Vector3)AssociatedEntity.EntityGameWorld.RootGround.WorldPosition);
+                Vector3 l_targetPosition = (Vector3)AssociatedEntity.EntityGameWorld.RootGround.WorldPosition + (l_initialDirection * TravelSpeed * d);
                 Vector3 l_finalDirection = Vector3.Normalize(m_currentDestination - l_targetPosition);
 
                 // If the initial direction is not the same as the final direction, this means that the destination point has been crossed
@@ -100,7 +101,7 @@ namespace _Locomotion
                     */
                     l_targetPosition = m_currentDestination;
                 }
-                RuntimeObject.RuntimeObjectRootComponent.transform.position = l_targetPosition;
+                AssociatedEntity.EntityGameWorld.RootGround.WorldPosition = l_targetPosition;
 
                 if (l_isDestinationReached)
                 {

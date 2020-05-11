@@ -1,4 +1,5 @@
 ﻿using _GameLoop;
+using _TrasformHierarchy;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +8,16 @@ namespace _UI._TransforConstraint
 
     public static class RectTransformLockConstraintContainer
     {
+
+        public static float GAME_LOOP_PRIORITY = 0.0f;
+
         private static List<RectTransformLockConstraintComponent> RectTransformLockConstraintComponents = new List<RectTransformLockConstraintComponent>();
 
         public static void Add(RectTransformLockConstraintComponent p_rectTransformLockConstraintComponent)
         {
             if (RectTransformLockConstraintComponents.Count == 0)
             {
-                GameLoop.AddGameLoopCallback(GameLoopHook.LateTick, new GameLoopCallback() { GameLoopPriority = 0.0f, Callback = RectTransformLockConstraintContainer.LateTick });
+                GameLoop.AddGameLoopCallback(GameLoopHook.LateTick, new GameLoopCallback() { GameLoopPriority = GAME_LOOP_PRIORITY, Callback = RectTransformLockConstraintContainer.LateTick });
             }
             RectTransformLockConstraintComponents.Add(p_rectTransformLockConstraintComponent);
         }
@@ -23,7 +27,7 @@ namespace _UI._TransforConstraint
             RectTransformLockConstraintComponents.Remove(p_rectTransformLockConstraintComponent);
             if (RectTransformLockConstraintComponents.Count == 0)
             {
-                GameLoop.RemoveGameLoopCallback(GameLoopHook.LateTick, new GameLoopCallback() { GameLoopPriority = 0.0f, Callback = RectTransformLockConstraintContainer.LateTick });
+                GameLoop.RemoveGameLoopCallback(GameLoopHook.LateTick, new GameLoopCallback() { GameLoopPriority = GAME_LOOP_PRIORITY, Callback = RectTransformLockConstraintContainer.LateTick });
             }
         }
 
