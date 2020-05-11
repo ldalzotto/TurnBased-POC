@@ -7,11 +7,6 @@ namespace _RuntimeObject
         public void Awake()
         {
             m_InstanciatedRuntimeObject = new RuntimeObject(this);
-            m_instanciatedComponentsGameObject = new GameObject("InstanciatedComponents");
-            m_instanciatedComponentsGameObject.transform.SetParent(transform);
-            m_instanciatedComponentsGameObject.transform.localPosition = Vector3.zero;
-            m_instanciatedComponentsGameObject.transform.localRotation = Quaternion.identity;
-            m_instanciatedComponentsGameObject.transform.localScale = Vector3.one;
         }
 
         public void OnDestroy()
@@ -20,8 +15,6 @@ namespace _RuntimeObject
         }
 
         public RuntimeObject m_InstanciatedRuntimeObject { get; private set; }
-        private GameObject m_instanciatedComponentsGameObject;
-        public GameObject GetInstanciatedComponentsGameObject() { return m_instanciatedComponentsGameObject; }
 
         public static RuntimeObjectRootComponent FindRootRuntimeObjectComponent(Component p_startComponent)
         {

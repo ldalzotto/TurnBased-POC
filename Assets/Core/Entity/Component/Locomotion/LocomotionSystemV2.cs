@@ -98,6 +98,11 @@ namespace _Locomotion
                         OnNavigationNodeReachedEvent.Invoke(l_oldNavigationNode, CurrentTargetNode);
                     }
                 }
+                else
+                {
+                    Locomotion.AssociatedEntity.EntityGameWorld.RootGround.WorldRotation =
+                            quaternion.LookRotationSafe(l_initialDirection, math.up());
+                }
             }
         }
     }

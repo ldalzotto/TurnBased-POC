@@ -45,12 +45,10 @@ namespace _Entity
             AssociatedEntity = p_entity;
             AssociatedEntity.EntityGameWorldInstanceID = new EntityGameWorldInstanceID() { ID = GetInstanceID() };
 
-            TransformComponent l_entityRootTransform = TransformComponent.alloc();
-
-            AssociatedEntity.EntityGameWorld = EntityGameWorld.build(l_entityRootTransform);
-
-            TransformComponentSynchronizer.alloc(l_entityRootTransform);
-            EntityModelTransformSynchronizer = TransformSynchronizer.alloc(RuntimeObject.RuntimeObjectRootComponent.transform, l_entityRootTransform.TransformComponentSynchronizer);
+            AssociatedEntity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
+            TransformComponentSynchronizer.alloc(AssociatedEntity.EntityGameWorld.RootGround);
+            EntityModelTransformSynchronizer = TransformSynchronizer.alloc(transform,
+                        AssociatedEntity.EntityGameWorld.RootGround.TransformComponentSynchronizer);
             TransformSynchronizerContainer.TransformSynchronizers.Add(EntityModelTransformSynchronizer);
 
             MyEvent<Entity>.IEventCallback l_onEntityDestroyed = OnEntityDestroyed.build(this);
