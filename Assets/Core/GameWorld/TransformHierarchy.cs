@@ -5,12 +5,23 @@ using Unity.Mathematics;
 
 namespace _TrasformHierarchy
 {
+    /// <summary>
+    /// The <see cref="TransformComponent"/> represent a position/rotation/scale in the game world.
+    /// Is can have only one parent <see cref="parent"/> and multiple childs <see cref="Childs"/>;
+    /// The <see cref="TransformComponent"/> store "Local" vectors and calculate "World" when neeeded.
+    /// </summary>
     [Serializable]
     public class TransformComponent
     {
+        /// <summary>
+        /// If true, matrices calculation cache is invalidated
+        /// </summary>
         public bool HasChanged;
         public TransformComponentSynchronizer TransformComponentSynchronizer;
 
+        /// <summary>
+        /// All "Local" members are relative to the parent.
+        /// </summary>
         private TransformComponent parent;
 
         public TransformComponent Parent
@@ -26,6 +37,7 @@ namespace _TrasformHierarchy
                 parent.Childs.Add(this);
             }
         }
+
         public List<TransformComponent> Childs;
 
         private float3 localPosition;
@@ -192,6 +204,9 @@ namespace _TrasformHierarchy
 
     }
 
+    /// <summary>
+    /// The <see cref="TransformComponentSynchronizer"/> is a convenient way to check wether or not the <see cref="TransformComponent"/> has changed.
+    /// </summary>
     public class TransformComponentSynchronizer
     {
         public TransformComponent TransformComponent;
