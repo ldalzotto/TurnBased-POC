@@ -179,16 +179,16 @@ namespace _Entity._Events
     /// <summary>
     /// Plays the <see cref="AnimationInput"/> at the provided <see cref="LayerID"/>.
     /// </summary>
-    public class AnimationVisualFeedbackPlayEvent : AEvent
+    public class AnimationVisualFeedbackPlayAsyncEvent : AEvent
     {
         public AnimationVisualFeedback AnimationVisualFeedback;
         public int LayerID;
         public IAnimationInput AnimationInput;
 
-        public static AnimationVisualFeedbackPlayEvent alloc(AnimationVisualFeedback p_animationVisualFeedback,
+        public static AnimationVisualFeedbackPlayAsyncEvent alloc(AnimationVisualFeedback p_animationVisualFeedback,
             int p_layerID, IAnimationInput p_animationInput)
         {
-            AnimationVisualFeedbackPlayEvent l_instance = new AnimationVisualFeedbackPlayEvent();
+            AnimationVisualFeedbackPlayAsyncEvent l_instance = new AnimationVisualFeedbackPlayAsyncEvent();
             l_instance.AnimationVisualFeedback = p_animationVisualFeedback;
             l_instance.LayerID = p_layerID;
             l_instance.AnimationInput = p_animationInput;
@@ -199,6 +199,43 @@ namespace _Entity._Events
         {
             base.Execute(p_eventQueue);
             AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput);
+        }
+    }
+
+    public class AnimationVisualFeedbackPlaySyncEvent : AAsyncEvent
+    {
+        public bool Completed;
+
+        public AnimationVisualFeedback AnimationVisualFeedback;
+        public int LayerID;
+        public IAnimationInput AnimationInput;
+
+        public static AnimationVisualFeedbackPlaySyncEvent alloc(AnimationVisualFeedback p_animationVisualFeedback,
+            int p_layerID, IAnimationInput p_animationInput)
+        {
+            AnimationVisualFeedbackPlaySyncEvent l_instance = new AnimationVisualFeedbackPlaySyncEvent();
+            l_instance.Completed = false;
+            l_instance.AnimationVisualFeedback = p_animationVisualFeedback;
+            l_instance.LayerID = p_layerID;
+            l_instance.AnimationInput = p_animationInput;
+            return l_instance;
+        }
+
+        private void OnAnimationEnd()
+        {
+            Completed = true;
+            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.DestroyLayer(LayerID);
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput, OnAnimationEnd);
+        }
+
+        public override bool IsCompleted()
+        {
+            return Completed;
         }
     }
 

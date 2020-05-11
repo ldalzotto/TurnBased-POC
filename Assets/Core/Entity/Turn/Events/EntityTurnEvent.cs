@@ -51,32 +51,41 @@ namespace _Entity._Turn
                         {
                             // Push to the event queue the will of moving along a path
                             case MoveToNavigationNodeNode l_moveToNavigationNode:
-
-                                AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
-                                if (l_animationVisualFeedback != null)
                                 {
-                                    EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlayEvent.alloc(l_animationVisualFeedback,
-                                           (int)AnimationLayers.LOCOMOTION, l_animationVisualFeedback.AnimationVisualFeedbackData.LocomotionAnimation.GetAnimationInput()));
-                                }
+                                    AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
+                                    if (l_animationVisualFeedback != null)
+                                    {
+                                        EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlayAsyncEvent.alloc(l_animationVisualFeedback,
+                                               (int)AnimationLayers.LOCOMOTION, l_animationVisualFeedback.AnimationVisualFeedbackData.LocomotionAnimation.GetAnimationInput()));
+                                    }
 
-                                var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
-                                while (l_pathEnumerator.MoveNext())
-                                {
-                                    EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEvent.alloc(Entity, l_pathEnumerator.Current));
-                                }
+                                    var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
+                                    while (l_pathEnumerator.MoveNext())
+                                    {
+                                        EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEvent.alloc(Entity, l_pathEnumerator.Current));
+                                    }
 
-                                if (l_animationVisualFeedback != null)
-                                {
-                                    EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackDestroyLayerEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.LOCOMOTION));
+                                    if (l_animationVisualFeedback != null)
+                                    {
+                                        EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackDestroyLayerEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.LOCOMOTION));
+                                    }
                                 }
-
                                 break;
 
                             case AttackNode l_attackNode:
 
-                                for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
                                 {
-                                    EventQueue.enqueueEvent(p_eventQueue, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
+                                    AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
+                                    if (l_animationVisualFeedback != null)
+                                    {
+                                        EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlaySyncEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.CONTEXT_ACTION,
+                                               l_animationVisualFeedback.AnimationVisualFeedbackData.AttackAnimation.GetAnimationInput()));
+                                    }
+
+                                    for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
+                                    {
+                                        EventQueue.enqueueEvent(p_eventQueue, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
+                                    }
                                 }
 
                                 break;

@@ -29,10 +29,13 @@ namespace _Entity._Animation
         /// See <see cref="EntityTurnIterationEvent"/> when processing the <see cref="MoveToNavigationNodeNode"/>.
         /// </summary>
         public IAnimationPlayableDefinition LocomotionAnimation;
+
+        public IAnimationPlayableDefinition AttackAnimation;
     }
 
     public enum AnimationLayers : int
     {
-        LOCOMOTION = -100
+        LOCOMOTION = -100,
+        CONTEXT_ACTION = -99
     }
 }
