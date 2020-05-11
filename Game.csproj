@@ -70,6 +70,7 @@
     <Compile Include="Assets\Entity\UI\EntityGaugeContainerComponent.cs" />
     <Compile Include="Assets\EntityComponents\ActionPoint\ActionPointDefinition.cs" />
     <Compile Include="Assets\EntityComponents\ActionPoint\UI\ActionPointGUIComponent.cs" />
+    <Compile Include="Assets\EntityComponents\AnimationVisualFeedbackDefinition.cs" />
     <Compile Include="Assets\EntityComponents\AttackDefinition.cs" />
     <Compile Include="Assets\EntityComponents\EntityCharacteristics\EntityCharacteristicsDefinition.cs" />
     <Compile Include="Assets\EntityComponents\Health\HealthDefinition.cs" />
@@ -694,6 +695,10 @@
     <ProjectReference Include="Core.csproj">
       <Project>{4AC7CA87-D36C-520A-77C9-A2E6F36CAF9C}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="AnimatorPlayable.csproj">
+      <Project>{3F18E8F0-4BFE-D7CE-4956-19A744FABB70}</Project>
+      <Name>AnimatorPlayable</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

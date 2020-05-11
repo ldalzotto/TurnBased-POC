@@ -2,6 +2,7 @@
 using _AI._DecisionTree;
 using _AI._DecisionTree._Algorithm;
 using _AI._DecisionTree._Builder;
+using _Entity._Animation;
 using _Entity._Events;
 using _EventQueue;
 
@@ -50,11 +51,23 @@ namespace _Entity._Turn
                         {
                             case MoveToNavigationNodeNode l_moveToNavigationNode:
 
+                                AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
+                                if (l_animationVisualFeedback != null)
+                                {
+                                    EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlayEvent.alloc(l_animationVisualFeedback, 0, l_animationVisualFeedback.AnimationVisualFeedbackData.LocomotionAnimation.GetAnimationInput()));
+                                }
+
                                 var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
                                 while (l_pathEnumerator.MoveNext())
                                 {
                                     EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEvent.alloc(Entity, l_pathEnumerator.Current));
                                 }
+
+                                if (l_animationVisualFeedback != null)
+                                {
+                                    EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackDestroyLayerEvent.alloc(l_animationVisualFeedback, 0));
+                                }
+
                                 break;
 
                             case AttackNode l_attackNode:

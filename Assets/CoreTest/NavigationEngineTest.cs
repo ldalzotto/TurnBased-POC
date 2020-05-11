@@ -6,6 +6,7 @@ using _GameLoop;
 using _Locomotion;
 using _NavigationEngine;
 using _NavigationGraph;
+using _TrasformHierarchy;
 using _TurnTimeline;
 using _Util;
 using NUnit.Framework;
@@ -76,6 +77,7 @@ public class NavigationTest
     {
         // Initializing trigger Entity
         Entity l_testTriggerEntity = Entity.alloc();
+        l_testTriggerEntity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
 
         EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
         EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData()));
@@ -93,6 +95,7 @@ public class NavigationTest
 
         // We create the Entity that will be involved in the trigger
         Entity l_entity = Entity.alloc();
+        l_entity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
         EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
 
         EventQueue.enqueueEvent(
@@ -117,6 +120,7 @@ public class NavigationTest
     {
         // Initializing trigger Entity
         Entity l_testTriggerEntity = Entity.alloc();
+        l_testTriggerEntity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
 
         EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
         EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData()));
@@ -134,6 +138,8 @@ public class NavigationTest
 
         // We create the Entity that will be involved in the trigger
         Entity l_entity = Entity.alloc();
+        l_entity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
+
         EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
 
         ActionPointData l_actionPointdata = new ActionPointData() { InitialActionPoints = 999f, CurrentActionPoints = 999f };
@@ -220,6 +226,7 @@ public class NavigationTest
     {
         // Initializing trigger Entity
         Entity l_testTriggerEntity = Entity.alloc();
+        l_testTriggerEntity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
 
         NavigationEngineTestTriggerComponent_Order1st l_firstTrigger = NavigationEngineTestTriggerComponent_Order1st.alloc();
         NavigationEngineTestTriggerComponent_Order2nd l_secondTrigger = NavigationEngineTestTriggerComponent_Order2nd.alloc(l_firstTrigger);
@@ -241,6 +248,8 @@ public class NavigationTest
 
         // We create the Entity that will be involved in the trigger
         Entity l_entity = Entity.alloc();
+        l_entity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
+
         EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
 
         EventQueue.enqueueEvent(

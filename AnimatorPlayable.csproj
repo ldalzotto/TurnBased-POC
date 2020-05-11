@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{4AC7CA87-D36C-520A-77C9-A2E6F36CAF9C}</ProjectGuid>
+    <ProjectGuid>{3F18E8F0-4BFE-D7CE-4956-19A744FABB70}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Core</AssemblyName>
+    <AssemblyName>AnimatorPlayable</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -26,7 +26,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,7 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <NoConfig>true</NoConfig>
@@ -63,51 +63,217 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\Algorithm.cs" />
-    <Compile Include="Assets\Core\AI\DecisionTree\Builder\TreeBuilder.cs" />
-    <Compile Include="Assets\Core\AI\DecisionTree\DecisionTree.cs" />
-    <Compile Include="Assets\Core\AI\DecisionTree\Nodes\AttackNode.cs" />
-    <Compile Include="Assets\Core\AI\DecisionTree\Nodes\MoveToEntityNode.cs" />
-    <Compile Include="Assets\Core\AI\DecisionTree\Nodes\MoveToNavigationNodeNode.cs" />
-    <Compile Include="Assets\Core\Entity\Component\ActionPoint\ActionPoint.cs" />
-    <Compile Include="Assets\Core\Entity\Component\ActionPoint\Calculations.cs" />
-    <Compile Include="Assets\Core\Entity\Component\AnimationVisualFeedback.cs" />
-    <Compile Include="Assets\Core\Entity\Component\Attack.cs" />
-    <Compile Include="Assets\Core\Entity\Component\EntityCharacteristics.cs" />
-    <Compile Include="Assets\Core\Entity\Component\Health.cs" />
-    <Compile Include="Assets\Core\Entity\Component\Locomotion\Locomotion.cs" />
-    <Compile Include="Assets\Core\Entity\Component\Locomotion\LocomotionSystemV2.cs" />
-    <Compile Include="Assets\Core\Entity\Component\NavigationModifier.cs" />
-    <Compile Include="Assets\Core\Entity\Component\Trigger\HealthRecoveryTrigger.cs" />
-    <Compile Include="Assets\Core\Entity\Component\TurnTimelineElligibility.cs" />
-    <Compile Include="Assets\Core\Entity\Entity.cs" />
-    <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
-    <Compile Include="Assets\Core\Entity\Events\EntityEvents.cs" />
-    <Compile Include="Assets\Core\Entity\Events\EntityEventsComposition.cs" />
-    <Compile Include="Assets\Core\Entity\Turn\Events\EntityTurnEvent.cs" />
-    <Compile Include="Assets\Core\Entity\Turn\Events\TurnEvent.cs" />
-    <Compile Include="Assets\Core\EventQueue\EventQueue.cs" />
-    <Compile Include="Assets\Core\EventQueue\EventQueueListener.cs" />
-    <Compile Include="Assets\Core\EventQueue\Events\CommonEvents.cs" />
-    <Compile Include="Assets\Core\ExternalHooks\ExternalHooks.cs" />
-    <Compile Include="Assets\Core\GameWorld\TransformHierarchy.cs" />
-    <Compile Include="Assets\Core\NavigationEngine\Events\EntityCurrentNavigationNodeChange.cs" />
-    <Compile Include="Assets\Core\NavigationEngine\NavigationEngine.cs" />
-    <Compile Include="Assets\Core\NavigationEngine\NavigationTriggerComponent\INavigationTriggerComponent.cs" />
-    <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\ObstacleStep.cs" />
-    <Compile Include="Assets\Core\NavigationEngine\ResolutionSteps\TriggerResolutionStep.cs" />
-    <Compile Include="Assets\Core\NavigationGraph\Algorithm.cs" />
-    <Compile Include="Assets\Core\NavigationGraph\NavigationGraph.cs" />
-    <Compile Include="Assets\Core\Tools\Collections\Helpers.cs" />
-    <Compile Include="Assets\Core\Tools\Collections\RefDictionary.cs" />
-    <Compile Include="Assets\Core\Tools\Collections\RefList.cs" />
-    <Compile Include="Assets\Core\Tools\Functional\Event\MyEvent.cs" />
-    <Compile Include="Assets\Core\Tools\Math\Dichotomy.cs" />
-    <Compile Include="Assets\Core\Tools\Math\MyRandom.cs" />
-    <Compile Include="Assets\Core\Tools\Memory\MemoryBuffer.cs" />
-    <Compile Include="Assets\Core\TurnTimeline\Algorithm.cs" />
-    <Compile Include="Assets\Core\TurnTimeline\TurnTimeline.cs" />
-    <None Include="Assets\Core\Core.asmdef" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Component\AnimatorPlayableComponent.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Configuration\AnimationPlayableDefinition\BlendedAnimationPlayableDefinition.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Configuration\AnimationPlayableDefinition\SequencedAnimationPlayableDefinition.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Configuration\AnimationPlayableDefinition\TwoDBlendTreePlayableDefinition.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Interface\IAnimationInput.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Interface\IAnimationPlayableDefinition.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Interface\IAnimatorPlayable.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Lib\AnimatorPlayable.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Lib\Inputs\AnimationLayersInput.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Lib\Interpolation\FreeformDirectionalInterpolator.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Lib\Layers\BlendedAnimation.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Lib\Layers\SequencedAnimation.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Lib\Layers\TwoDBlendTree.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Test\InterpolationVisualizer.cs" />
+    <Compile Include="Assets\Library\AnimatorPlayable\Test\TreeAnimationTest.cs" />
+    <None Include="Assets\Library\AnimatorPlayable\AnimatorPlayable.asmdef" />
+    <Reference Include="UnityEngine">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.AndroidJNIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.DSPGraphModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.SubsystemsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.TextCoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UNETModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.VR">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.Graphs">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+      <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/16.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
     <Reference Include="Sirenix.OdinInspector.Attributes">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Assets/Plugins/Sirenix/Assemblies/Sirenix.OdinInspector.Attributes.dll</HintPath>
     </Reference>
@@ -486,16 +652,14 @@
     <Reference Include="Boo.Lang">
       <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Mathematics">
-      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/Unity.Mathematics.dll</HintPath>
+    <Reference Include="UnityEditor.UI">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="AnimatorPlayable.csproj">
-      <Project>{3F18E8F0-4BFE-D7CE-4956-19A744FABB70}</Project>
-      <Name>AnimatorPlayable</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup></ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -21,7 +21,6 @@ namespace _Locomotion
 
     /// <summary>
     /// Physically move the <see cref="Entity"/> towards a <see cref="_NavigationGraph.NavigationNode"/>.
-    /// His role is to update <see cref="Entity.CurrentNavigationNode"/> position. 
     /// This component is limited to move to a single <see cref="_NavigationGraph.NavigationNode"/> and broadcast <see cref="OnNavigationNodeReachedEvent"/> when reached.
     /// </summary>
     public class LocomotionSystemV2
@@ -38,7 +37,6 @@ namespace _Locomotion
         public bool HeadingTowardsTargetNode = false;
         public float3 CurrentDestination;
         private NavigationNode CurrentTargetNode;
-
 
         public static LocomotionSystemV2 alloc(Locomotion p_locomotion)
         {

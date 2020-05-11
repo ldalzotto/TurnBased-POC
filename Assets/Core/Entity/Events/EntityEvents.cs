@@ -1,5 +1,8 @@
 ﻿using _ActionPoint;
+using _AnimatorPlayable;
+using _AnimatorPlayable._Interface;
 using _Attack;
+using _Entity._Animation;
 using _EventQueue;
 using _Locomotion;
 using _NavigationEngine._Events;
@@ -170,6 +173,49 @@ namespace _Entity._Events
                     }
                 }
             }
+        }
+    }
+
+    public class AnimationVisualFeedbackPlayEvent : AEvent
+    {
+        public AnimationVisualFeedback AnimationVisualFeedback;
+        public int LayerID;
+        public IAnimationInput AnimationInput;
+
+        public static AnimationVisualFeedbackPlayEvent alloc(AnimationVisualFeedback p_animationVisualFeedback,
+            int p_layerID, IAnimationInput p_animationInput)
+        {
+            AnimationVisualFeedbackPlayEvent l_instance = new AnimationVisualFeedbackPlayEvent();
+            l_instance.AnimationVisualFeedback = p_animationVisualFeedback;
+            l_instance.LayerID = p_layerID;
+            l_instance.AnimationInput = p_animationInput;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput);
+        }
+    }
+
+    public class AnimationVisualFeedbackDestroyLayerEvent : AEvent
+    {
+        public AnimationVisualFeedback AnimationVisualFeedback;
+        public int LayerID;
+
+        public static AnimationVisualFeedbackDestroyLayerEvent alloc(AnimationVisualFeedback p_animationVisualFeedback, int p_layerID)
+        {
+            AnimationVisualFeedbackDestroyLayerEvent l_instance = new AnimationVisualFeedbackDestroyLayerEvent();
+            l_instance.AnimationVisualFeedback = p_animationVisualFeedback;
+            l_instance.LayerID = p_layerID;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+            AnimationVisualFeedback.AnimationVisualFeedbackData.AnimatorPlayable.DestroyLayer(LayerID);
         }
     }
 }
