@@ -123,7 +123,7 @@ public class NavigationTest
         l_testTriggerEntity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
 
         EntityComponent.add_component(l_testTriggerEntity, NavigationEngineTestTriggerComponent.alloc());
-        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData()));
+        EntityComponent.add_component(l_testTriggerEntity, Locomotion.alloc(new LocomotionData() { Speed = float.MaxValue * 0.1f }));
 
         // We warp the l_testTriggeredEntity to a random NavigationNode
         EventQueue.enqueueEvent(
@@ -140,7 +140,7 @@ public class NavigationTest
         Entity l_entity = Entity.alloc();
         l_entity.EntityGameWorld = EntityGameWorld.build(TransformComponent.alloc());
 
-        EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData()));
+        EntityComponent.add_component(l_entity, Locomotion.alloc(new LocomotionData() { Speed = float.MaxValue * 0.1f }));
 
         ActionPointData l_actionPointdata = new ActionPointData() { InitialActionPoints = 999f, CurrentActionPoints = 999f };
         EntityComponent.add_component(l_entity, ActionPoint.alloc(ref l_actionPointdata));
@@ -166,6 +166,7 @@ public class NavigationTest
 
         while (!l_navigationNodeMoveEvent.IsCompleted())
         {
+            LocomotionSystemV2Container.Tick(1.0f);
             EventQueue.iterate(TestEventQueue);
         }
 

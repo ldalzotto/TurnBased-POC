@@ -25,7 +25,7 @@ namespace _Locomotion
     /// </summary>
     public class LocomotionSystemV2
     {
-        public Locomotion Locomotion;
+        public Locomotion LocomotionComponent;
 
         #region Event callbacks
         /// <summary>
@@ -41,7 +41,7 @@ namespace _Locomotion
         public static LocomotionSystemV2 alloc(Locomotion p_locomotion)
         {
             LocomotionSystemV2 l_instance = new LocomotionSystemV2();
-            l_instance.Locomotion = p_locomotion;
+            l_instance.LocomotionComponent = p_locomotion;
             LocomotionSystemV2Container.LocomotionSystemComponents.Add(l_instance);
             return l_instance;
         }
@@ -53,7 +53,7 @@ namespace _Locomotion
 
         public static void warp(LocomotionSystemV2 p_locomotionSystem, NavigationNode p_navigationNode)
         {
-            p_locomotionSystem.Locomotion.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition
+            p_locomotionSystem.LocomotionComponent.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition
                     = p_navigationNode.LocalPosition;
         }
 
@@ -70,8 +70,8 @@ namespace _Locomotion
         {
             if (HeadingTowardsTargetNode)
             {
-                float3 l_initialDirection = math.normalize(CurrentDestination - Locomotion.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition);
-                float3 l_targetPosition = Locomotion.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition + (l_initialDirection * Locomotion.LocomotionData.Speed * d);
+                float3 l_initialDirection = math.normalize(CurrentDestination - LocomotionComponent.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition);
+                float3 l_targetPosition = LocomotionComponent.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition + (l_initialDirection * LocomotionComponent.LocomotionData.Speed * d);
                 float3 l_finalDirection = math.normalize(CurrentDestination - l_targetPosition);
 
                 // If the initial direction is not the same as the final direction, this means that the destination point has been crossed
@@ -84,12 +84,12 @@ namespace _Locomotion
                     */
                     l_targetPosition = CurrentDestination;
                 }
-                Locomotion.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition = l_targetPosition;
+                LocomotionComponent.AssociatedEntity.EntityGameWorld.RootGround.WorldPosition = l_targetPosition;
 
                 if (l_isDestinationReached)
                 {
                     HeadingTowardsTargetNode = false;
-                    NavigationNode l_oldNavigationNode = Locomotion.AssociatedEntity.CurrentNavigationNode;
+                    NavigationNode l_oldNavigationNode = LocomotionComponent.AssociatedEntity.CurrentNavigationNode;
 
                     if (OnNavigationNodeReachedEvent != null)
                     {
@@ -98,7 +98,7 @@ namespace _Locomotion
                 }
                 else
                 {
-                    Locomotion.AssociatedEntity.EntityGameWorld.RootGround.WorldRotation =
+                    LocomotionComponent.AssociatedEntity.EntityGameWorld.RootGround.WorldRotation =
                             quaternion.LookRotationSafe(l_initialDirection, math.up());
                 }
             }
