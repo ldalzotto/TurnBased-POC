@@ -5,6 +5,7 @@ using _GameWorld;
 using _NavigationGraph;
 using _RuntimeObject;
 using _TrasformHierarchy;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace _Entity
     [Serializable]
     public class EntityRegistrationComponent : RuntimeComponent
     {
+        [AssetSelector]
         public EntityDefinition EntityDefinition;
         public Entity AssociatedEntity;
         private TransformSynchronizer EntityModelTransformSynchronizer;

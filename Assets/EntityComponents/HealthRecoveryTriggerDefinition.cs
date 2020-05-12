@@ -6,8 +6,8 @@ using UnityEngine;
 namespace _HealthRecovery
 {
     [Serializable]
-    [CreateAssetMenu(fileName = "HealthRecoveryDefinition", menuName = "EntityComponents/HealthRecoveryDefinition")]
-    public class HealthRecoveryDefinition : EntityDefinitionSubObject
+    [CreateAssetMenu(fileName = "HealthRecoveryTriggerDefinition", menuName = "EntityComponents/HealthRecoveryTriggerDefinition")]
+    public class HealthRecoveryTriggerDefinition : EntityDefinitionSubObject
     {
         public HealthRecoveryData HealthRecoveryData;
         public override void Initialize(Entity p_entity, RuntimeObjectRootComponent p_runtimeObjectRootComponent)
