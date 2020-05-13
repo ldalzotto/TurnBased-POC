@@ -72,7 +72,7 @@ namespace _Entity
             if (l_animationVisualFeedbackComponent != null)
             {
                 EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue,
-                       AnimationVisualFeedbackPlayAsyncEvent.alloc(l_animationVisualFeedbackComponent, (int)AnimationLayers.BASE, 
+                       AnimationVisualFeedbackPlayAsyncEvent.alloc(l_animationVisualFeedbackComponent, (int)AnimationLayers.BASE,
                                     l_animationVisualFeedbackComponent.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.IDLE).GetAnimationInput()));
             }
         }

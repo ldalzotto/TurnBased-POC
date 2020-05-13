@@ -76,7 +76,7 @@ namespace _Entity._Turn
 
                                 {
                                     AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
-                                 
+
                                     for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
                                     {
                                         if (l_animationVisualFeedback != null)
