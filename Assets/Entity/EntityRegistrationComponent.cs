@@ -1,4 +1,5 @@
-﻿using _Entity._Events;
+﻿using _Entity._Animation;
+using _Entity._Events;
 using _EventQueue;
 using _Functional;
 using _GameWorld;
@@ -66,6 +67,14 @@ namespace _Entity
 
             NavigationNode l_randomNavigationNode = NavigationGraphAlgorithm.pickRandomNode(NavigationGraphComponentContainer.UniqueNavigationGraphComponent.NavigationGraph);
             EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue, NavigationNodeWarpEntityEvent.alloc(AssociatedEntity, l_randomNavigationNode));
+
+            AnimationVisualFeedback l_animationVisualFeedbackComponent = EntityComponent.get_component<AnimationVisualFeedback>(AssociatedEntity);
+            if (l_animationVisualFeedbackComponent != null)
+            {
+                EventQueue.enqueueEvent(EventQueueContainer.TurnTimelineQueue,
+                       AnimationVisualFeedbackPlayAsyncEvent.alloc(l_animationVisualFeedbackComponent, (int)AnimationLayers.BASE, 
+                                    l_animationVisualFeedbackComponent.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.IDLE).GetAnimationInput()));
+            }
         }
 
         public override void OnDestroy()

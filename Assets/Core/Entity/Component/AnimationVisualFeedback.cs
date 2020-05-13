@@ -36,8 +36,9 @@ namespace _Entity._Animation
 
     public enum AnimationLayers : int
     {
-        LOCOMOTION = -100,
-        CONTEXT_ACTION = -99
+        BASE = -100,
+        LOCOMOTION = -99,
+        CONTEXT_ACTION = -98
     }
 
     public enum AnimationLookupTag : uint
@@ -47,6 +48,7 @@ namespace _Entity._Animation
         /// See <see cref="EntityTurnIterationEvent"/> when processing the <see cref="MoveToNavigationNodeNode"/>.
         /// </summary>
         LOCOMOTION = 0,
-        ATTACK = 1
+        ATTACK = 1,
+        IDLE = 2
     }
 }
