@@ -1,4 +1,5 @@
-﻿using _Entity;
+﻿using _AnimatorPlayable._Interface;
+using _Entity;
 using _EventQueue;
 using _NavigationGraph;
 using Sirenix.OdinInspector;
@@ -120,3 +121,13 @@ public class NavigationNodeGameWorldInstanceIDDrawer : OdinValueDrawer<Navigatio
         EditorGUILayout.ObjectField("Game Instance", EditorUtility.InstanceIDToObject(this.ValueEntry.SmartValue.ID), typeof(GameObject), true);
     }
 }
+
+/*
+public class IAnimationPlayableDefinitionDrawer<T> : OdinValueDrawer<T> where T : IAnimationPlayableDefinition
+{
+    protected override void DrawPropertyLayout(GUIContent label)
+    {
+        EditorGUILayout.IntField(2);
+    }
+}
+*/
