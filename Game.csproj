@@ -100,14 +100,24 @@
     <Compile Include="Assets\UI\Gauge\Scripts\UIGaugeComponent.cs" />
     <Compile Include="Assets\UI\TransformConstraint\RectTransformLockConstraintComponent.cs" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.xml" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLibrary\ToonSpecular.hlsl" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Serialization.Config.xml" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonMetaPass.hlsl" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonForwardPass.hlsl" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLibrary\ToonRim.hlsl" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLightning.hlsl" />
     <None Include="Assets\Game.asmdef" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.OdinInspector.Attributes.xml" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLibrary\ToonToBuiltinUnity.hlsl" />
     <None Include="Assets\_GameAssets\Readme.txt" />
     <None Include="Assets\Plugins\Sirenix\Readme.txt" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLibrary\ToonEmission.hlsl" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.OdinInspector.Editor.xml" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\link.xml" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLibrary\ToonDiffuse.hlsl" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonShader.shader" />
+    <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonInput.hlsl" />
     <None Include="Assets\UI\Gauge\Shader\UIGaugeShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

@@ -64,8 +64,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\AIDecisionTreeDebugWindow.cs" />
+    <Compile Include="Assets\Editor\EditorPersistance\EditorPersistantBoolVariable\EditorPersistantBoolVariable.cs" />
     <Compile Include="Assets\Editor\EntityInspectorWindow.cs" />
     <Compile Include="Assets\Editor\EventQueueDebugWindow.cs" />
+    <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
+    <Compile Include="Assets\Editor\ShaderGUI\ToonShaderEditor.cs" />
     <None Include="Assets\Editor\Editor.asmdef" />
     <Reference Include="UnityEngine">
       <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -642,6 +645,15 @@
     </Reference>
     <Reference Include="Boo.Lang">
       <HintPath>G:/Programs/Unity/2019.3.13f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Editor">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Editor">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>G:/GameProjects/RejunevationUnityCS/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
