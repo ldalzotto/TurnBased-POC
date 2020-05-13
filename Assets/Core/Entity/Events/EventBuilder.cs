@@ -33,14 +33,16 @@ namespace _Entity._Events
         public static void attackEvent(Entity p_entity, EventQueue p_eventQueue,
                     Entity p_sourceEntity, Entity p_targetEntity, Attack p_attack)
         {
+            AttackEntityEvent l_attackEvent = AttackEntityEvent.alloc(p_sourceEntity, p_targetEntity, p_attack);
+
             AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(p_entity);
             if (l_animationVisualFeedback != null)
             {
-                EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlaySyncEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.CONTEXT_ACTION,
-                       l_animationVisualFeedback.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.ATTACK).GetAnimationInput()));
+                l_attackEvent.BeforeApplyingDamage = AnimationVisualFeedbackPlaySyncEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.CONTEXT_ACTION,
+                       l_animationVisualFeedback.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.ATTACK).GetAnimationInput());
             }
 
-            EventQueue.enqueueEvent(p_eventQueue, AttackEntityEvent.alloc(p_sourceEntity, p_targetEntity, p_attack));
+            EventQueue.enqueueEvent(p_eventQueue, l_attackEvent);
         }
     }
 }

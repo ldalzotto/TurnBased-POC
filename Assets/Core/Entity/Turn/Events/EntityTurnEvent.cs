@@ -1,9 +1,4 @@
 ﻿using _ActionPoint;
-using _AI._DecisionTree;
-using _AI._DecisionTree._Algorithm;
-using _AI._DecisionTree._Builder;
-using _Entity._Animation;
-using _Entity._Events;
 using _EventQueue;
 
 namespace _Entity._Turn
@@ -36,63 +31,7 @@ namespace _Entity._Turn
 
             if (EntityComponent.get_component<ActionPoint>(Entity).ActionPointData.CurrentActionPoints > 0.00f)
             {
-
-                DecisionTree l_decisionTree = DecisionTree.alloc();
-                TreeBuilder.buildAggressiveTree(l_decisionTree, Entity);
-                var l_choice = Algorithm.traverseDecisionTree(l_decisionTree, Entity);
-
-                // TODO -> this piece of logic must be elsewhere.
-                for (int i = 0; i < l_choice.PickedChoice.DecisionNodesChoiceOrdered.Length; i++)
-                {
-                    ADecisionNode l_decisionNode = l_choice.PickedChoice.DecisionNodesChoiceOrdered[i];
-                    if (l_decisionNode.DecisionNodeConsumerAction == EDecisionNodeConsumerAction.EXECUTE)
-                    {
-                        switch (l_decisionNode)
-                        {
-                            // Push to the event queue the will of moving along a path
-                            case MoveToNavigationNodeNode l_moveToNavigationNode:
-                                {
-                                    AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
-                                    if (l_animationVisualFeedback != null)
-                                    {
-                                        EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlayAsyncEvent.alloc(l_animationVisualFeedback,
-                                               (int)AnimationLayers.LOCOMOTION, l_animationVisualFeedback.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.LOCOMOTION).GetAnimationInput()));
-                                    }
-
-                                    var l_pathEnumerator = l_moveToNavigationNode.CalculatedPath.GetEnumerator();
-                                    while (l_pathEnumerator.MoveNext())
-                                    {
-                                        EventQueue.enqueueEvent(p_eventQueue, NavigationNodeMoveEvent.alloc(Entity, l_pathEnumerator.Current));
-                                    }
-
-                                    if (l_animationVisualFeedback != null)
-                                    {
-                                        EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackDestroyLayerEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.LOCOMOTION));
-                                    }
-                                }
-                                break;
-
-                            case AttackNode l_attackNode:
-
-                                {
-                                    AnimationVisualFeedback l_animationVisualFeedback = EntityComponent.get_component<AnimationVisualFeedback>(Entity);
-
-                                    for (int j = 0; j < l_attackNode.NumberOfAttacks; j++)
-                                    {
-                                        if (l_animationVisualFeedback != null)
-                                        {
-                                            EventQueue.enqueueEvent(p_eventQueue, AnimationVisualFeedbackPlaySyncEvent.alloc(l_animationVisualFeedback, (int)AnimationLayers.CONTEXT_ACTION,
-                                                   l_animationVisualFeedback.AnimationVisualFeedbackData.GetAnimation(AnimationLookupTag.ATTACK).GetAnimationInput()));
-                                        }
-
-                                        EventQueue.enqueueEvent(p_eventQueue, AttackEntityEvent.alloc(l_attackNode.SourceEntity, l_attackNode.TargetEntity, l_attackNode.Attack));
-                                    }
-                                }
-
-                                break;
-                        }
-                    }
-                }
+                TurnIteration.Iterate(Entity, p_eventQueue);
             }
 
             // This means that at least one action is performed.

@@ -15,14 +15,12 @@ namespace _Attack
         }
 
         /// <summary>
-        /// Calculates and apply damage from the <paramref name="p_attack"/>.
+        /// Calculates damage from the <paramref name="p_attack"/>.
         /// In the future, this function will take into account <see cref="_EntityCharacteristics.EntityCharacteristics"/> for defense, ect ...
         /// </summary>
-        public static void resolve(Attack p_attack, Entity p_targetEntity)
+        public static float resolve(Attack p_attack, Entity p_targetEntity)
         {
-            Health.addToCurrentHealth(
-                EntityComponent.get_component<Health>(p_targetEntity),
-                p_attack.AttackData.Damage * -1);
+            return p_attack.AttackData.Damage * -1;
         }
     }
 

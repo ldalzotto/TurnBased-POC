@@ -3,10 +3,12 @@ using _AnimatorPlayable._Interface;
 using _Attack;
 using _Entity._Animation;
 using _EventQueue;
+using _Health;
 using _Locomotion;
 using _NavigationEngine._Events;
 using _NavigationGraph;
 using System;
+using System.Collections.Generic;
 
 namespace _Entity._Events
 {
@@ -135,13 +137,19 @@ namespace _Entity._Events
 
     /// <summary>
     /// Attacks the <see cref="TargetEntity"/> with the provided <see cref="Attack"/>.
-    /// May cause the <see cref="TargetEntity"/> to be destroyed.
+    ///  - Consumes <see cref="ActionPoint"/>.
     /// </summary>
     public class AttackEntityEvent : AEvent
     {
         public Entity SourceEntity;
         public Entity TargetEntity;
         public Attack Attack;
+
+        /// <summary>
+        /// The <see cref="Attack"/> will be performed. These <see cref="AEvent"/> 
+        /// will be inserted before executing the <see cref="EntityApplyDamageEvent"/>.
+        /// </summary>
+        public AEvent BeforeApplyingDamage;
 
         public static AttackEntityEvent alloc(Entity p_sourceEntity, Entity p_targetEntity, Attack p_attack)
         {
@@ -161,16 +169,47 @@ namespace _Entity._Events
                 ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
                 if (l_actionPoint.ActionPointData.CurrentActionPoints >= Attack.AttackData.APCost)
                 {
-                    ActionPoint.add(EntityComponent.get_component<ActionPoint>(SourceEntity), -1 * Attack.AttackData.Damage);
-                    Attack.resolve(Attack, TargetEntity);
+                    ActionPoint.add(EntityComponent.get_component<ActionPoint>(SourceEntity), -1 * Attack.AttackData.APCost);
+                    float l_appliedDamage = Attack.resolve(Attack, TargetEntity);
 
-                    // TODO -> This logic must be inside an EventListener.
-                    // Maybe reacting to an Interface or tag ?
-                    if (TargetEntity.MarkedForDestruction)
+                    if (BeforeApplyingDamage != null)
                     {
-                        EntityEventsComposition.addEntityDestroyedEvents(p_eventQueue.Events, TargetEntity, true);
+                        EventQueue.insertEventAt(p_eventQueue, 0, BeforeApplyingDamage);
                     }
+
+                    EventQueue.insertEventAt(p_eventQueue, 0, EntityApplyDamageEvent.alloc(TargetEntity, l_appliedDamage));
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Apply <see cref="SignedAmountOfDamage"/> to the <see cref="TargetEntity"/>.
+    /// May cause the <see cref="TargetEntity"/> to be destroyed.
+    /// </summary>
+    public class EntityApplyDamageEvent : AEvent
+    {
+        public Entity TargetEntity;
+        public float SignedAmountOfDamage;
+
+        public static EntityApplyDamageEvent alloc(Entity p_targetEntity, float p_signedAmountOfDamage)
+        {
+            EntityApplyDamageEvent l_instance = new EntityApplyDamageEvent();
+            l_instance.TargetEntity = p_targetEntity;
+            l_instance.SignedAmountOfDamage = p_signedAmountOfDamage;
+            return l_instance;
+        }
+
+        public override void Execute(EventQueue p_eventQueue)
+        {
+            base.Execute(p_eventQueue);
+
+            Health l_targetEntityHealth = EntityComponent.get_component<Health>(TargetEntity);
+            Health.addToCurrentHealth(l_targetEntityHealth, SignedAmountOfDamage);
+
+            if (TargetEntity.MarkedForDestruction)
+            {
+                EntityEventsComposition.addEntityDestroyedEvents(p_eventQueue.Events, TargetEntity, true);
             }
         }
     }
