@@ -1,9 +1,6 @@
-﻿
-
-using _Entity._Events;
+﻿using _Entity._Events;
 using _Functional;
 using _NavigationGraph;
-using _TrasformHierarchy;
 using System;
 using System.Collections.Generic;
 
@@ -74,26 +71,6 @@ namespace _Entity
         }
     }
 
-    /// <summary>
-    /// Used for debug purpose, to be able to find the associated GameObject is possible.
-    /// </summary>
-    public struct EntityGameWorldInstanceID
-    {
-        public int ID;
-    }
-
-    public struct EntityGameWorld
-    {
-        public TransformComponent RootGround;
-
-
-        public static EntityGameWorld build(TransformComponent p_rootGround)
-        {
-            EntityGameWorld l_instance = new EntityGameWorld();
-            l_instance.RootGround = p_rootGround;
-            return l_instance;
-        }
-    }
 
 
     #region Entity Component

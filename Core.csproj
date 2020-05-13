@@ -82,6 +82,7 @@
     <Compile Include="Assets\Core\Entity\Component\TurnTimelineElligibility.cs" />
     <Compile Include="Assets\Core\Entity\Entity.cs" />
     <Compile Include="Assets\Core\Entity\EntityContainer.cs" />
+    <Compile Include="Assets\Core\Entity\EntityGameWorld.cs" />
     <Compile Include="Assets\Core\Entity\Events\EntityEvents.cs" />
     <Compile Include="Assets\Core\Entity\Events\EntityEventsComposition.cs" />
     <Compile Include="Assets\Core\Entity\Events\EventBuilder.cs" />

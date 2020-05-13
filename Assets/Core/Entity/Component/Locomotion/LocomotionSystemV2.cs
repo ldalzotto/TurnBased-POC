@@ -98,8 +98,7 @@ namespace _Locomotion
                 }
                 else
                 {
-                    LocomotionComponent.AssociatedEntity.EntityGameWorld.RootGround.WorldRotation =
-                            quaternion.LookRotationSafe(l_initialDirection, math.up());
+                    EntityGameWorld.orientTowards(ref LocomotionComponent.AssociatedEntity.EntityGameWorld, ref l_initialDirection);
                 }
             }
         }

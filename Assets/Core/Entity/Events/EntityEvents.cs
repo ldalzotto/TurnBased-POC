@@ -170,6 +170,9 @@ namespace _Entity._Events
                 if (l_actionPoint.ActionPointData.CurrentActionPoints >= Attack.AttackData.APCost)
                 {
                     ActionPoint.add(EntityComponent.get_component<ActionPoint>(SourceEntity), -1 * Attack.AttackData.APCost);
+
+                    EntityGameWorld.orientTowards(ref SourceEntity.EntityGameWorld, TargetEntity);
+
                     float l_appliedDamage = Attack.resolve(Attack, TargetEntity);
 
                     if (BeforeApplyingDamage != null)
