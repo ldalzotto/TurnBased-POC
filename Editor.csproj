@@ -68,6 +68,7 @@
     <Compile Include="Assets\Editor\EntityInspectorWindow.cs" />
     <Compile Include="Assets\Editor\EventQueueDebugWindow.cs" />
     <Compile Include="Assets\Editor\Helper\AssetFinder.cs" />
+    <Compile Include="Assets\Editor\ScriptableObjectCreator.cs" />
     <Compile Include="Assets\Editor\ShaderGUI\ToonShaderEditor.cs" />
     <None Include="Assets\Editor\Editor.asmdef" />
     <Reference Include="UnityEngine">

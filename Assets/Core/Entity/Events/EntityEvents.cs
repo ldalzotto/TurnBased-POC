@@ -145,12 +145,6 @@ namespace _Entity._Events
         public Entity TargetEntity;
         public Attack Attack;
 
-        /// <summary>
-        /// The <see cref="Attack"/> will be performed. These <see cref="AEvent"/> 
-        /// will be inserted before executing the <see cref="EntityApplyDamageEvent"/>.
-        /// </summary>
-        public AEvent BeforeApplyingDamage;
-
         public static AttackEntityEvent alloc(Entity p_sourceEntity, Entity p_targetEntity, Attack p_attack)
         {
             AttackEntityEvent l_instance = new AttackEntityEvent();
@@ -175,12 +169,13 @@ namespace _Entity._Events
 
                     float l_appliedDamage = Attack.resolve(Attack, TargetEntity);
 
-                    if (BeforeApplyingDamage != null)
-                    {
-                        EventQueue.insertEventAt(p_eventQueue, 0, BeforeApplyingDamage);
-                    }
-
                     EventQueue.insertEventAt(p_eventQueue, 0, EntityApplyDamageEvent.alloc(TargetEntity, l_appliedDamage));
+
+                    if (Attack.AttackBeforeDamageEventHook != null)
+                    {
+                        Attack.AttackBeforeDamageEventHook.SourceEntity = SourceEntity;
+                        Attack.AttackBeforeDamageEventHook.FeedEventQueue(p_eventQueue, 0);
+                    }
                 }
             }
         }
@@ -223,11 +218,11 @@ namespace _Entity._Events
     public class AnimationVisualFeedbackPlayAsyncEvent : AEvent
     {
         public AnimationVisualFeedback AnimationVisualFeedback;
-        public int LayerID;
+        public AnimationLayers LayerID;
         public IAnimationInput AnimationInput;
 
         public static AnimationVisualFeedbackPlayAsyncEvent alloc(AnimationVisualFeedback p_animationVisualFeedback,
-            int p_layerID, IAnimationInput p_animationInput)
+            AnimationLayers p_layerID, IAnimationInput p_animationInput)
         {
             AnimationVisualFeedbackPlayAsyncEvent l_instance = new AnimationVisualFeedbackPlayAsyncEvent();
             l_instance.AnimationVisualFeedback = p_animationVisualFeedback;
@@ -239,7 +234,7 @@ namespace _Entity._Events
         public override void Execute(EventQueue p_eventQueue)
         {
             base.Execute(p_eventQueue);
-            AnimationVisualFeedback.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput);
+            AnimationVisualFeedback.AnimatorPlayable.PlayAnimation((int)LayerID, AnimationInput);
         }
     }
 
@@ -248,11 +243,11 @@ namespace _Entity._Events
         public bool Completed;
 
         public AnimationVisualFeedback AnimationVisualFeedback;
-        public int LayerID;
+        public AnimationLayers LayerID;
         public IAnimationInput AnimationInput;
 
         public static AnimationVisualFeedbackPlaySyncEvent alloc(AnimationVisualFeedback p_animationVisualFeedback,
-            int p_layerID, IAnimationInput p_animationInput)
+            AnimationLayers p_layerID, IAnimationInput p_animationInput)
         {
             AnimationVisualFeedbackPlaySyncEvent l_instance = new AnimationVisualFeedbackPlaySyncEvent();
             l_instance.Completed = false;
@@ -265,13 +260,13 @@ namespace _Entity._Events
         private void OnAnimationEnd()
         {
             Completed = true;
-            AnimationVisualFeedback.AnimatorPlayable.DestroyLayer(LayerID);
+            AnimationVisualFeedback.AnimatorPlayable.DestroyLayer((int)LayerID);
         }
 
         public override void Execute(EventQueue p_eventQueue)
         {
             base.Execute(p_eventQueue);
-            AnimationVisualFeedback.AnimatorPlayable.PlayAnimation(LayerID, AnimationInput, OnAnimationEnd);
+            AnimationVisualFeedback.AnimatorPlayable.PlayAnimation((int)LayerID, AnimationInput, OnAnimationEnd);
         }
 
         public override bool IsCompleted()
@@ -283,9 +278,9 @@ namespace _Entity._Events
     public class AnimationVisualFeedbackDestroyLayerEvent : AEvent
     {
         public AnimationVisualFeedback AnimationVisualFeedback;
-        public int LayerID;
+        public AnimationLayers LayerID;
 
-        public static AnimationVisualFeedbackDestroyLayerEvent alloc(AnimationVisualFeedback p_animationVisualFeedback, int p_layerID)
+        public static AnimationVisualFeedbackDestroyLayerEvent alloc(AnimationVisualFeedback p_animationVisualFeedback, AnimationLayers p_layerID)
         {
             AnimationVisualFeedbackDestroyLayerEvent l_instance = new AnimationVisualFeedbackDestroyLayerEvent();
             l_instance.AnimationVisualFeedback = p_animationVisualFeedback;
@@ -296,7 +291,7 @@ namespace _Entity._Events
         public override void Execute(EventQueue p_eventQueue)
         {
             base.Execute(p_eventQueue);
-            AnimationVisualFeedback.AnimatorPlayable.DestroyLayer(LayerID);
+            AnimationVisualFeedback.AnimatorPlayable.DestroyLayer((int)LayerID);
         }
     }
 }

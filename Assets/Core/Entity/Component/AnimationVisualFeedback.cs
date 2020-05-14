@@ -48,7 +48,6 @@ namespace _Entity._Animation
         /// See <see cref="EntityTurnIterationEvent"/> when processing the <see cref="MoveToNavigationNodeNode"/>.
         /// </summary>
         LOCOMOTION = 0,
-        ATTACK = 1,
         IDLE = 2
     }
 }

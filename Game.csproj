@@ -99,6 +99,7 @@
     <Compile Include="Assets\TurnTimeline\TurnTimelineComponent.cs" />
     <Compile Include="Assets\UI\Gauge\Scripts\UIGaugeComponent.cs" />
     <Compile Include="Assets\UI\TransformConstraint\RectTransformLockConstraintComponent.cs" />
+    <Compile Include="Assets\_GameAssets\Entity\ExperimentGirl\EventHook\ExperimentGirl_AttackBeforeDamageEventHook.cs" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.xml" />
     <None Include="Assets\_GameAssets\Graphics\Shader\ToonUnlit\ToonLibrary\ToonSpecular.hlsl" />
     <None Include="Assets\Plugins\Sirenix\Assemblies\Sirenix.Utilities.Editor.xml" />

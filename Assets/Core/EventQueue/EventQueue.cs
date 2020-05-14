@@ -141,4 +141,15 @@ namespace _EventQueue
         public virtual void OnCompleted(EventQueue p_eventQueue) { }
 
     }
+
+    /// <summary>
+    /// This interface is a convenient way to allow an <see cref="AEvent"/> to insert additional Events at some particular position provided by 
+    /// external sources.
+    /// <see cref="IEventHook"/> purpose is to be created as game assets and easily switchable.
+    /// Exemple : Before applying damages. Some attacks may trigger animations, other will add particles, ...
+    /// </summary>
+    public interface IEventHook
+    {
+        void FeedEventQueue(EventQueue p_eventQueue, int p_insertionIndex);
+    }
 }

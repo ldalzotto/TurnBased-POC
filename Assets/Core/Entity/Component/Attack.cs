@@ -1,4 +1,5 @@
 ﻿using _Entity;
+using _EventQueue;
 using _Health;
 
 namespace _Attack
@@ -7,10 +8,16 @@ namespace _Attack
     {
         public AttackData AttackData;
 
-        public static Attack alloc(ref AttackData p_attackData)
+        /// <summary>
+        /// <see cref="AEvent"/> hooked just before applying damage from the <see cref="Attack"/>.
+        /// </summary>
+        public IAttackBeforeDamageEventHook AttackBeforeDamageEventHook;
+
+        public static Attack alloc(ref AttackData p_attackData, IAttackBeforeDamageEventHook p_attackBeforeDamageEventHook)
         {
             Attack l_instance = new Attack();
             l_instance.AttackData = p_attackData;
+            l_instance.AttackBeforeDamageEventHook = p_attackBeforeDamageEventHook;
             return l_instance;
         }
 
@@ -28,5 +35,10 @@ namespace _Attack
     {
         public float APCost;
         public float Damage;
+    }
+
+    public interface IAttackBeforeDamageEventHook : IEventHook
+    {
+        Entity SourceEntity { get; set; }
     }
 }
