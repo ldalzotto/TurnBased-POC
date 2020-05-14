@@ -1,6 +1,5 @@
 ﻿using _Entity;
 using _EventQueue;
-using _Health;
 
 namespace _Attack
 {

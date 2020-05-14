@@ -1,9 +1,12 @@
-﻿using _Entity;
+﻿using _AnimatorPlayable._Interface;
+using _Editor._Helper;
+using _Entity;
 using _EventQueue;
 using _NavigationGraph;
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Serialization;
+using Sirenix.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -121,12 +124,33 @@ public class NavigationNodeGameWorldInstanceIDDrawer : OdinValueDrawer<Navigatio
     }
 }
 
-/*
+
 public class IAnimationPlayableDefinitionDrawer<T> : OdinValueDrawer<T> where T : IAnimationPlayableDefinition
 {
+    private GenericAssetSelector<T> InterfaceScriptableObjectAssetSelector;
+
+    private GUIContent TreeSelectionButtonGUIContent = new GUIContent("O", "Open selection tree.");
+
     protected override void DrawPropertyLayout(GUIContent label)
     {
-        EditorGUILayout.IntField(2);
+        if (InterfaceScriptableObjectAssetSelector == null)
+        {
+            InterfaceScriptableObjectAssetSelector = new GenericAssetSelector<T>(
+                    (T p_selectedAsset) => { ValueEntry.SmartValue = p_selectedAsset; });
+        }
+
+        Rect rect = EditorGUILayout.GetControlRect();
+
+        ScriptableObject l_selectedScriptableObject = (ScriptableObject)EditorGUI.ObjectField(rect.SetWidth(rect.width * 0.9f), ValueEntry.SmartValue as ScriptableObject, typeof(ScriptableObject), false);
+        if (l_selectedScriptableObject is IAnimationPlayableDefinition)
+        {
+            ValueEntry.SmartValue = (T)(IAnimationPlayableDefinition)l_selectedScriptableObject;
+        }
+
+
+        if (GUI.Button(rect.AlignRight(rect.width * 0.1f), TreeSelectionButtonGUIContent))
+        {
+            InterfaceScriptableObjectAssetSelector.ShowInPopup();
+        }
     }
 }
-*/

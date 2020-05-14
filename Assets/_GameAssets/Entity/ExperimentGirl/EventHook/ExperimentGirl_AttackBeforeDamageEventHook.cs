@@ -5,9 +5,6 @@ using _Entity._Animation;
 using _Entity._Events;
 using _EventQueue;
 using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace _GameAssets._Entity._ExperimentGirl
 {

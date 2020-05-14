@@ -142,18 +142,18 @@ public class ToonShaderEditor : ShaderGUI
         if (this.surfaceOptionFoldout.GetValue())
         {
             BaseShaderGUI.DoPopup(ToonShaderEditorStatic.surfaceType, surfaceTypeProp, Enum.GetNames(typeof(BaseShaderGUI.SurfaceType)), materialEditor);
-            if ((BaseShaderGUI.SurfaceType) material.GetFloat("_Surface") == BaseShaderGUI.SurfaceType.Transparent)
+            if ((BaseShaderGUI.SurfaceType)material.GetFloat("_Surface") == BaseShaderGUI.SurfaceType.Transparent)
                 BaseShaderGUI.DoPopup(ToonShaderEditorStatic.blendingMode, blendModeProp, Enum.GetNames(typeof(BlendMode)), materialEditor);
 
             EditorGUI.BeginChangeCheck();
             EditorGUI.showMixedValue = cullingProp.hasMixedValue;
-            var culling = (BaseShaderGUI.RenderFace) cullingProp.floatValue;
-            culling = (BaseShaderGUI.RenderFace) EditorGUILayout.EnumPopup(ToonShaderEditorStatic.cullingText, culling);
+            var culling = (BaseShaderGUI.RenderFace)cullingProp.floatValue;
+            culling = (BaseShaderGUI.RenderFace)EditorGUILayout.EnumPopup(ToonShaderEditorStatic.cullingText, culling);
             if (EditorGUI.EndChangeCheck())
             {
                 materialEditor.RegisterPropertyChangeUndo(ToonShaderEditorStatic.cullingText.text);
-                cullingProp.floatValue = (float) culling;
-                material.doubleSidedGI = (BaseShaderGUI.RenderFace) cullingProp.floatValue != BaseShaderGUI.RenderFace.Front;
+                cullingProp.floatValue = (float)culling;
+                material.doubleSidedGI = (BaseShaderGUI.RenderFace)cullingProp.floatValue != BaseShaderGUI.RenderFace.Front;
             }
 
             EditorGUI.showMixedValue = false;
@@ -280,7 +280,7 @@ public class ToonShaderEditor : ShaderGUI
             {
                 EditorGUI.BeginChangeCheck();
                 EditorGUI.showMixedValue = queueOffsetProp.hasMixedValue;
-                var queue = EditorGUILayout.IntSlider(ToonShaderEditorStatic.queueSlider, (int) queueOffsetProp.floatValue, -queueOffsetRange, queueOffsetRange);
+                var queue = EditorGUILayout.IntSlider(ToonShaderEditorStatic.queueSlider, (int)queueOffsetProp.floatValue, -queueOffsetRange, queueOffsetRange);
                 if (EditorGUI.EndChangeCheck())
                     queueOffsetProp.floatValue = queue;
                 EditorGUI.showMixedValue = false;
@@ -351,7 +351,7 @@ public static class ToonShaderEditorStatic
     public static GUIContent SpecularMapText = new GUIContent("Specular map");
     public static string SpecularPowerText = "Specular power";
     public static string SpecularColorText = "Specular color";
-    
+
     public static string TOON_EMISSION_ENABLED = "TOON_EMISSION_ENABLED";
     public static GUIContent EmissionMapText = new GUIContent("Emission map");
     public static string EmissionColorText = "Emission color";
