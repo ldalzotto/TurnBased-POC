@@ -28,11 +28,9 @@ namespace _AI._DecisionTree
     public abstract class ADecisionNode
     {
         public List<ADecisionNode> LinkedNodes;
-        public EDecisionNodeConsumerAction DecisionNodeConsumerAction;
 
         public virtual void TreeTraversal(ADecisionNode p_sourceNode, ref EntityDecisionContext p_entityDecisionContextdata)
         {
-            DecisionNodeConsumerAction = EDecisionNodeConsumerAction.SKIP;
         }
     }
 

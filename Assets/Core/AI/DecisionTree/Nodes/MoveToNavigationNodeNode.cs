@@ -38,25 +38,10 @@ namespace _AI._DecisionTree
                                 SourceNavigationNode,
                                 TargetNavigationNode,
                                 PathCalculationParameters.build(2.0f));
-
                 NavigationGraphAlgorithm.CalculatePath(l_calculationRequest);
-
                 ref NavigationPath l_calculatedNavigationPath = ref l_calculationRequest.ResultPath;
-
-                /* The PathScore is kepts as if, because we want that the AIDecisionTree algorithm compare all possible path until the destination is reached to
-                effectively retrieve the shortest one. */
                 p_entityDecisionContextdata.AIDecisionScore.PathScore += l_calculatedNavigationPath.PathCost;
-
-                NavigationPath.limitPathByMaximumPathCost(ref l_calculatedNavigationPath, p_entityDecisionContextdata.ActionPoint.CurrentActionPoints);
-
-                if (l_calculatedNavigationPath.NavigationNodes.Count > 1)
-                {
-                    DecisionNodeConsumerAction = EDecisionNodeConsumerAction.EXECUTE;
-                    CalculatedPath = new List<NavigationNode>(l_calculatedNavigationPath.NavigationNodes);
-                }
-
-                /* However, the virtual ActionPoints is updated as if the Entity has traversed the calculated path until it's virtual action points is depleted. */
-                ActionPointData.add(ref p_entityDecisionContextdata.ActionPoint, -1 * l_calculatedNavigationPath.PathCost);
+                CalculatedPath = new List<NavigationNode>(l_calculatedNavigationPath.NavigationNodes);
             }
         }
     };

@@ -14,11 +14,8 @@ namespace _AI._DecisionTree._Builder
         public static void buildAggressiveTree(DecisionTree p_decisionTree, Entity p_sourceEntity)
         {
             Health p_sourceEntityHealth = EntityComponent.get_component<Health>(p_sourceEntity);
-            if (Health.getHealthRatio(p_sourceEntityHealth) > 0.5f)
-            {
-                buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
-            }
-            else
+
+            if (Health.getHealthRatio(p_sourceEntityHealth) <= 0.5f)
             {
                 if (EntityComponentContainer.Components.ContainsKey(typeof(HealthRecoveryTrigger)))
                 {
@@ -29,14 +26,18 @@ namespace _AI._DecisionTree._Builder
                     buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
                 }
             }
+            else
+            {
+                buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
+            }
         }
 
         private static void buildMoveToRangeOfEntity(DecisionTree p_decisionTree, Entity p_sourceEntity)
         {
             /* 
-                         For now, only Entities with characteristics are considered elligible to move to.
-                         //TODO, having a more complex targetting system.
-                     */
+               For now, only Entities with characteristics are considered elligible to move to.
+               //TODO, having a more complex targetting system.
+            */
             if (EntityComponentContainer.Components.ContainsKey(typeof(EntityCharacteristics)))
             {
                 var l_entitiesToGo = EntityComponentContainer.Components[typeof(EntityCharacteristics)];
@@ -69,6 +70,9 @@ namespace _AI._DecisionTree._Builder
                     MoveToNavigationNodeNode l_moveToNavigationNodeNode = MoveToNavigationNodeNode.alloc(p_sourceEntity.CurrentNavigationNode,
                         l_healthRecoveryTrigger.AssociatedEntity.CurrentNavigationNode);
                     DecisionTree.linkDecisionNodes(p_decisionTree, p_decisionTree.RootNode, l_moveToNavigationNodeNode);
+
+                    HealNode l_healNode = HealNode.alloc(p_sourceEntity, l_healthRecoveryTrigger);
+                    DecisionTree.linkDecisionNodes(p_decisionTree, l_moveToNavigationNodeNode, l_healNode);
                 }
             }
         }

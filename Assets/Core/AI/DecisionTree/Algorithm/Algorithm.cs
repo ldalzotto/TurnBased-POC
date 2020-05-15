@@ -16,7 +16,7 @@ namespace _AI._DecisionTree._Algorithm
             RefList<AIDecisionTreeChoice> l_choices = new RefList<AIDecisionTreeChoice>();
 
             RefList<TraversalStack> l_traversalStacks = new RefList<TraversalStack>();
-            l_traversalStacks.Add(TraversalStack.build(p_decisionTree.RootNode, EntityDecisionContext.build(EntityComponent.get_component<ActionPoint>(p_calledEntity).ActionPointData)));
+            l_traversalStacks.Add(TraversalStack.build(p_decisionTree.RootNode, EntityDecisionContext.build()));
 
             while (l_traversalStacks.Count > 0)
             {
@@ -63,7 +63,7 @@ namespace _AI._DecisionTree._Algorithm
                 }
             }
 
-            ref AIDecisionTreeChoice l_pickedChoice = ref pickTreeChoice(l_choices);
+            ref AIDecisionTreeChoice l_pickedChoice = ref pickTreeChoice(l_choices, EntityComponent.get_component<ActionPoint>(p_calledEntity));
             AIdecisionTreeTraversalResponse l_response = AIdecisionTreeTraversalResponse.build(ref l_pickedChoice, l_choices);
             OnAIDecisionTreeTraversed?.Invoke(l_response);
             return l_response;
@@ -75,30 +75,24 @@ namespace _AI._DecisionTree._Algorithm
         /// </summary>
         /// <param name="p_choices"> Compared choices. </param>
         /// <returns> The picked choice </returns>
-        static ref AIDecisionTreeChoice pickTreeChoice(RefList<AIDecisionTreeChoice> p_choices)
+        static ref AIDecisionTreeChoice pickTreeChoice(RefList<AIDecisionTreeChoice> p_choices, ActionPoint p_calledEntityActionPoint)
         {
-            // Becuase PathScore represents the distance crossed, because we want to minimize movement, we normalize it by inverting the value
-            float l_highestPathScore = 0.0f;
-            float l_highestDamageScore = 0.0f;
+            // Becuase PathScore represents the distance crossed and that we want to minimize movement, 
+            // we normalize the PathScore by it's potential maxmimum value calculated if the Entity were using all it's ActionPoints to move.
+            float l_maxPathScoreThatCanBeCrossed = _ActionPoint.Calculations.actionPointToCrossableWorldDistance(p_calledEntityActionPoint.ActionPointData.CurrentActionPoints);
 
             for (int i = 0; i < p_choices.Count; i++)
             {
                 ref AIDecisionTreeChoice l_aIDecisionTreeChoice = ref p_choices.ValueRef(i);
-                l_highestPathScore = math.max(l_highestPathScore, l_aIDecisionTreeChoice.AIDecisionScore.PathScore);
-                l_highestDamageScore = math.max(l_highestDamageScore, l_aIDecisionTreeChoice.AIDecisionScore.DamageScore);
             }
 
             for (int i = 0; i < p_choices.Count; i++)
             {
                 ref AIDecisionTreeChoice l_aIDecisionTreeChoice = ref p_choices.ValueRef(i);
-                if (l_highestPathScore != 0.0f)
+                if (l_maxPathScoreThatCanBeCrossed != 0.0f)
                 {
-                    l_aIDecisionTreeChoice.AIDecisionScore.PathScore = 1 - (l_aIDecisionTreeChoice.AIDecisionScore.PathScore / l_highestPathScore);
-                }
-
-                if (l_highestPathScore != 0.0f)
-                {
-                    l_aIDecisionTreeChoice.AIDecisionScore.DamageScore = (l_aIDecisionTreeChoice.AIDecisionScore.DamageScore / l_highestPathScore);
+                    l_aIDecisionTreeChoice.AIDecisionScore.PathScore =
+                        math.max(l_maxPathScoreThatCanBeCrossed - l_aIDecisionTreeChoice.AIDecisionScore.PathScore, 0.0f);
                 }
             }
 
@@ -126,7 +120,6 @@ namespace _AI._DecisionTree._Algorithm
             public int LinkIterationCounter;
             public EntityDecisionContext EntityDecisionContextdata;
 
-
             public static TraversalStack build(ADecisionNode p_decisionNodeHandler, EntityDecisionContext p_entityDecisionContext)
             {
                 TraversalStack l_instance = new TraversalStack();
@@ -141,16 +134,9 @@ namespace _AI._DecisionTree._Algorithm
         {
             public AIDecisionScore AIDecisionScore;
 
-            /// <summary>
-            /// The <see cref="ActionPointData"/> value is passed between <see cref="ADecisionNode"/>. 
-            /// It simulates the current state of the <see cref="ActionPoint"/> component of the <see cref="Entity"/>.
-            /// </summary>
-            public ActionPointData ActionPoint;
-
-            public static EntityDecisionContext build(ActionPointData p_actionPoint)
+             public static EntityDecisionContext build()
             {
                 EntityDecisionContext l_instance = new EntityDecisionContext();
-                l_instance.ActionPoint = p_actionPoint;
                 return l_instance;
             }
         }
@@ -171,9 +157,14 @@ namespace _AI._DecisionTree._Algorithm
             /// </summary>
             public float DamageScore;
 
+            /// <summary>
+            /// The amount of healing done.
+            /// </summary>
+            public float HealScore;
+
             public static float totalScore(ref AIDecisionScore p_aiDecisionScore)
             {
-                return p_aiDecisionScore.DamageScore + p_aiDecisionScore.PathScore;
+                return p_aiDecisionScore.DamageScore + p_aiDecisionScore.PathScore + p_aiDecisionScore.HealScore;
             }
         }
 

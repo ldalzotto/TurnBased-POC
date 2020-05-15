@@ -30,21 +30,22 @@ namespace _AI._DecisionTree
 
         public override void TreeTraversal(ADecisionNode p_sourceNode, ref EntityDecisionContext p_entityDecisionContextdata)
         {
-            if (NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode, TargetEntity.CurrentNavigationNode, NavigationGraphFlag.SNAPSHOT))
+            //TODO -> Store executed attacks in a vector, then the consumer read the vector and transforms them in EntityActions.
+            ActionPoint l_sourceEntityActionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
+            ActionPointData l_virtualActionPointData = new ActionPointData()
             {
-                if (p_entityDecisionContextdata.ActionPoint.CurrentActionPoints >= Attack.AttackData.APCost)
-                {
-                    DecisionNodeConsumerAction = EDecisionNodeConsumerAction.EXECUTE;
-
-                    //TODO -> Store executed attacks in a vector, then the consumer read the vector and transforms them in EntityActions.
-                    while (p_entityDecisionContextdata.ActionPoint.CurrentActionPoints >= Attack.AttackData.APCost)
-                    {
-                        ActionPointData.add(ref p_entityDecisionContextdata.ActionPoint, -1 * Attack.AttackData.APCost);
-                        p_entityDecisionContextdata.AIDecisionScore.DamageScore += Attack.AttackData.Damage;
-                        NumberOfAttacks += 1;
-                    }
-                }
+                InitialActionPoints = l_sourceEntityActionPoint.ActionPointData.InitialActionPoints,
+                CurrentActionPoints = l_sourceEntityActionPoint.ActionPointData.InitialActionPoints
+            };
+            while (l_virtualActionPointData.CurrentActionPoints >= Attack.AttackData.APCost)
+            {
+                ActionPointData.add(ref l_virtualActionPointData, -1 * Attack.AttackData.APCost);
+                p_entityDecisionContextdata.AIDecisionScore.DamageScore += Attack.AttackData.Damage;
+                NumberOfAttacks += 1;
             }
+            //    }
+
+
         }
     };
 }

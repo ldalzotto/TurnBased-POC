@@ -67,6 +67,7 @@
     <Compile Include="Assets\Core\AI\DecisionTree\Builder\TreeBuilder.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\DecisionTree.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\AttackNode.cs" />
+    <Compile Include="Assets\Core\AI\DecisionTree\Nodes\HealNode.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\MoveToEntityNode.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\MoveToNavigationNodeNode.cs" />
     <Compile Include="Assets\Core\Entity\Component\ActionPoint\ActionPoint.cs" />
