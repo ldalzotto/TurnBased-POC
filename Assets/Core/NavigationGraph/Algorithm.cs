@@ -42,6 +42,15 @@ namespace _NavigationGraph
             return l_instance;
         }
 
+        public NavigationPath Clone()
+        {
+            NavigationPath l_instance = new NavigationPath();
+            l_instance.NavigationNodes = new List<NavigationNode>(NavigationNodes);
+            l_instance.NavigationNodesTraversalCalculations = new Dictionary<NavigationNode, NavigationNodePathTraversalCalculations>(NavigationNodesTraversalCalculations);
+            l_instance.PathCost = PathCost;
+            return l_instance;
+        }
+
         public static void reset(ref NavigationPath p_navigationPath)
         {
             p_navigationPath.NavigationNodes.Clear();

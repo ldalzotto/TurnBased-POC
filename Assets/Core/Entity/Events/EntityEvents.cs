@@ -8,6 +8,7 @@ using _Locomotion;
 using _NavigationEngine._Events;
 using _NavigationGraph;
 using System;
+using Unity.Mathematics;
 
 namespace _Entity._Events
 {
@@ -164,7 +165,7 @@ namespace _Entity._Events
                 {
                     ActionPoint.add(EntityComponent.get_component<ActionPoint>(SourceEntity), -1 * Attack.AttackData.APCost);
 
-                    EntityGameWorld.orientTowards(ref SourceEntity.EntityGameWorld, TargetEntity);
+                    EntityGameWorld.orientTowards(ref SourceEntity.EntityGameWorld, TargetEntity, math.up());
 
                     float l_appliedDamage = Attack.resolve(Attack, TargetEntity);
 

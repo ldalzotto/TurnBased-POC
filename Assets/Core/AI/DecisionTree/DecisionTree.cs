@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using static _AI._DecisionTree._Algorithm.Algorithm;
 
 namespace _AI._DecisionTree
 {
@@ -29,7 +28,7 @@ namespace _AI._DecisionTree
     {
         public List<ADecisionNode> LinkedNodes;
 
-        public virtual void TreeTraversal(ADecisionNode p_sourceNode, ref EntityDecisionContext p_entityDecisionContextdata)
+        public virtual void TreeTraversal(ADecisionNode p_sourceNode)
         {
         }
     }
@@ -37,19 +36,4 @@ namespace _AI._DecisionTree
     public class RootDecisionNode : ADecisionNode
     {
     }
-
-
-    /// <summary>
-    /// This enumeration is used by the consumer of the <see cref="DecisionTree"/>. It indicates whether or not an operation
-    /// must be executed when the choiche made encounter the associated <see cref="ADecisionNode"/>.
-    /// </summary>
-    public enum EDecisionNodeConsumerAction : ushort
-    {
-        SKIP = 0,
-
-        /// <summary>
-        /// The consumer is likely to execute another process by reading the associated <see cref="ADecisionNode"/> data.
-        /// </summary>
-        EXECUTE = 1
-    };
 }

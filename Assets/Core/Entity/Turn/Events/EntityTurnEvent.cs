@@ -1,5 +1,5 @@
-﻿using _ActionPoint;
-using _EventQueue;
+﻿using _EventQueue;
+using _GameLoop;
 
 namespace _Entity._Turn
 {
@@ -27,16 +27,9 @@ namespace _Entity._Turn
         /// <param name="p_eventQueue"></param>
         public override void Execute(EventQueue p_eventQueue)
         {
-            int l_eventQueueSizeBeforeInsersion = p_eventQueue.Events.Count;
+            ExternalHooks.Profiler_BeginSample("EntityTurnIterationEvent");
 
-            if (EntityComponent.get_component<ActionPoint>(Entity).ActionPointData.CurrentActionPoints > 0.00f)
-            {
-                TurnIteration.Iterate(Entity, p_eventQueue);
-            }
-
-            // This means that at least one action is performed.
-            // Thus, we try to re-evaluate action choice to be sure that there is nothing else to do for the associated Entity.
-            if (l_eventQueueSizeBeforeInsersion != p_eventQueue.Events.Count)
+            if (TurnIteration.Iterate(Entity, p_eventQueue))
             {
                 EventQueue.enqueueEvent(p_eventQueue, EntityTurnIterationEvent.alloc(Entity));
             }
@@ -44,6 +37,8 @@ namespace _Entity._Turn
             {
                 EventQueue.enqueueEvent(p_eventQueue, EntityTurnIterationEndEvent.alloc(Entity));
             }
+
+            ExternalHooks.Profiler_EndSample();
         }
     }
 

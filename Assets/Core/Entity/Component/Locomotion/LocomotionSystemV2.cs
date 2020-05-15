@@ -98,7 +98,8 @@ namespace _Locomotion
                 }
                 else
                 {
-                    EntityGameWorld.orientTowards(ref LocomotionComponent.AssociatedEntity.EntityGameWorld, ref l_initialDirection);
+                    float3 l_orientationDirection = l_initialDirection.ProjectOnPlane(math.up());
+                    EntityGameWorld.orientTowards(ref LocomotionComponent.AssociatedEntity.EntityGameWorld, ref l_orientationDirection);
                 }
             }
         }

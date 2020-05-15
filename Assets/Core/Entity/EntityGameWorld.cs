@@ -32,5 +32,11 @@ namespace _Entity
             float3 p_direction = math.normalize(p_targetEntiry.EntityGameWorld.RootGround.WorldPosition - p_entityGameWorld.RootGround.WorldPosition);
             orientTowards(ref p_entityGameWorld, ref p_direction);
         }
+
+        public static void orientTowards(ref EntityGameWorld p_entityGameWorld, Entity p_targetEntiry, float3 p_projectionPlaneNormal)
+        {
+            float3 p_direction = math.normalize(p_targetEntiry.EntityGameWorld.RootGround.WorldPosition - p_entityGameWorld.RootGround.WorldPosition).ProjectOnPlane(p_projectionPlaneNormal);
+            orientTowards(ref p_entityGameWorld, ref p_direction);
+        }
     }
 }

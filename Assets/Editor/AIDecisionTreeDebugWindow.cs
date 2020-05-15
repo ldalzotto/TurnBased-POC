@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using static _AI._DecisionTree._Algorithm.Algorithm;
 
 public class AIDecisionTreeDebugWindow : OdinEditorWindow
 {
@@ -44,6 +43,7 @@ public class AIDecisionTreeDebugWindow : OdinEditorWindow
     {
         base.OnEnable();
         ExecutedEvents = new List<object>();
+        /*
         _AI._DecisionTree._Algorithm.Algorithm.OnAIDecisionTreeTraversed = (AIdecisionTreeTraversalResponse p_choices) =>
         {
             ExecutedEvents.Add(
@@ -53,7 +53,7 @@ public class AIDecisionTreeDebugWindow : OdinEditorWindow
                     ExecutedEvent = SerializationUtility.CreateCopy(p_choices)
                 }
             );
-        };
+        };.*/
     }
 
 

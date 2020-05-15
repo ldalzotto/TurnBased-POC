@@ -1,10 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using _AI._DecisionTree._Algorithm;
-using _Entity;
-using _NavigationGraph;
+﻿using _Entity;
 using _HealthRecovery;
-using _Health;
 
 namespace _AI._DecisionTree
 {
@@ -12,25 +7,21 @@ namespace _AI._DecisionTree
     {
         public Entity SourceEntity;
         public HealthRecoveryTrigger TargetHealTrigger;
+        public float RecoveredHealth;
 
         public static HealNode alloc(Entity p_sourceEntity, HealthRecoveryTrigger p_targetHealTrigger)
         {
             HealNode l_instance = new HealNode();
             l_instance.SourceEntity = p_sourceEntity;
             l_instance.TargetHealTrigger = p_targetHealTrigger;
+            l_instance.RecoveredHealth = 0.0f;
             return l_instance;
         }
 
-        public override void TreeTraversal(ADecisionNode p_sourceNode, ref Algorithm.EntityDecisionContext p_entityDecisionContextdata)
+        public override void TreeTraversal(ADecisionNode p_sourceNode)
         {
-            base.TreeTraversal(p_sourceNode, ref p_entityDecisionContextdata);
-#if comment
-            if (NavigationGraphAlgorithm.areNavigationNodesNeighbors(NavigationGraphContainer.UniqueNavigationGraph, SourceEntity.CurrentNavigationNode,
-                    TargetHealTrigger.AssociatedEntity.CurrentNavigationNode, NavigationGraphFlag.SNAPSHOT))
-            {
-#endif
-                p_entityDecisionContextdata.AIDecisionScore.HealScore += TargetHealTrigger.HealthRecoveryData.RecoveredHealth;
-      //      }
+            base.TreeTraversal(p_sourceNode);
+            RecoveredHealth += TargetHealTrigger.HealthRecoveryData.RecoveredHealth;
         }
     }
 }
