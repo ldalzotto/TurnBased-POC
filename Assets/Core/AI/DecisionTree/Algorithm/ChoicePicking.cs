@@ -39,10 +39,7 @@ namespace _AI._DecisionTree._Algorithm
                     {
                         case MoveToNavigationNodeNode l_moveToNavigationNodeNode:
                             {
-                                if (l_maxPathScoreThatCanBeCrossed != 0.0f)
-                                {
-                                    l_choiceScore.PathScore += math.max(l_maxPathScoreThatCanBeCrossed - l_moveToNavigationNodeNode.PathCost, 0.0f);
-                                }
+                                l_choiceScore.PathScore += math.max(l_maxPathScoreThatCanBeCrossed - l_moveToNavigationNodeNode.PathCost, 0.0f);
                                 break;
                             }
                         case AttackNode l_attackNode:

@@ -1,5 +1,7 @@
-﻿using _AI._DecisionTree._Builder;
+﻿using _AI._Behavior;
+using _AI._DecisionTree._Builder;
 using _Entity;
+using System;
 using System.Collections.Generic;
 using static _AI._DecisionTree._Algorithm.Traversal;
 
@@ -7,15 +9,22 @@ namespace _AI._DecisionTree._Algorithm
 {
     public static class TreeIteration
     {
-        public static TreeIterationResult iterate(Entity p_entity,
-                    ChoicePicking.PickChoiceDelegate p_choicePickingFunc)
+        public static Action<TreeIterationResult> OnDecisionTreeIterated;
+
+        public delegate void BuildDecisionTreeDelegate(DecisionTree p_decisionTree, Entity p_sourceEntity);
+
+        public static TreeIterationResult iterate(AIBehavior p_aiBehavior)
         {
+            IAIBehaviorProvider l_aiBehaviorProvider = p_aiBehavior.IAIBehaviorProvider;
+            
             DecisionTree l_decisionTree = DecisionTree.alloc();
-            TreeBuilder.buildAggressiveTree(l_decisionTree, p_entity);
+            l_aiBehaviorProvider.buildDecisionTree(l_decisionTree, p_aiBehavior.AssociatedEntity);
             RefList<AIDecisionTreeChoice> l_choices = Traversal.traverseDecisionTree(l_decisionTree);
-            ref AIDecisionTreeChoice l_choice = ref p_choicePickingFunc.Invoke(l_choices, p_entity);
+            ref AIDecisionTreeChoice l_choice = ref l_aiBehaviorProvider.get_choicePicking().Invoke(l_choices, p_aiBehavior.AssociatedEntity);
             List<float> l_actionPointConsumptionPrediction = ActionPointPrediction.predictActionPointConsumptions(ref l_choice);
-            return TreeIterationResult.build(ref l_choice, l_actionPointConsumptionPrediction, l_choices);
+            TreeIterationResult l_result = TreeIterationResult.build(ref l_choice, l_actionPointConsumptionPrediction, l_choices);
+            OnDecisionTreeIterated?.Invoke(l_result);
+            return l_result;
         }
 
         public struct TreeIterationResult

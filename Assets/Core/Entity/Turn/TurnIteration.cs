@@ -1,6 +1,8 @@
 ﻿using _ActionPoint;
+using _AI._Behavior;
 using _AI._DecisionTree;
 using _AI._DecisionTree._Algorithm;
+using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
 using System.Collections.Generic;
@@ -17,9 +19,18 @@ namespace _Entity._Turn
         /// </summary>
         public static bool Iterate(Entity p_entity, EventQueue p_eventQueue)
         {
-            TreeIterationResult l_treeIterationResult = TreeIteration.iterate(p_entity, ChoicePicking.defaultTestPickChoice);
-            PushEventsFromAIDecision(p_entity, p_eventQueue, ref l_treeIterationResult.PickedChoice);
-            return DoesTheEntityNeedsAnAdditionalTurnIteration(p_entity, l_treeIterationResult.ActionPointConsumptionPrediction);
+            AIBehavior l_aiBehavior = EntityComponent.get_component<AIBehavior>(p_entity);
+            if (l_aiBehavior != null)
+            {
+                TreeIterationResult l_treeIterationResult = TreeIteration.iterate(l_aiBehavior);
+                PushEventsFromAIDecision(p_entity, p_eventQueue, ref l_treeIterationResult.PickedChoice);
+                return DoesTheEntityNeedsAnAdditionalTurnIteration(p_entity, l_treeIterationResult.ActionPointConsumptionPrediction);
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         private static void PushEventsFromAIDecision(Entity p_entity, EventQueue p_eventQueue, ref AIDecisionTreeChoice p_aiDecision)

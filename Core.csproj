@@ -67,12 +67,13 @@
     <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\ChoicePicking.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\Traversal.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Algorithm\TreeIteration.cs" />
-    <Compile Include="Assets\Core\AI\DecisionTree\Builder\TreeBuilder.cs" />
+    <Compile Include="Assets\Core\AI\DecisionTree\Builder\TreeBuilderLibrary.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\DecisionTree.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\AttackNode.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\HealNode.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\MoveToEntityNode.cs" />
     <Compile Include="Assets\Core\AI\DecisionTree\Nodes\MoveToNavigationNodeNode.cs" />
+    <Compile Include="Assets\Core\Entity\Component\AIBehavior.cs" />
     <Compile Include="Assets\Core\Entity\Component\ActionPoint\ActionPoint.cs" />
     <Compile Include="Assets\Core\Entity\Component\ActionPoint\Calculations.cs" />
     <Compile Include="Assets\Core\Entity\Component\AnimationVisualFeedback.cs" />

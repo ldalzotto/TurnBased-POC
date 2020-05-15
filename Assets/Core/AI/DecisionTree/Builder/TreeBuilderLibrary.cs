@@ -9,30 +9,9 @@ using System.Collections.Generic;
 
 namespace _AI._DecisionTree._Builder
 {
-    public static class TreeBuilder
+    public static class TreeBuilderLibrary
     {
-        public static void buildAggressiveTree(DecisionTree p_decisionTree, Entity p_sourceEntity)
-        {
-            Health p_sourceEntityHealth = EntityComponent.get_component<Health>(p_sourceEntity);
-
-            if (Health.getHealthRatio(p_sourceEntityHealth) <= 0.5f)
-            {
-                if (EntityComponentContainer.Components.ContainsKey(typeof(HealthRecoveryTrigger)))
-                {
-                    buildMoveToHealthTrigger(p_decisionTree, p_sourceEntity);
-                }
-                else
-                {
-                    buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
-                }
-            }
-            else
-            {
-                buildMoveToRangeOfEntity(p_decisionTree, p_sourceEntity);
-            }
-        }
-
-        private static void buildMoveToRangeOfEntity(DecisionTree p_decisionTree, Entity p_sourceEntity)
+        public static void buildMoveToRangeOfEntity(DecisionTree p_decisionTree, Entity p_sourceEntity)
         {
             /* 
                For now, only Entities with characteristics are considered elligible to move to.
@@ -59,7 +38,7 @@ namespace _AI._DecisionTree._Builder
             }
         }
 
-        private static void buildMoveToHealthTrigger(DecisionTree p_decisionTree, Entity p_sourceEntity)
+        public static void buildMoveToHealthTrigger(DecisionTree p_decisionTree, Entity p_sourceEntity)
         {
             if (EntityComponentContainer.Components.ContainsKey(typeof(HealthRecoveryTrigger)))
             {

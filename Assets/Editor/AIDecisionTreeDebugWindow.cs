@@ -1,10 +1,12 @@
-﻿using Sirenix.OdinInspector;
+﻿using _AI._DecisionTree._Algorithm;
+using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
+using static _AI._DecisionTree._Algorithm.TreeIteration;
 
 public class AIDecisionTreeDebugWindow : OdinEditorWindow
 {
@@ -43,6 +45,18 @@ public class AIDecisionTreeDebugWindow : OdinEditorWindow
     {
         base.OnEnable();
         ExecutedEvents = new List<object>();
+
+        TreeIteration.OnDecisionTreeIterated = (TreeIterationResult p_choices) =>
+        {
+            ExecutedEvents.Add(
+                new AIDecisionTreeEntry()
+                {
+                    ExecutionTime = DateTime.Now.ToString("hh:mm:ss.fff tt"),
+                    ExecutedEvent = SerializationUtility.CreateCopy(p_choices)
+                }
+            );
+        };
+
         /*
         _AI._DecisionTree._Algorithm.Algorithm.OnAIDecisionTreeTraversed = (AIdecisionTreeTraversalResponse p_choices) =>
         {
