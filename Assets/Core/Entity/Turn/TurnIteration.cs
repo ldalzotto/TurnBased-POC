@@ -2,7 +2,6 @@
 using _AI._Behavior;
 using _AI._DecisionTree;
 using _AI._DecisionTree._Algorithm;
-using _AI._DecisionTree._Builder;
 using _Entity._Events;
 using _EventQueue;
 using System.Collections.Generic;

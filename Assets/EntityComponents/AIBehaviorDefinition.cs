@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using _Entity;
-using System;
+﻿using _Entity;
 using _RuntimeObject;
 using Sirenix.OdinInspector;
+using System;
+using UnityEngine;
 
 namespace _AI._Behavior
 {

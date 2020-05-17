@@ -1,10 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using _AI._DecisionTree;
 using _Entity;
 using static _AI._DecisionTree._Algorithm.ChoicePicking;
-using static _AI._DecisionTree._Algorithm.TreeIteration;
-using _AI._DecisionTree._Algorithm;
-using _AI._DecisionTree;
 
 namespace _AI._Behavior
 {

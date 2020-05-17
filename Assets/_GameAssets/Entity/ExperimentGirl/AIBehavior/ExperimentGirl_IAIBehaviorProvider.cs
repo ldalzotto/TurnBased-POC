@@ -1,13 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using Sirenix.OdinInspector;
-using _AI._Behavior;
+﻿using _AI._Behavior;
+using _AI._DecisionTree;
 using _AI._DecisionTree._Algorithm;
 using _AI._DecisionTree._Builder;
-using _AI._DecisionTree;
 using _Entity;
 using _Health;
 using _HealthRecovery;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace _GameAssets._Entity._ExperimentGirl
 {

@@ -1,5 +1,4 @@
 ﻿using _AI._Behavior;
-using _AI._DecisionTree._Builder;
 using _Entity;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace _AI._DecisionTree._Algorithm
         public static TreeIterationResult iterate(AIBehavior p_aiBehavior)
         {
             IAIBehaviorProvider l_aiBehaviorProvider = p_aiBehavior.IAIBehaviorProvider;
-            
+
             DecisionTree l_decisionTree = DecisionTree.alloc();
             l_aiBehaviorProvider.buildDecisionTree(l_decisionTree, p_aiBehavior.AssociatedEntity);
             RefList<AIDecisionTreeChoice> l_choices = Traversal.traverseDecisionTree(l_decisionTree);
