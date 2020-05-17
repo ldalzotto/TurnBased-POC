@@ -30,19 +30,19 @@ Press Delete to restart the level.
 
 The application features (links redirect to source code implementation) :
 
-* Turn based action sequencing.
-* A* path findind.
-* Logic execution when an Entity is moving to a node that have a trigger Entity.
-* Entity interaction :
+* [Turn based action sequencing](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/TurnTimeline.)
+* [A* path findind.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/NavigationGraph)
+* [Logic execution when an Entity is moving to a node that have a trigger Entity.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/NavigationEngine)
+* [Entity interaction](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity/Events) :
     * Moving Entity :
         * Can attack other moving entities
         * Can die when health < 0
     * Trigger Entity :
-        * Add health to the moving Entity that walks at the same cell.
-* Agent action decision tree that picks to most favorable actions.
-* Centralized Event queue that monitor all actions in the game.
-* Non unity Entity <-> Component relationship.
-* Non unity game loop execution order.
+        * [Add health to the moving Entity that walks at the same cell.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity/Component/Trigger)
+* [Agent action decision tree that picks to most favorable actions.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/AI/DecisionTree)
+* [Centralized Event queue that monitor all actions in the game.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/EventQueue)
+* [Non unity Entity <-> Component relationship.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity)
+* [Non unity game loop execution order.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/GameLoop)
 
 ## Dependencies
 
