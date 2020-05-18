@@ -16,7 +16,7 @@ If you want more details on a specific feature, feel free to post an issue and I
 
 A playable demo is available on [itch.io](https://loic-dal-zotto.itch.io/poc-turnbasedtacticalmovement) or as a [git release](https://github.com/ldalzotto/TurnBased-POC/releases/tag/0.9).
 
-**Insert youtube video**
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/7zP136u5RJo/0.jpg)](https://www.youtube.com/watch?v=7zP136u5RJo)
 
 ### Controls
 
