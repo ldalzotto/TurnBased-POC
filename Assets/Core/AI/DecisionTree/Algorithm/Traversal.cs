@@ -40,7 +40,7 @@ namespace _AI._DecisionTree._Algorithm
                         #endregion
                     }
                 }
-                else // Ne links have been found, this means that the current node is a leaf node.
+                else // No links have been found, this means that the current node is a leaf node.
                 {
                     #region Creating the choice as the current node is a leaf
 

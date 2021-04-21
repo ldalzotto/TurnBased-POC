@@ -1,0 +1,9 @@
+site_name: ProjectUndefined-Prototype
+theme: 'windmill'
+nav:
+    # - 'Range intersection': 'range_intersection.md'
+    - 'Architecture overview': 'architecture_overview.md'
+extra_javascript:
+    - ./js/custom.js
+extra_css:
+    - ./css/custom.css

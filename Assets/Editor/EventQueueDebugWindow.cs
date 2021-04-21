@@ -22,7 +22,7 @@ public class EventQueueDebugWindow : OdinEditorWindow
     }
 
     [FoldoutGroup("Log File")]
-    [FilePath(AbsolutePath = true)]
+    [Sirenix.OdinInspector.FilePath(AbsolutePath = true)]
     public string UnityProjectPath;
 
     [FoldoutGroup("Log File")]

@@ -26,6 +26,7 @@ namespace _AI._DecisionTree._Builder
                     {
                         foreach (ADecisionNode l_moveToNavigationNode in createMoveToEntityTree(p_decisionTree, p_decisionTree.RootNode, p_sourceEntity, l_entity))
                         {
+                            // For every potential target, we try to attack
                             DecisionTree.linkDecisionNodes(
                                     p_decisionTree,
                                     l_moveToNavigationNode,

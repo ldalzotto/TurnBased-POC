@@ -71,6 +71,8 @@ namespace _Entity._Events
 
         public bool Completed;
         public bool MovementAllowed;
+
+        // called only once
         public override void Execute(EventQueue p_eventQueue)
         {
             if (SourceEntity.MarkedForDestruction)
@@ -78,7 +80,6 @@ namespace _Entity._Events
                 Completed = true;
                 return;
             }
-
 
             float l_costToMove = _ActionPoint.Calculations.actionPointBetweenNavigationNodes(SourceEntity.CurrentNavigationNode, TargetNavigationNode);
             ActionPoint l_actionPoint = EntityComponent.get_component<ActionPoint>(SourceEntity);
@@ -100,6 +101,7 @@ namespace _Entity._Events
             }
         }
 
+        // called every event queue step
         public override bool IsCompleted()
         {
             return Completed;
