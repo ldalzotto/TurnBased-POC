@@ -2,25 +2,25 @@
 
 This repository is the source code of a proof of concept of a Unity game.
 
-This project contains source code only, there is no asset files. I decided to strip assets from git history as they were taking space for nothing.
+TurnBased-POC is a proof of concept that aims to show the feasibility and practical application of :
 
-## Purpose
-
-The purpose of this repository is to share pieces of code that can be inspiring for people who wants to develop similar features.
-
-This project has no external documentation, your guide to understand how things work together will be comments (when there are some 😋). Feel free to dig into code to get a grasp of what is happening.
-
-If you want more details on a specific feature, feel free to post an issue and I will answer to you as best as I can.
+* Entity turn lifecycle management
+  * Ordering and stacking execution of events that involes interaction of Entities.
+  * Execution of TurnAction per Entity that consumes ActionPoints
+* A* pathfinding
+  * With dynamic obstacle avoidance
+  
+This repository contains source code only, there is no asset files. I decided to strip assets from git history as they were taking space for nothing. The whole unity project with assets is available [here](//todo).
 
 ## Demo
 
-A playable demo is available on [itch.io](https://loic-dal-zotto.itch.io/poc-turnbasedtacticalmovement) or as a [git release](https://github.com/ldalzotto/TurnBased-POC/releases/tag/0.9).
+A playable demo is available [here](https://github.com/ldalzotto/TurnBased-POC/releases/tag/0.9).
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/7zP136u5RJo/0.jpg)](https://www.youtube.com/watch?v=7zP136u5RJo)
+![](https://i.imgur.com/4HYH1P6.gif)
 
 ### Controls
 
-You don't control anything. 
+You don't control anything.
 
 Press Enter to start the level. Agents will act and move automatically.
 
@@ -30,15 +30,15 @@ Press Delete to restart the level.
 
 The application features (links redirect to source code implementation) :
 
-* [Turn based action sequencing](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/TurnTimeline.)
+* [Turn based action sequencing](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/TurnTimeline)
 * [A* path findind.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/NavigationGraph)
 * [Logic execution when an Entity is moving to a node that have a trigger Entity.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/NavigationEngine)
 * [Entity interaction](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity/Events) :
-    * Moving Entity :
-        * Can attack other moving entities
-        * Can die when health < 0
-    * Trigger Entity :
-        * [Add health to the moving Entity that walks at the same cell.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity/Component/Trigger)
+  * Moving Entity :
+    * Can attack other moving entities
+    * Can die when health < 0
+  * Trigger Entity :
+    * [Add health to the moving Entity that walks at the same cell.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity/Component/Trigger)
 * [Agent action decision tree that picks to most favorable actions.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/AI/DecisionTree)
 * [Centralized Event queue that monitor all actions in the game.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/EventQueue)
 * [Non unity Entity <-> Component relationship.](https://github.com/ldalzotto/TurnBased-POC/tree/master/Assets/Core/Entity)
@@ -47,7 +47,3 @@ The application features (links redirect to source code implementation) :
 ## Dependencies
 
 The application uses the OdinInspector package. The package is not included, you can buy it [here](https://assetstore.unity.com/packages/tools/utilities/odin-inspector-and-serializer-89041).
-
-## License
-
-Feel free to steal it.

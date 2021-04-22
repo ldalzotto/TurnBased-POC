@@ -1,12 +1,12 @@
 The TurnBased-POC project concept consists of three main components that interact between each others :
 
-1. The navigation graph, that defines the 3D surface where entities can be positioned and moving on.
+1. The navigation graph, that defines the 3D surface where entities can be positioned and move around.
 2. The decision tree, that defines what actions the entity is going to do (movement, attack).
 3. The event action queue, that controls the execution flow of actions.
 
 Basically the turn of an entity can be defined as : deciding which actions will be performed and send them to the event action queue that will update the navigation graph (and other systems not detailed here).
 
-// TODO -> image
+<svg-inline src="overview_overview.svg"><svg-inline/>
 
 # Entity
 
@@ -27,7 +27,7 @@ algorithm returns a path which is an array of links.
 
 For every path, the cost is calculated as the sum of the crossed distance.
 
-To improve the algorithm efficiency, we can influence how the next calculated node is picked by associating an additional score to every node called "heuristic score". In our case, this heuristic is the distance between the evaluated node
+To improve the algorithm efficiency, we can influence how the next calculated node is picked by associating an additional score to every node called "heuristic score". In our case, this heuristic is the distance between the evaluated node  
 and the target node. By minimizing the path cost and the heuristic score, we can force the algorithm to pick nodes that are going in the direction of the target node. Thus, finding the shortest path quickly?
 
 ## Updating the navigation graph
@@ -37,31 +37,32 @@ into account anymore.
 
 # Navigation engine
 
-// TODO -> structure
+<svg-inline src="overview_navigationgraph.svg"><svg-inline/>
 
 The navigation engine is the layer above the navigation graph that manage entity movement and it's consequence on the navigation graph.
 > All entity movement must be executed through the navigation engine to ensure that related structures are properly updated.
 
+It keeps track of the position of entities and make it easy to query which entities are at a specific navigation node.
+
+**Trigger listener:**
+
+The navigation engine allows it's consumer to register trigger listener at a navigation node. <br/>
+When an entity move from one navigation node to another, it execute registered triggers attached to the target navigation. These trigger events can then be consumed to execute custom logic on the entity.
+
 ## Obstacle
 
-If an entity is defined as an obstacle, this is translated by removing all navigation links that goes to the node where the entity is standing on. <br/>
-When an entity moves from navigation node A to B, the links previously removed that point to node A are restored because the entity is no longer standing on this point. The links that point to node B are removed.
-
-## Trigger
-
-When an entity move from one navigation node to another, it may execute triggers that have been allocated to the destination node. These triggers can then be consumed to execute custom logic on the entity.
+If an entity is defined as an obstacle, this is translated by removing all navigation links that goes to the node where the entity is standing on. This will forbid the navigation graph to use these links when he a nvaigation path is queries. <br/>
+When an entity move from navigation node A to B, the links previously removed that point to node A are restored because the entity is no longer standing on this point. The links that point to node B are removed.
 
 # Decision tree
 
-The decision tree is a structure that chain actions in a tree form. Example of actions are : moving to a navigation node or attack an entity.
+The decision tree is a structure that predict the next actions that an entity will do.
 
-The goal of the decision tree is to list all possible choices that an entity can do and assign a score to every possibilities.
-
-// TODO -> adding graph
+The decision tree lists all possible choices that an entity can do and assign a score to every possibilities.
 
 ## Building the tree
 
-The tree is built by using "behavior" functions that prioritize one type of action from another.
+The tree is built by using functions that prioritize one type of action from another.
 
 The game have two behaviors defined :
 
@@ -70,9 +71,9 @@ The game have two behaviors defined :
 
 ## Score calculation
 
-During the score calculation, we simulate the entity actions and see it's consequence on action point and health. All entity data that are updated are temporary values used only for the simulation of the score calculation.
+For every possible branches of the tree, a score is calculate to evaluate if the chain of action is worth to be executed by the entity. During the score calculation, we simulate the entity actions and see it's consequence on action point and health. All entity data that are updated are temporary values used only for the simulation of the score calculation.
 
-Every branches of the decision tree is traversed to calculate an associated score. The decision that have the highest score will be picked to be sent to the event action queue.
+The branch that have the highest score will be picked to be sent to the event action queue.
 
 ## Action nodes
 

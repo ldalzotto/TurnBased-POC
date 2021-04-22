@@ -1,8 +1,8 @@
-site_name: ProjectUndefined-Prototype
+site_name: TurnBased-poc
 theme: 'windmill'
 nav:
     # - 'Range intersection': 'range_intersection.md'
-    - 'Architecture overview': 'architecture_overview.md'
+    - 'overview': 'overview.md'
 extra_javascript:
     - ./js/custom.js
 extra_css:
