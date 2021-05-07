@@ -10,7 +10,7 @@ TurnBased-POC is a proof of concept that aims to show the feasibility and practi
 * A* pathfinding
   * With dynamic obstacle avoidance
   
-This repository contains source code only, there is no asset files. I decided to strip assets from git history as they were taking space for nothing. The whole unity project with assets is available [here](//todo).
+This repository contains source code only, there is no asset files. I decided to strip assets from git history as they were taking space for nothing. The whole unity project with assets is available [here](https://drive.google.com/file/d/1z_Xk5o0m9eFeluYiwCw1Kq2WxEzHGnHv/view?usp=sharing).
 
 ## Demo
 
